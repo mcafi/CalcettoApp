@@ -17,15 +17,21 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
-public class SignupActivity extends AppCompatActivity implements View.OnClickListener{
+import java.util.HashMap;
+import java.util.Map;
+
+public class SignupActivity extends AppCompatActivity implements View.OnClickListener {
     private FirebaseAuth mAuthReg = FirebaseAuth.getInstance();
+    private DatabaseReference database = FirebaseDatabase.getInstance().getReference();
 
     public void onStart() {
         super.onStart();
         // Check if user is signed in (non-null) and update UI accordingly.
         FirebaseUser currentUser = mAuthReg.getCurrentUser();
-        if(currentUser!=null){
+        if (currentUser != null) {
             startActivity(new Intent(SignupActivity.this, LogoutActivity.class));
         }
     }
@@ -42,21 +48,25 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
 
     @Override
     public void onClick(View v) {
-        switch (v.getId()){
-            case R.id.ButtonReg:{
+        switch (v.getId()) {
+            case R.id.ButtonReg: {
                 EditText usernameReg = findViewById(R.id.usernameReg);
-                String username = usernameReg.getText().toString();
+                final String username = usernameReg.getText().toString();
                 EditText emailReg = findViewById(R.id.emailReg);
-                String email = emailReg.getText().toString();
+                final String email = emailReg.getText().toString();
                 EditText passwordReg = findViewById(R.id.passwordReg);
                 String password = passwordReg.getText().toString();
-                mAuthReg.createUserWithEmailAndPassword(email,password).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                mAuthReg.createUserWithEmailAndPassword(email, password).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
                             // Sign in success, update UI with the signed-in user's information
                             Log.d("Reg", "createUserWithEmail:success");
                             FirebaseUser user = mAuthReg.getCurrentUser();
+                            Map<String, String> utente = new HashMap<String, String>();
+                            utente.put("username", username);
+                            utente.put("email", email);
+                            database.child("utenti").child(user.getUid()).setValue(utente);
                             startActivity(new Intent(SignupActivity.this, LogoutActivity.class));
                         } else {
                             // If sign in fails, display a message to the user.
@@ -70,7 +80,7 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
                 });
                 break;
             }
-            case R.id.giaRegistrato:{
+            case R.id.giaRegistrato: {
                 startActivity(new Intent(SignupActivity.this, LoginActivity.class));
                 break;
             }

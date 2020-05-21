@@ -25,7 +25,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         super.onStart();
         // Check if user is signed in (non-null) and update UI accordingly.
         FirebaseUser currentUser = mAuth.getCurrentUser();
-        if(currentUser!=null){
+        if (currentUser != null) {
             startActivity(new Intent(LoginActivity.this, LogoutActivity.class));
         }
         //updateUI(currentUser);
@@ -37,20 +37,20 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         super.onCreate(savedInstanceState);
         setContentView(R.layout.login);
         Button Registrazione = findViewById(R.id.Login);
-        TextView giaReg =findViewById(R.id.nonRegistrato);
+        TextView giaReg = findViewById(R.id.nonRegistrato);
         Registrazione.setOnClickListener(this);
         giaReg.setOnClickListener(this);
     }
 
     @Override
     public void onClick(View v) {
-        switch (v.getId()){
-            case R.id.Login:{
+        switch (v.getId()) {
+            case R.id.Login: {
                 EditText emailLog = findViewById(R.id.emailLog);
                 String email = emailLog.getText().toString();
                 EditText passwordLog = findViewById(R.id.passwordLog);
                 String password = passwordLog.getText().toString();
-                mAuth.signInWithEmailAndPassword(email,password).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                mAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
@@ -70,7 +70,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 });
                 break;
             }
-            case R.id.nonRegistrato:{
+            case R.id.nonRegistrato: {
                 startActivity(new Intent(LoginActivity.this, SignupActivity.class));
                 break;
             }
