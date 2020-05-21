@@ -26,10 +26,11 @@
         android:layout_height="40dp"
         android:layout_marginTop="60dp"
         android:layout_marginBottom="60dp"
+        android:paddingHorizontal="10dp"
         android:background="@android:color/white"
         android:backgroundTint="@android:color/white"
         android:ems="10"
-        android:hint="email"
+        android:hint="@string/email"
         android:inputType="textEmailAddress"
         app:layout_constraintBottom_toTopOf="@+id/passwordLog"
         app:layout_constraintEnd_toEndOf="parent"
@@ -42,10 +43,11 @@
         android:layout_height="40dp"
         android:layout_marginTop="60dp"
         android:layout_marginBottom="400dp"
+        android:paddingHorizontal="10dp"
         android:background="@android:color/white"
         android:backgroundTint="@android:color/white"
         android:ems="10"
-        android:hint="password"
+        android:hint="@string/password"
         android:inputType="textPassword"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -58,11 +60,19 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="60dp"
         android:layout_marginBottom="196dp"
-        android:text="Login"
+        android:text="@string/button_login"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/passwordLog" />
+
+    <com.google.android.gms.common.SignInButton
+        android:id="@+id/google_login"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        tools:layout_editor_absoluteX="142dp"
+        tools:layout_editor_absoluteY="386dp"
+        tools:ignore="MissingConstraints" />
 
     <TextView
         android:id="@+id/nonRegistrato"

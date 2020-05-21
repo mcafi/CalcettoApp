@@ -21,15 +21,33 @@
         app:srcCompat="@drawable/calcetto" />
 
     <EditText
+        android:id="@+id/usernameReg"
+        android:layout_width="wrap_content"
+        android:layout_height="40dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="20dp"
+        android:paddingHorizontal="10dp"
+        android:background="@android:color/white"
+        android:backgroundTint="@android:color/white"
+        android:ems="10"
+        android:hint="@string/username"
+        android:inputType="textPersonName"
+        app:layout_constraintBottom_toTopOf="@+id/emailReg"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/calcetto" />
+
+    <EditText
         android:id="@+id/emailReg"
         android:layout_width="wrap_content"
         android:layout_height="40dp"
         android:layout_marginTop="20dp"
         android:layout_marginBottom="20dp"
+        android:paddingHorizontal="10dp"
         android:background="@android:color/white"
         android:backgroundTint="@android:color/white"
         android:ems="10"
-        android:hint="email"
+        android:hint="@string/email"
         android:inputType="textEmailAddress"
         app:layout_constraintBottom_toTopOf="@+id/passwordReg"
         app:layout_constraintEnd_toEndOf="parent"
@@ -42,31 +60,16 @@
         android:layout_height="40dp"
         android:layout_marginTop="20dp"
         android:layout_marginBottom="20dp"
+        android:paddingHorizontal="10dp"
         android:background="@android:color/white"
         android:backgroundTint="@android:color/white"
         android:ems="10"
-        android:hint="password"
+        android:hint="@string/password"
         android:inputType="textPassword"
         app:layout_constraintBottom_toTopOf="@+id/ButtonReg"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/emailReg" />
-
-    <EditText
-        android:id="@+id/usernameReg"
-        android:layout_width="wrap_content"
-        android:layout_height="40dp"
-        android:layout_marginTop="20dp"
-        android:layout_marginBottom="20dp"
-        android:background="@android:color/white"
-        android:backgroundTint="@android:color/white"
-        android:ems="10"
-        android:hint="username"
-        android:inputType="textPersonName"
-        app:layout_constraintBottom_toTopOf="@+id/emailReg"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/calcetto" />
 
     <Button
         android:id="@+id/ButtonReg"
@@ -74,7 +77,7 @@
         android:layout_height="47dp"
         android:layout_marginTop="20dp"
         android:layout_marginBottom="228dp"
-        android:text="Registrati"
+        android:text="@string/button_signup"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.497"
