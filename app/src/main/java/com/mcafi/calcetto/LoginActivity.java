@@ -11,36 +11,33 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.viewpager.widget.ViewPager;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.snackbar.Snackbar;
-import com.google.android.material.tabs.TabLayout;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.mcafi.calcetto.ui.main.SectionsPagerAdapter;
 
-public class Registrazione extends AppCompatActivity implements View.OnClickListener{
-    private FirebaseAuth mAuthReg = FirebaseAuth.getInstance();
+public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
+    private FirebaseAuth mAuth = FirebaseAuth.getInstance();
 
     public void onStart() {
         super.onStart();
         // Check if user is signed in (non-null) and update UI accordingly.
-        FirebaseUser currentUser = mAuthReg.getCurrentUser();
+        FirebaseUser currentUser = mAuth.getCurrentUser();
         if(currentUser!=null){
-            startActivity(new Intent(Registrazione.this,Logout.class));
+            startActivity(new Intent(LoginActivity.this, LogoutActivity.class));
         }
+        //updateUI(currentUser);
     }
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.registrazione);
-        Button Registrazione= findViewById(R.id.ButtonReg);
-        TextView giaReg =findViewById(R.id.giaRegistrato);
+        setContentView(R.layout.login);
+        Button Registrazione = findViewById(R.id.Login);
+        TextView giaReg =findViewById(R.id.nonRegistrato);
         Registrazione.setOnClickListener(this);
         giaReg.setOnClickListener(this);
     }
@@ -48,24 +45,22 @@ public class Registrazione extends AppCompatActivity implements View.OnClickList
     @Override
     public void onClick(View v) {
         switch (v.getId()){
-            case R.id.ButtonReg:{
-                EditText usernameReg= findViewById(R.id.usernameReg);
-                String username = usernameReg.getText().toString();
-                EditText emailReg= findViewById(R.id.emailReg);
-                String email = emailReg.getText().toString();
-                EditText passwordReg= findViewById(R.id.passwordReg);
-                String password = passwordReg.getText().toString();
-                mAuthReg.createUserWithEmailAndPassword(email,password).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+            case R.id.Login:{
+                EditText emailLog = findViewById(R.id.emailLog);
+                String email = emailLog.getText().toString();
+                EditText passwordLog = findViewById(R.id.passwordLog);
+                String password = passwordLog.getText().toString();
+                mAuth.signInWithEmailAndPassword(email,password).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
                             // Sign in success, update UI with the signed-in user's information
-                            Log.d("Reg", "createUserWithEmail:success");
-                            FirebaseUser user = mAuthReg.getCurrentUser();
-                            startActivity(new Intent(Registrazione.this,Logout.class));
+                            Log.d("Login", "createUserWithEmail:success");
+                            FirebaseUser user = mAuth.getCurrentUser();
+                            startActivity(new Intent(LoginActivity.this, LogoutActivity.class));
                         } else {
                             // If sign in fails, display a message to the user.
-                            Log.w("Reg", "createUserWithEmail:failure", task.getException());
+                            Log.w("Login", "createUserWithEmail:failure", task.getException());
                             Toast.makeText(getApplicationContext(), "Authentication failed.",
                                     Toast.LENGTH_SHORT).show();
                         }
@@ -75,11 +70,10 @@ public class Registrazione extends AppCompatActivity implements View.OnClickList
                 });
                 break;
             }
-            case R.id.giaRegistrato:{
-                startActivity(new Intent(Registrazione.this,Login.class));
+            case R.id.nonRegistrato:{
+                startActivity(new Intent(LoginActivity.this, SignupActivity.class));
                 break;
             }
         }
-
     }
 }

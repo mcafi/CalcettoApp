@@ -9,7 +9,7 @@ import android.widget.Button;
 
 import com.google.firebase.auth.FirebaseAuth;
 
-public class Logout extends AppCompatActivity implements View.OnClickListener{
+public class LogoutActivity extends AppCompatActivity implements View.OnClickListener{
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -22,6 +22,6 @@ public class Logout extends AppCompatActivity implements View.OnClickListener{
     @Override
     public void onClick(View v) {
         FirebaseAuth.getInstance().signOut();
-        startActivity(new Intent(Logout.this,Login.class));
+        startActivity(new Intent(LogoutActivity.this, LoginActivity.class));
     }
 }
