@@ -9,8 +9,6 @@ import com.google.android.material.tabs.TabLayout;
 import androidx.viewpager.widget.ViewPager;
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 
 import com.mcafi.calcetto.ui.main.SectionsPagerAdapter;
@@ -27,6 +25,13 @@ public class MainActivity extends AppCompatActivity {
         TabLayout tabs = findViewById(R.id.tabs);
         tabs.setupWithViewPager(viewPager);
         FloatingActionButton fab = findViewById(R.id.fab);
+
+        sectionsPagerAdapter.addFragment(new MapFragment(), "Mappa");
+        sectionsPagerAdapter.addFragment(new MainFragment(), "Partite");
+        sectionsPagerAdapter.addFragment(new ProfileFragment(), "Profilo");
+
+        //carica di default il fragment centrale
+        viewPager.setCurrentItem(1);
 
         fab.setOnClickListener(new View.OnClickListener() {
             @Override

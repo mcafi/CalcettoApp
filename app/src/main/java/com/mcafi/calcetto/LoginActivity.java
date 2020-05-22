@@ -35,7 +35,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         // Check if user is signed in (non-null) and update UI accordingly.
         FirebaseUser currentUser = mAuth.getCurrentUser();
         if (currentUser != null) {
-            startActivity(new Intent(LoginActivity.this, LogoutActivity.class));
+            startActivity(new Intent(LoginActivity.this, MainActivity.class));
         }
     }
 
@@ -86,7 +86,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                             // Sign in success, update UI with the signed-in user's information
                             Log.d("signIn:success", "e");
                             FirebaseUser user = mAuth.getCurrentUser();
-                            startActivity(new Intent(LoginActivity.this, LogoutActivity.class));
+                            startActivity(new Intent(LoginActivity.this, MainActivity.class));
                         } else {
                             // If sign in fails, display a message to the user.
                             Log.w("signIn:failure", task.getException());
@@ -111,7 +111,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                             // Sign in success, update UI with the signed-in user's information
                             Log.d("Login", "createUserWithEmail:success");
                             FirebaseUser user = mAuth.getCurrentUser();
-                            startActivity(new Intent(LoginActivity.this, LogoutActivity.class));
+                            startActivity(new Intent(LoginActivity.this, MainActivity.class));
                         } else {
                             // If sign in fails, display a message to the user.
                             Log.w("Login", "createUserWithEmail:failure", task.getException());
