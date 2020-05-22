@@ -34,8 +34,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         super.onStart();
         // Check if user is signed in (non-null) and update UI accordingly.
         FirebaseUser currentUser = mAuth.getCurrentUser();
-        GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(this);
-        if (currentUser != null || account != null) {
+        if (currentUser != null) {
             startActivity(new Intent(LoginActivity.this, LogoutActivity.class));
         }
     }
@@ -50,9 +49,9 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 .build();
         mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
         setContentView(R.layout.activity_login);
-        Button Registrazione = findViewById(R.id.Login);
+        Button registrazione = findViewById(R.id.Login);
         TextView giaReg = findViewById(R.id.nonRegistrato);
-        Registrazione.setOnClickListener(this);
+        registrazione.setOnClickListener(this);
         giaReg.setOnClickListener(this);
         findViewById(R.id.google_login).setOnClickListener(this);
     }
@@ -71,7 +70,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 firebaseAuthWithGoogle(account.getIdToken());
             } catch (ApiException e) {
                 // Google Sign In failed, update UI appropriately
-                Log.w( "Google sign in failed", e);
+                Log.w("Google sign in failed", e);
                 // ...
             }
         }
@@ -85,7 +84,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
                             // Sign in success, update UI with the signed-in user's information
-                            Log.d( "signIn:success", "e");
+                            Log.d("signIn:success", "e");
                             FirebaseUser user = mAuth.getCurrentUser();
                             startActivity(new Intent(LoginActivity.this, LogoutActivity.class));
                         } else {
