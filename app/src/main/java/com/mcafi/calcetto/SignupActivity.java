@@ -32,7 +32,7 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
         // Check if user is signed in (non-null) and update UI accordingly.
         FirebaseUser currentUser = mAuthReg.getCurrentUser();
         if (currentUser != null) {
-            startActivity(new Intent(SignupActivity.this, LogoutActivity.class));
+            startActivity(new Intent(SignupActivity.this, MainActivity.class));
         }
     }
 
@@ -67,7 +67,7 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
                             utente.put("username", username);
                             utente.put("email", email);
                             database.child("utenti").child(user.getUid()).setValue(utente);
-                            startActivity(new Intent(SignupActivity.this, LogoutActivity.class));
+                            startActivity(new Intent(SignupActivity.this, MainActivity.class));
                         } else {
                             // If sign in fails, display a message to the user.
                             Log.w("Reg", "createUserWithEmail:failure", task.getException());
