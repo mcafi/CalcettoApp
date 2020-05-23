@@ -50,6 +50,8 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.ButtonReg: {
+                EditText nameReg = findViewById(R.id.nameReg);
+                final String name = nameReg.getText().toString();
                 EditText usernameReg = findViewById(R.id.usernameReg);
                 final String username = usernameReg.getText().toString();
                 EditText emailReg = findViewById(R.id.emailReg);
@@ -62,11 +64,9 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
                         if (task.isSuccessful()) {
                             // Sign in success, update UI with the signed-in user's information
                             Log.d("Reg", "createUserWithEmail:success");
-                            FirebaseUser user = mAuthReg.getCurrentUser();
-                            Map<String, String> utente = new HashMap<String, String>();
-                            utente.put("username", username);
-                            utente.put("email", email);
-                            database.child("utenti").child(user.getUid()).setValue(utente);
+                            FirebaseUser firebaseUuser = mAuthReg.getCurrentUser();
+                            User user = new User(email, name, username);
+                            database.child("utenti").child(firebaseUuser.getUid()).setValue(user);
                             startActivity(new Intent(SignupActivity.this, MainActivity.class));
                         } else {
                             // If sign in fails, display a message to the user.

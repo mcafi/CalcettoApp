@@ -15,8 +15,8 @@ public class LogoutActivity extends AppCompatActivity implements View.OnClickLis
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_logout);
-        Button Logout = findViewById(R.id.logout);
-        Logout.setOnClickListener(this);
+        Button logout = findViewById(R.id.logoutButton);
+        logout.setOnClickListener(this);
     }
 
     @Override
