@@ -17,15 +17,11 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-
-import java.util.HashMap;
-import java.util.Map;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 public class SignupActivity extends AppCompatActivity implements View.OnClickListener {
     private FirebaseAuth mAuthReg = FirebaseAuth.getInstance();
-    private DatabaseReference database = FirebaseDatabase.getInstance().getReference();
+    private FirebaseFirestore db = FirebaseFirestore.getInstance();
 
     public void onStart() {
         super.onStart();
@@ -66,7 +62,7 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
                             Log.d("Reg", "createUserWithEmail:success");
                             FirebaseUser firebaseUuser = mAuthReg.getCurrentUser();
                             User user = new User(email, name, username);
-                            database.child("utenti").child(firebaseUuser.getUid()).setValue(user);
+                            db.collection("utenti").document(firebaseUuser.getUid()).set(user);
                             startActivity(new Intent(SignupActivity.this, MainActivity.class));
                         } else {
                             // If sign in fails, display a message to the user.
@@ -74,8 +70,6 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
                             Toast.makeText(getApplicationContext(), "Authentication failed.",
                                     Toast.LENGTH_SHORT).show();
                         }
-
-                        // ...
                     }
                 });
                 break;
