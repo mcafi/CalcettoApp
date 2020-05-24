@@ -11,6 +11,7 @@ import android.widget.TextView;
 import androidx.fragment.app.Fragment;
 
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
@@ -42,8 +43,10 @@ public class ProfileFragment extends Fragment  implements View.OnClickListener  
                 emailText.setText(user.getEmail());
             }
         });
-        Button Logout = v.findViewById(R.id.logoutButton);
-        Logout.setOnClickListener(this);
+        Button logout = v.findViewById(R.id.logoutButton);
+        logout.setOnClickListener(this);
+        FloatingActionButton settingsButton = v.findViewById(R.id.settingsButton);
+        settingsButton.setOnClickListener(this);
         return v;
     }
 
@@ -51,7 +54,15 @@ public class ProfileFragment extends Fragment  implements View.OnClickListener  
 
     @Override
     public void onClick(View v) {
-        FirebaseAuth.getInstance().signOut();
-        startActivity(new Intent(getActivity(), LoginActivity.class));
+        switch (v.getId()){
+            case (R.id.logoutButton):
+                FirebaseAuth.getInstance().signOut();
+                startActivity(new Intent(getActivity(), LoginActivity.class));
+                break;
+            case (R.id.settingsButton):
+                startActivity(new Intent(getActivity(), SettingsActivity.class));
+                break;
+        }
+
     }
 }
