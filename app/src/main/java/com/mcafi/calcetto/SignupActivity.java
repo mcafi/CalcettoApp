@@ -18,6 +18,7 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.mcafi.calcetto.model.User;
 
 public class SignupActivity extends AppCompatActivity implements View.OnClickListener {
     private FirebaseAuth mAuthReg = FirebaseAuth.getInstance();
@@ -60,9 +61,9 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
                         if (task.isSuccessful()) {
                             // Sign in success, update UI with the signed-in user's information
                             Log.d("Reg", "createUserWithEmail:success");
-                            FirebaseUser firebaseUuser = mAuthReg.getCurrentUser();
+                            FirebaseUser firebaseUser = mAuthReg.getCurrentUser();
                             User user = new User(email, name, username);
-                            db.collection("utenti").document(firebaseUuser.getUid()).set(user);
+                            db.collection("utenti").document(firebaseUser.getUid()).set(user);
                             startActivity(new Intent(SignupActivity.this, MainActivity.class));
                         } else {
                             // If sign in fails, display a message to the user.

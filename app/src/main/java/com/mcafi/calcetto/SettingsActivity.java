@@ -3,7 +3,6 @@ package com.mcafi.calcetto;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
-import android.content.Context;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
@@ -16,6 +15,7 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreSettings;
+import com.mcafi.calcetto.model.User;
 
 import java.util.HashMap;
 import java.util.Map;

@@ -18,16 +18,22 @@ import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.mcafi.calcetto.model.User;
 
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
     private int RC_SIGN_IN = 7;
     private FirebaseAuth mAuth = FirebaseAuth.getInstance();
+    private FirebaseFirestore db = FirebaseFirestore.getInstance();
     private GoogleSignInClient mGoogleSignInClient;
 
     public void onStart() {
@@ -85,8 +91,22 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                         if (task.isSuccessful()) {
                             // Sign in success, update UI with the signed-in user's information
                             Log.d("signIn:success", "e");
-                            FirebaseUser user = mAuth.getCurrentUser();
-                            startActivity(new Intent(LoginActivity.this, MainActivity.class));
+                            final FirebaseUser firebaseUser = mAuth.getCurrentUser();
+                            final DocumentReference userRef = db.collection("utenti").document(firebaseUser.getUid());
+                            userRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                                @Override
+                                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                                    if (task.isSuccessful()) {
+                                        DocumentSnapshot document = task.getResult();
+                                        if (document.exists()) {
+                                            startActivity(new Intent(LoginActivity.this, MainActivity.class));
+                                        } else {
+                                            User user = new User(firebaseUser.getEmail(), "Nome e cognome", "bomber");
+                                            db.collection("utenti").document(firebaseUser.getUid()).set(user);
+                                        }
+                                    }
+                                }
+                            });
                         } else {
                             // If sign in fails, display a message to the user.
                             Log.w("signIn:failure", task.getException());

@@ -1,4 +1,4 @@
-package com.mcafi.calcetto;
+package com.mcafi.calcetto.model;
 
 public class User {
     private String email;
