@@ -1,5 +1,8 @@
 package com.mcafi.calcetto.model;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class User {
     private String email;
     private String name;
@@ -37,5 +40,13 @@ public class User {
 
     public void setUsername(String username) {
         this.username = username;
+    }
+
+    public Map<String, Object> toMap(){
+        Map<String, Object> map = new HashMap<>();
+        map.put("email", this.email);
+        map.put("name", this.name);
+        map.put("username", this.username);
+        return map;
     }
 }
