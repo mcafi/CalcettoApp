@@ -71,4 +71,16 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:srcCompat="@drawable/ic_edit_black_48dp"
         android:backgroundTint="@color/colorButton" />
+
+    <Button
+        android:id="@+id/editPicturebutton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="495dp"
+        android:text="Modifica Immagine"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/profileIcon" />
 </androidx.constraintlayout.widget.ConstraintLayout>
