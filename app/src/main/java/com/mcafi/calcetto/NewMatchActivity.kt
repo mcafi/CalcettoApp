@@ -1,6 +1,7 @@
 package com.mcafi.calcetto
 
 import android.app.DatePickerDialog
+import android.app.TimePickerDialog
 import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
@@ -19,12 +20,16 @@ class NewMatchActivity : AppCompatActivity(), View.OnClickListener {
     private val db = initializeDatabase()
     private val firebaseUser = mAuthReg.currentUser!!
     private lateinit var dpd: DatePickerDialog
+    private lateinit var tpd: TimePickerDialog
 
     private val c: Calendar = Calendar.getInstance()
     private val year = c.get(Calendar.YEAR)
     private val month = c.get(Calendar.MONTH)
     private val day = c.get(Calendar.DAY_OF_MONTH)
+    private val hour = c.get(Calendar.HOUR_OF_DAY)
+    private val minute = c.get(Calendar.MINUTE)
     private val dateFormat = SimpleDateFormat("dd/MM/yyyy", Locale("it"))
+    private val timeFormat = SimpleDateFormat("HH:mm", Locale("it"))
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -36,13 +41,20 @@ class NewMatchActivity : AppCompatActivity(), View.OnClickListener {
         supportActionBar!!.setDisplayShowTitleEnabled(false)
 
         newMatchDate.setText(dateFormat.format(c.time))
+        newMatchTime.setText(timeFormat.format(c.time))
 
         dpd = DatePickerDialog(this@NewMatchActivity, R.style.DialogTheme, DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
             c.set(year, monthOfYear, dayOfMonth)
             newMatchDate.setText(dateFormat.format(c.time))
         }, year, month, day)
+        tpd = TimePickerDialog(this@NewMatchActivity, R.style.DialogTheme, TimePickerDialog.OnTimeSetListener { view, hourOfDay, minute ->
+            c.set(Calendar.HOUR_OF_DAY, hourOfDay)
+            c.set(Calendar.MINUTE, minute)
+            newMatchTime.setText(timeFormat.format(c.time))
+        }, hour, minute, true)
 
         newMatchDate.setOnClickListener(this)
+        newMatchTime.setOnClickListener(this)
         saveMatchButton.setOnClickListener(this)
     }
 
@@ -56,8 +68,11 @@ class NewMatchActivity : AppCompatActivity(), View.OnClickListener {
             R.id.newMatchDate -> {
                 dpd.show()
             }
+            R.id.newMatchTime -> {
+                tpd.show()
+            }
             R.id.saveMatchButton -> {
-                val match = Match(firebaseUser.uid, c)
+                val match = Match(firebaseUser.uid, c, newMatchNotes.text.toString())
                 db.collection("partite").add(match)
             }
         }
