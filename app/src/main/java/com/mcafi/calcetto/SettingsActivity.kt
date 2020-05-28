@@ -10,7 +10,6 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.FirebaseFirestoreSettings
 import com.mcafi.calcetto.model.User
-import java.util.*
 
 class SettingsActivity : AppCompatActivity(), View.OnClickListener {
     private val mAuthReg = FirebaseAuth.getInstance()
@@ -33,8 +32,8 @@ class SettingsActivity : AppCompatActivity(), View.OnClickListener {
         saveSettings.setOnClickListener(this)
         userRef.get().addOnSuccessListener { documentSnapshot ->
             user = documentSnapshot.toObject(User::class.java)!!
-            nameText.text = user!!.name
-            usernameText.text = user!!.username
+            nameText.text = user.name
+            usernameText.text = user.username
         }
     }
 
