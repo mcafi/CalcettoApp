@@ -2,7 +2,6 @@ package com.mcafi.calcetto
 
 import android.app.DatePickerDialog
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
@@ -11,6 +10,7 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.FirebaseFirestoreSettings
 import com.mcafi.calcetto.model.Match
 import kotlinx.android.synthetic.main.activity_new_match.*
+import java.text.SimpleDateFormat
 import java.util.*
 
 class NewMatchActivity : AppCompatActivity(), View.OnClickListener {
@@ -20,10 +20,11 @@ class NewMatchActivity : AppCompatActivity(), View.OnClickListener {
     private val firebaseUser = mAuthReg.currentUser!!
     private lateinit var dpd: DatePickerDialog
 
-    val c = Calendar.getInstance()
-    val year = c.get(Calendar.YEAR)
-    val month = c.get(Calendar.MONTH)
-    val day = c.get(Calendar.DAY_OF_MONTH)
+    private val c: Calendar = Calendar.getInstance()
+    private val year = c.get(Calendar.YEAR)
+    private val month = c.get(Calendar.MONTH)
+    private val day = c.get(Calendar.DAY_OF_MONTH)
+    private val dateFormat = SimpleDateFormat("dd/MM/yyyy", Locale("it"))
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -33,9 +34,14 @@ class NewMatchActivity : AppCompatActivity(), View.OnClickListener {
         supportActionBar!!.setDisplayHomeAsUpEnabled(true)
         supportActionBar!!.setDisplayShowHomeEnabled(true)
         supportActionBar!!.setDisplayShowTitleEnabled(false)
-        dpd = DatePickerDialog(this@NewMatchActivity, DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
+
+        newMatchDate.setText(dateFormat.format(c.time))
+
+        dpd = DatePickerDialog(this@NewMatchActivity, R.style.DialogTheme, DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
             c.set(year, monthOfYear, dayOfMonth)
+            newMatchDate.setText(dateFormat.format(c.time))
         }, year, month, day)
+
         newMatchDate.setOnClickListener(this)
         saveMatchButton.setOnClickListener(this)
     }
@@ -51,7 +57,7 @@ class NewMatchActivity : AppCompatActivity(), View.OnClickListener {
                 dpd.show()
             }
             R.id.saveMatchButton -> {
-                var match = Match(firebaseUser.uid, c)
+                val match = Match(firebaseUser.uid, c)
                 db.collection("partite").add(match)
             }
         }
