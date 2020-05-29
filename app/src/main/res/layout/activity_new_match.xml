@@ -22,7 +22,7 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:text="Nuova partita"
-            android:textSize="18dp"
+            android:textSize="18sp"
             tools:layout_editor_absoluteX="16dp"
             tools:layout_editor_absoluteY="18dp" />
 
@@ -64,7 +64,7 @@
         android:layout_marginTop="16dp"
         android:text="Button"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/newMatchNotes" />
+        app:layout_constraintTop_toBottomOf="@+id/newMatchNotes" />
 
     <EditText
         android:id="@+id/newMatchNotes"

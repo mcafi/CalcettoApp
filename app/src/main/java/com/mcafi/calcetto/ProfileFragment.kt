@@ -81,10 +81,10 @@ class ProfileFragment : Fragment(), View.OnClickListener {
         }
     }
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent) {
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (resultCode == Activity.RESULT_OK && requestCode == PICK_IMAGE) {
-            imageUri = data.data
+            imageUri = data?.data
             profileIcon.setImageURI(imageUri)
             val uploadTask = immagini.putFile(imageUri!!)
             // Register observers to listen for when the download is done or if it fails

@@ -1,4 +1,5 @@
 <resources>
+    <string name="api_key">AIzaSyDcEEGrjxw712L4SX0oUWQ0Cgn3BKPAbGE</string>
     <string name="app_name">Calcetto</string>
     <string name="tab_text_1">Tab 1</string>
     <string name="tab_text_2">Tab 2</string>
