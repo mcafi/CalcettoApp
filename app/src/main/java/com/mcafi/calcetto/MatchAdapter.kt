@@ -11,10 +11,10 @@ import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.ArrayList
 
-class MatchAdapter(private val context: Context, private val dataSource: ArrayList<Match>): BaseAdapter() {
+class MatchAdapter(context: Context, private val dataSource: ArrayList<Match>): BaseAdapter() {
     private val inflater: LayoutInflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
     private val dateTimeFormat = SimpleDateFormat("dd/MMM/yyyy - HH:mm", Locale("it"))
-    val c = Calendar.getInstance()
+    private val c = Calendar.getInstance()
 
     override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {
         val rowView = convertView ?: inflater.inflate(R.layout.match_item, parent, false)
@@ -24,9 +24,10 @@ class MatchAdapter(private val context: Context, private val dataSource: ArrayLi
         val matchAvailable = rowView.findViewById(R.id.match_available) as TextView
         val matchNotes = rowView.findViewById(R.id.match_notes) as TextView
 
-        c.set(match.date!!.year, match.date!!.month, match.date!!.day, match.date!!.hour, match.date!!.minute)
+        c.set(match.date.year, match.date.month, match.date.day, match.date.hour, match.date.minute)
 
         matchDate.text = dateTimeFormat.format(c.time)
+        matchAvailable.text = (match.available - match.participants.size).toString()
         matchNotes.text = match.notes
 
         return rowView
