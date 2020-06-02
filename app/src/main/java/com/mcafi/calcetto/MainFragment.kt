@@ -6,6 +6,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.AdapterView.OnItemClickListener
 import android.widget.ListView
 import androidx.fragment.app.Fragment
 import com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -14,7 +15,6 @@ import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.FirebaseFirestoreSettings
 import com.mcafi.calcetto.model.Match
-import kotlin.collections.ArrayList
 
 class MainFragment : Fragment() {
     private val mAuthReg = FirebaseAuth.getInstance()
@@ -35,6 +35,7 @@ class MainFragment : Fragment() {
                 .addOnSuccessListener { result ->
                     for (document in result) {
                         val match = document.toObject(Match::class.java)
+                        match.id = document.id
                         matchList.add(match)
                     }
                     val adapter = MatchAdapter(context!!, matchList)
@@ -43,6 +44,13 @@ class MainFragment : Fragment() {
                 .addOnFailureListener { exception ->
                     Log.d("Main", "Error getting documents: ", exception)
                 }
+
+        listView.onItemClickListener = OnItemClickListener { parent, view, position, id ->
+            val match = parent.getItemAtPosition(position) as Match
+            val viewMatchIntent = Intent(activity, MatchViewActivity::class.java)
+            viewMatchIntent.putExtra("MATCH_ID", match.id)
+            startActivity(viewMatchIntent)
+        }
         return view
     }
 

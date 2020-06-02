@@ -24,7 +24,7 @@ class MatchAdapter(context: Context, private val dataSource: ArrayList<Match>): 
         val matchAvailable = rowView.findViewById(R.id.match_available) as TextView
         val matchNotes = rowView.findViewById(R.id.match_notes) as TextView
 
-        c.set(match.date.year, match.date.month, match.date.day, match.date.hour, match.date.minute)
+        c.set(match.matchDate.year, match.matchDate.month, match.matchDate.day, match.matchDate.hour, match.matchDate.minute)
 
         matchDate.text = dateTimeFormat.format(c.time)
         matchAvailable.text = (match.available - match.participants.size).toString()

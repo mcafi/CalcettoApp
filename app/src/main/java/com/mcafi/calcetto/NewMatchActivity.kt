@@ -10,7 +10,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.FirebaseFirestoreSettings
 import com.mcafi.calcetto.model.Match
-import com.mcafi.calcetto.model.MatchDateTime
+import com.mcafi.calcetto.model.DateTime
 import kotlinx.android.synthetic.main.activity_new_match.*
 import java.lang.Integer.parseInt
 import java.text.SimpleDateFormat
@@ -75,7 +75,7 @@ class NewMatchActivity : AppCompatActivity(), View.OnClickListener {
                 tpd.show()
             }
             R.id.saveMatchButton -> {
-                val match = Match(firebaseUser.uid, MatchDateTime(c), newMatchNotes.text.toString(), emptyList<String>(), parseInt(availableSpots.text.toString()))
+                val match = Match(firebaseUser.uid, DateTime(Calendar.getInstance()), DateTime(c), newMatchNotes.text.toString(), emptyList<String>(), parseInt(availableSpots.text.toString()))
                 db.collection("partite").add(match)
             }
         }
