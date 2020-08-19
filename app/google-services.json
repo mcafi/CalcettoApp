@@ -15,6 +15,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "820965235480-k89m5i6dfldseojsle3nlghj63dsu8i2.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.mcafi.calcetto",
+            "certificate_hash": "def49f5987e5ac5cb7ce208a7f5eb368828637fc"
+          }
+        },
+        {
           "client_id": "820965235480-kbljjs09kge8tk5id869tarabm1baqdf.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
