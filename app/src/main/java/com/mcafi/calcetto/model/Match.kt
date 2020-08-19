@@ -1,6 +1,5 @@
 package com.mcafi.calcetto.model
 
-import com.google.android.libraries.places.api.model.Place
 import kotlin.collections.ArrayList
 
 class Match(
@@ -10,6 +9,7 @@ class Match(
         var notes: String = "",
         var participants: List<String> = ArrayList<String>(),
         var available: Int = 0,
-        var id: String = "",
-        var place: Place) {
+        var place: MatchPlace = MatchPlace(),
+        var id: String = ""
+) {
 }

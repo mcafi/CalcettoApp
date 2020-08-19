@@ -17,6 +17,7 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.FirebaseFirestoreSettings
 import com.mcafi.calcetto.model.Match
 import com.mcafi.calcetto.model.DateTime
+import com.mcafi.calcetto.model.MatchPlace
 import kotlinx.android.synthetic.main.activity_new_match.*
 import java.lang.Integer.parseInt
 import java.text.SimpleDateFormat
@@ -38,7 +39,7 @@ class NewMatchActivity : AppCompatActivity(), View.OnClickListener {
     private val minute = c.get(Calendar.MINUTE)
     private val dateFormat = SimpleDateFormat("dd/MM/yyyy", Locale("it"))
     private val timeFormat = SimpleDateFormat("HH:mm", Locale("it"))
-    private var matchPlace: Place? = null
+    private var matchPlace: MatchPlace = MatchPlace()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -67,10 +68,10 @@ class NewMatchActivity : AppCompatActivity(), View.OnClickListener {
         }, hour, minute, true)
 
         val autocompleteFragment = supportFragmentManager.findFragmentById(R.id.autocomplete_fragment) as AutocompleteSupportFragment
-        autocompleteFragment.setPlaceFields(listOf(Place.Field.ID, Place.Field.NAME))
+        autocompleteFragment.setPlaceFields(listOf(Place.Field.ID, Place.Field.NAME, Place.Field.LAT_LNG, Place.Field.ADDRESS))
         autocompleteFragment.setOnPlaceSelectedListener(object : PlaceSelectionListener {
             override fun onPlaceSelected(place: Place) {
-                matchPlace = place
+                matchPlace = MatchPlace(place.id!!, place.latLng!!.latitude, place.latLng!!.longitude, place.name!!, place.address!!)
                 Log.i("TAG", "Place: ${place.name}, ${place.id}")
             }
 
@@ -99,7 +100,7 @@ class NewMatchActivity : AppCompatActivity(), View.OnClickListener {
                 tpd.show()
             }
             R.id.saveMatchButton -> {
-                val match = Match(firebaseUser.uid, DateTime(Calendar.getInstance()), DateTime(c), newMatchNotes.text.toString(), emptyList<String>(), parseInt(availableSpots.text.toString()), "", matchPlace!!)
+                val match = Match(firebaseUser.uid, DateTime(Calendar.getInstance()), DateTime(c), newMatchNotes.text.toString(), emptyList<String>(), parseInt(availableSpots.text.toString()), matchPlace!!)
                 db.collection("partite").add(match)
             }
         }
