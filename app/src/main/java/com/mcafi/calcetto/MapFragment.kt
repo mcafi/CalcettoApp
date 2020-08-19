@@ -1,23 +1,31 @@
 package com.mcafi.calcetto
 
+import android.Manifest
+import android.content.pm.PackageManager
+import android.location.Location
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
-import com.google.android.gms.maps.GoogleMap
-import com.google.android.gms.maps.MapView
-import com.google.android.gms.maps.MapsInitializer
-import com.google.android.gms.maps.OnMapReadyCallback
+import com.google.android.gms.location.FusedLocationProviderClient
+import com.google.android.gms.location.LocationListener
+import com.google.android.gms.location.LocationServices
+import com.google.android.gms.maps.*
+import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.FirebaseFirestoreSettings
 import com.mcafi.calcetto.model.Match
 
-class MapFragment : Fragment(), OnMapReadyCallback {
+class MapFragment : Fragment(), GoogleMap.OnMyLocationButtonClickListener,
+        GoogleMap.OnMyLocationClickListener, OnMapReadyCallback, LocationListener {
     private val db = initializeDatabase()
+    private lateinit var map: GoogleMap
+    private lateinit var fusedLocationClient: FusedLocationProviderClient
 
     override fun onCreateView(inflater: LayoutInflater, viewGroup: ViewGroup?, savedInstanceState: Bundle?): View? {
         val v = inflater.inflate(R.layout.fragment_map, viewGroup, false)
@@ -31,12 +39,15 @@ class MapFragment : Fragment(), OnMapReadyCallback {
             e.printStackTrace()
         }
 
+        fusedLocationClient = LocationServices.getFusedLocationProviderClient(context!!)
+
         mMapView.getMapAsync(this);
 
         return v
     }
 
     override fun onMapReady(googleMap: GoogleMap) {
+        map = googleMap
         db.collection("partite")
                 .get()
                 .addOnSuccessListener { result ->
@@ -47,6 +58,7 @@ class MapFragment : Fragment(), OnMapReadyCallback {
                                 .title("ciaooo"))
                     }
                 }
+        enableMyLocation()
     }
 
     private fun initializeDatabase(): FirebaseFirestore {
@@ -57,4 +69,38 @@ class MapFragment : Fragment(), OnMapReadyCallback {
         db.firestoreSettings = settings
         return db
     }
+
+    private fun enableMyLocation() {
+        if (!::map.isInitialized) return
+        if (ContextCompat.checkSelfPermission(context!!, Manifest.permission.ACCESS_FINE_LOCATION)
+                == PackageManager.PERMISSION_GRANTED) {
+            map.isMyLocationEnabled = true
+            map.uiSettings.isMyLocationButtonEnabled = true
+            fusedLocationClient.lastLocation
+                    .addOnSuccessListener { location : Location ->
+                        map.moveCamera(CameraUpdateFactory.newLatLngZoom(LatLng(location.latitude, location.longitude), 13F))
+                    }
+
+        } else {
+            // Permission to access the location is missing. Show rationale and request permission
+            requestPermissions(Array<String>(1){Manifest.permission.ACCESS_FINE_LOCATION}, 42)
+        }
+    }
+
+
+    override fun onMyLocationClick(location: Location) {
+        Toast.makeText(context, "Current location:\n$location", Toast.LENGTH_LONG).show()
+    }
+
+    override fun onMyLocationButtonClick(): Boolean {
+        Toast.makeText(context, "MyLocation button clicked", Toast.LENGTH_SHORT).show()
+        // Return false so that we don't consume the event and the default behavior still occurs
+        // (the camera animates to the user's current position).
+        return false
+    }
+
+    override fun onLocationChanged(location: Location) {
+        Toast.makeText(context, "HO LA LOCHESCION", Toast.LENGTH_LONG).show()
+    }
+
 }
