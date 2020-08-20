@@ -25,16 +25,15 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener {
     private val db = FirebaseFirestore.getInstance()
     private var mGoogleSignInClient: GoogleSignInClient? = null
     public override fun onStart() {
-        super.onStart()
         // Check if user is signed in (non-null) and update UI accordingly.
         val currentUser = mAuth.currentUser
         if (currentUser != null) {
             startActivity(Intent(this@LoginActivity, MainActivity::class.java))
         }
+        super.onStart()
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
         val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestIdToken(getString(R.string.default_web_client_id))
                 .requestEmail()
@@ -46,6 +45,7 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener {
         registrazione.setOnClickListener(this)
         giaReg.setOnClickListener(this)
         findViewById<View>(R.id.google_login).setOnClickListener(this)
+        super.onCreate(savedInstanceState)
     }
 
     public override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {

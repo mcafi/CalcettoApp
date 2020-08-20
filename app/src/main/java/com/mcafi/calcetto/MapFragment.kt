@@ -1,6 +1,7 @@
 package com.mcafi.calcetto
 
 import android.Manifest
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.location.Location
 import android.os.Bundle
@@ -14,13 +15,14 @@ import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.maps.*
 import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.MarkerOptions
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.FirebaseFirestoreSettings
 import com.mcafi.calcetto.model.Match
 
 class MapFragment : Fragment(), GoogleMap.OnMyLocationButtonClickListener,
-        GoogleMap.OnMyLocationClickListener, OnMapReadyCallback {
+        GoogleMap.OnMyLocationClickListener, OnMapReadyCallback, GoogleMap.OnInfoWindowClickListener {
     private val db = initializeDatabase()
     private lateinit var map: GoogleMap
     private lateinit var fusedLocationClient: FusedLocationProviderClient
@@ -52,11 +54,15 @@ class MapFragment : Fragment(), GoogleMap.OnMyLocationButtonClickListener,
                 .addOnSuccessListener { result ->
                     for (document in result) {
                         val match = document.toObject(Match::class.java)
-                        googleMap.addMarker(MarkerOptions()
-                                .position(LatLng(match.place.lat, match.place.lng))
-                                .title("ciaooo"))
+                        if (match.participants.size < match.available) {
+                            val marker = googleMap.addMarker(MarkerOptions()
+                                    .position(LatLng(match.place.lat, match.place.lng))
+                                    .title(match.creationDate.toString() + ", " + (match.available - match.participants.size) + " posti disponibili"))
+                            marker.tag = document.id
+                        }
                     }
                 }
+        map.setOnInfoWindowClickListener(this)
         enableMyLocation()
     }
 
@@ -76,13 +82,13 @@ class MapFragment : Fragment(), GoogleMap.OnMyLocationButtonClickListener,
             map.isMyLocationEnabled = true
             map.uiSettings.isMyLocationButtonEnabled = true
             fusedLocationClient.lastLocation
-                    .addOnSuccessListener { location : Location ->
+                    .addOnSuccessListener { location: Location ->
                         map.moveCamera(CameraUpdateFactory.newLatLngZoom(LatLng(location.latitude, location.longitude), 13F))
                     }
 
         } else {
             // Permission to access the location is missing. Show rationale and request permission
-            requestPermissions(Array<String>(2){Manifest.permission.ACCESS_FINE_LOCATION; Manifest.permission.ACCESS_COARSE_LOCATION}, 42)
+            requestPermissions(Array<String>(2) { Manifest.permission.ACCESS_FINE_LOCATION; Manifest.permission.ACCESS_COARSE_LOCATION }, 42)
         }
     }
 
@@ -96,6 +102,12 @@ class MapFragment : Fragment(), GoogleMap.OnMyLocationButtonClickListener,
         // Return false so that we don't consume the event and the default behavior still occurs
         // (the camera animates to the user's current position).
         return false
+    }
+
+    override fun onInfoWindowClick(marker: Marker): Unit {
+        val viewMatchIntent = Intent(activity, MatchViewActivity::class.java)
+        viewMatchIntent.putExtra("MATCH_ID", marker.tag as String)
+        startActivity(viewMatchIntent)
     }
 
 }

@@ -17,21 +17,21 @@ class SignupActivity : AppCompatActivity(), View.OnClickListener {
     private val mAuthReg = FirebaseAuth.getInstance()
     private val db = FirebaseFirestore.getInstance()
     public override fun onStart() {
-        super.onStart()
         // Check if user is signed in (non-null) and update UI accordingly.
         val currentUser = mAuthReg.currentUser
         if (currentUser != null) {
             startActivity(Intent(this@SignupActivity, MainActivity::class.java))
         }
+        super.onStart()
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_signup)
         val registrazione = findViewById<Button>(R.id.ButtonReg)
         val giaReg = findViewById<TextView>(R.id.giaRegistrato)
         registrazione.setOnClickListener(this)
         giaReg.setOnClickListener(this)
+        super.onCreate(savedInstanceState)
     }
 
     override fun onClick(v: View) {

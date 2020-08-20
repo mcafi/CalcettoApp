@@ -9,10 +9,10 @@ import com.google.firebase.auth.FirebaseAuth
 
 class LogoutActivity : AppCompatActivity(), View.OnClickListener {
     override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_logout)
         val logout = findViewById<Button>(R.id.logoutButton)
         logout.setOnClickListener(this)
+        super.onCreate(savedInstanceState)
     }
 
     override fun onClick(v: View) {
