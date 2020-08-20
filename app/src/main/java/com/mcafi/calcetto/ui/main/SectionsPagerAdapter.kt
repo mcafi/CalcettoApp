@@ -1,53 +1,33 @@
-package com.mcafi.calcetto.ui.main;
+package com.mcafi.calcetto.ui.main
 
-import android.content.Context;
-
-import androidx.annotation.Nullable;
-import androidx.annotation.StringRes;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentPagerAdapter;
-
-import com.mcafi.calcetto.R;
-
-import java.util.ArrayList;
-import java.util.List;
+import android.content.Context
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentManager
+import androidx.fragment.app.FragmentPagerAdapter
+import java.util.*
 
 /**
  * A [FragmentPagerAdapter] that returns a fragment corresponding to
  * one of the sections/tabs/pages.
  */
-public class SectionsPagerAdapter extends FragmentPagerAdapter {
-
-    private final List<Fragment> fragmentList = new ArrayList<>();
-    private final List<String> fragmentTitleList = new ArrayList<>();
-
-    private final Context mContext;
-
-    public SectionsPagerAdapter(Context context, FragmentManager fm) {
-        super(fm);
-        mContext = context;
+class SectionsPagerAdapter(private val mContext: Context, fm: FragmentManager?) : FragmentPagerAdapter(fm!!) {
+    private val fragmentList: MutableList<Fragment> = ArrayList()
+    private val fragmentTitleList: MutableList<String> = ArrayList()
+    override fun getItem(position: Int): Fragment {
+        return fragmentList[position]
     }
 
-    @Override
-    public Fragment getItem(int position) {
-        return fragmentList.get(position);
+    override fun getPageTitle(position: Int): CharSequence? {
+        return fragmentTitleList[position]
     }
 
-    @Nullable
-    @Override
-    public CharSequence getPageTitle(int position) {
-        return fragmentTitleList.get(position);
+    override fun getCount(): Int {
+        return fragmentList.size
     }
 
-    @Override
-    public int getCount() {
-        return fragmentList.size();
-    }
-
-    public void addFragment(Fragment fragment, String title) {
-        fragmentList.add(fragment);
-        fragmentTitleList.add(title);
-        notifyDataSetChanged();
+    fun addFragment(fragment: Fragment, title: String) {
+        fragmentList.add(fragment)
+        fragmentTitleList.add(title)
+        notifyDataSetChanged()
     }
 }

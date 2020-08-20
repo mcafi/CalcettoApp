@@ -1,157 +1,129 @@
-package com.mcafi.calcetto;
+package com.mcafi.calcetto
 
-import android.content.Intent;
-import android.os.Bundle;
-import android.util.Log;
-import android.view.View;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.TextView;
-import android.widget.Toast;
+import android.content.Intent
+import android.os.Bundle
+import android.util.Log
+import android.view.View
+import android.widget.Button
+import android.widget.EditText
+import android.widget.TextView
+import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
+import com.google.android.gms.auth.api.signin.GoogleSignIn
+import com.google.android.gms.auth.api.signin.GoogleSignInClient
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions
+import com.google.android.gms.common.api.ApiException
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.GoogleAuthProvider
+import com.google.firebase.firestore.FirebaseFirestore
+import com.mcafi.calcetto.LoginActivity
+import com.mcafi.calcetto.model.User
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-
-import com.google.android.gms.auth.api.signin.GoogleSignIn;
-import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
-import com.google.android.gms.auth.api.signin.GoogleSignInClient;
-import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
-import com.google.android.gms.common.api.ApiException;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.AuthCredential;
-import com.google.firebase.auth.AuthResult;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.auth.GoogleAuthProvider;
-import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.FirebaseFirestore;
-import com.mcafi.calcetto.model.User;
-
-public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
-    private int RC_SIGN_IN = 7;
-    private FirebaseAuth mAuth = FirebaseAuth.getInstance();
-    private FirebaseFirestore db = FirebaseFirestore.getInstance();
-    private GoogleSignInClient mGoogleSignInClient;
-
-    public void onStart() {
-        super.onStart();
+class LoginActivity : AppCompatActivity(), View.OnClickListener {
+    private val RC_SIGN_IN = 7
+    private val mAuth = FirebaseAuth.getInstance()
+    private val db = FirebaseFirestore.getInstance()
+    private var mGoogleSignInClient: GoogleSignInClient? = null
+    public override fun onStart() {
+        super.onStart()
         // Check if user is signed in (non-null) and update UI accordingly.
-        FirebaseUser currentUser = mAuth.getCurrentUser();
+        val currentUser = mAuth.currentUser
         if (currentUser != null) {
-            startActivity(new Intent(LoginActivity.this, MainActivity.class));
+            startActivity(Intent(this@LoginActivity, MainActivity::class.java))
         }
     }
 
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestIdToken(getString(R.string.default_web_client_id))
                 .requestEmail()
-                .build();
-        mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
-        setContentView(R.layout.activity_login);
-        Button registrazione = findViewById(R.id.Login);
-        TextView giaReg = findViewById(R.id.nonRegistrato);
-        registrazione.setOnClickListener(this);
-        giaReg.setOnClickListener(this);
-        findViewById(R.id.google_login).setOnClickListener(this);
+                .build()
+        mGoogleSignInClient = GoogleSignIn.getClient(this, gso)
+        setContentView(R.layout.activity_login)
+        val registrazione = findViewById<Button>(R.id.Login)
+        val giaReg = findViewById<TextView>(R.id.nonRegistrato)
+        registrazione.setOnClickListener(this)
+        giaReg.setOnClickListener(this)
+        findViewById<View>(R.id.google_login).setOnClickListener(this)
     }
 
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
+    public override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
 
         // Result returned from launching the Intent from GoogleSignInApi.getSignInIntent(...);
         if (requestCode == RC_SIGN_IN) {
-            Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
+            val task = GoogleSignIn.getSignedInAccountFromIntent(data)
             try {
                 // Google Sign In was successful, authenticate with Firebase
-                GoogleSignInAccount account = task.getResult(ApiException.class);
-                Log.d("firebaseAuthWithGoogle:", account.getId());
-                firebaseAuthWithGoogle(account.getIdToken());
-            } catch (ApiException e) {
+                val account = task.getResult(ApiException::class.java)
+                Log.d("firebaseAuthWithGoogle:", account!!.id)
+                firebaseAuthWithGoogle(account.idToken)
+            } catch (e: ApiException) {
                 // Google Sign In failed, update UI appropriately
-                Log.w("Google sign in failed", e);
+                Log.w("Google sign in failed", e)
                 // ...
             }
         }
     }
 
-    private void firebaseAuthWithGoogle(String idToken) {
-        AuthCredential credential = GoogleAuthProvider.getCredential(idToken, null);
+    private fun firebaseAuthWithGoogle(idToken: String?) {
+        val credential = GoogleAuthProvider.getCredential(idToken, null)
         mAuth.signInWithCredential(credential)
-                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        if (task.isSuccessful()) {
-                            // Sign in success, update UI with the signed-in user's information
-                            Log.d("signIn:success", "e");
-                            final FirebaseUser firebaseUser = mAuth.getCurrentUser();
-                            final DocumentReference userRef = db.collection("utenti").document(firebaseUser.getUid());
-                            userRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                                @Override
-                                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                                    if (task.isSuccessful()) {
-                                        DocumentSnapshot document = task.getResult();
-                                        if (document.exists()) {
-                                            startActivity(new Intent(LoginActivity.this, MainActivity.class));
-                                        } else {
-                                            User user = new User(firebaseUser.getEmail(), "Nome e cognome", "bomber");
-                                            db.collection("utenti").document(firebaseUser.getUid()).set(user);
-                                        }
-                                    }
+                .addOnCompleteListener(this) { task ->
+                    if (task.isSuccessful) {
+                        // Sign in success, update UI with the signed-in user's information
+                        Log.d("signIn:success", "e")
+                        val firebaseUser = mAuth.currentUser
+                        val userRef = db.collection("utenti").document(firebaseUser!!.uid)
+                        userRef.get().addOnCompleteListener { task ->
+                            if (task.isSuccessful) {
+                                val document = task.result
+                                if (document!!.exists()) {
+                                    startActivity(Intent(this@LoginActivity, MainActivity::class.java))
+                                } else {
+                                    val user = User(firebaseUser.email, "Nome e cognome", "bomber")
+                                    db.collection("utenti").document(firebaseUser.uid).set(user)
                                 }
-                            });
-                        } else {
-                            // If sign in fails, display a message to the user.
-                            Log.w("signIn:failure", task.getException());
-                            startActivity(new Intent(LoginActivity.this, LoginActivity.class));
+                            }
                         }
+                    } else {
+                        // If sign in fails, display a message to the user.
+                        Log.w("signIn:failure", task.exception)
+                        startActivity(Intent(this@LoginActivity, LoginActivity::class.java))
                     }
-                });
+                }
     }
 
-    @Override
-    public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.Login: {
-                EditText emailLog = findViewById(R.id.emailLog);
-                String email = emailLog.getText().toString();
-                EditText passwordLog = findViewById(R.id.passwordLog);
-                String password = passwordLog.getText().toString();
-                mAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        if (task.isSuccessful()) {
-                            // Sign in success, update UI with the signed-in user's information
-                            Log.d("Login", "createUserWithEmail:success");
-                            FirebaseUser user = mAuth.getCurrentUser();
-                            startActivity(new Intent(LoginActivity.this, MainActivity.class));
-                        } else {
-                            // If sign in fails, display a message to the user.
-                            Log.w("Login", "createUserWithEmail:failure", task.getException());
-                            Toast.makeText(getApplicationContext(), "Authentication failed.",
-                                    Toast.LENGTH_SHORT).show();
-                        }
-
-                        // ...
+    override fun onClick(v: View) {
+        when (v.id) {
+            R.id.Login -> {
+                val emailLog = findViewById<EditText>(R.id.emailLog)
+                val email = emailLog.text.toString()
+                val passwordLog = findViewById<EditText>(R.id.passwordLog)
+                val password = passwordLog.text.toString()
+                mAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(this) { task ->
+                    if (task.isSuccessful) {
+                        // Sign in success, update UI with the signed-in user's information
+                        Log.d("Login", "createUserWithEmail:success")
+                        val user = mAuth.currentUser
+                        startActivity(Intent(this@LoginActivity, MainActivity::class.java))
+                    } else {
+                        // If sign in fails, display a message to the user.
+                        Log.w("Login", "createUserWithEmail:failure", task.exception)
+                        Toast.makeText(applicationContext, "Authentication failed.",
+                                Toast.LENGTH_SHORT).show()
                     }
-                });
-                break;
+
+                    // ...
+                }
             }
-            case R.id.google_login: {
-                Intent signInIntent = mGoogleSignInClient.getSignInIntent();
-                startActivityForResult(signInIntent, RC_SIGN_IN);
-                break;
+            R.id.google_login -> {
+                val signInIntent = mGoogleSignInClient!!.signInIntent
+                startActivityForResult(signInIntent, RC_SIGN_IN)
             }
-            case R.id.nonRegistrato: {
-                startActivity(new Intent(LoginActivity.this, SignupActivity.class));
-                break;
+            R.id.nonRegistrato -> {
+                startActivity(Intent(this@LoginActivity, SignupActivity::class.java))
             }
         }
     }

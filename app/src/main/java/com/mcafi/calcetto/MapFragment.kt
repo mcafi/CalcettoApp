@@ -11,10 +11,8 @@ import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import com.google.android.gms.location.FusedLocationProviderClient
-import com.google.android.gms.location.LocationListener
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.maps.*
-import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
 import com.google.firebase.firestore.FirebaseFirestore
@@ -22,7 +20,7 @@ import com.google.firebase.firestore.FirebaseFirestoreSettings
 import com.mcafi.calcetto.model.Match
 
 class MapFragment : Fragment(), GoogleMap.OnMyLocationButtonClickListener,
-        GoogleMap.OnMyLocationClickListener, OnMapReadyCallback, LocationListener {
+        GoogleMap.OnMyLocationClickListener, OnMapReadyCallback {
     private val db = initializeDatabase()
     private lateinit var map: GoogleMap
     private lateinit var fusedLocationClient: FusedLocationProviderClient
@@ -31,7 +29,7 @@ class MapFragment : Fragment(), GoogleMap.OnMyLocationButtonClickListener,
         val v = inflater.inflate(R.layout.fragment_map, viewGroup, false)
         val mMapView = v.findViewById(R.id.mapView) as MapView
         mMapView.onCreate(savedInstanceState)
-        mMapView.onResume() // needed to get the map to display immediately
+        mMapView.onResume()
 
         try {
             MapsInitializer.initialize(activity!!.applicationContext)
@@ -41,6 +39,7 @@ class MapFragment : Fragment(), GoogleMap.OnMyLocationButtonClickListener,
 
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(context!!)
 
+        // il getMapAsync chiama la onMapReady
         mMapView.getMapAsync(this);
 
         return v
@@ -73,7 +72,7 @@ class MapFragment : Fragment(), GoogleMap.OnMyLocationButtonClickListener,
     private fun enableMyLocation() {
         if (!::map.isInitialized) return
         if (ContextCompat.checkSelfPermission(context!!, Manifest.permission.ACCESS_FINE_LOCATION)
-                == PackageManager.PERMISSION_GRANTED) {
+                == PackageManager.PERMISSION_GRANTED && ContextCompat.checkSelfPermission(context!!, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
             map.isMyLocationEnabled = true
             map.uiSettings.isMyLocationButtonEnabled = true
             fusedLocationClient.lastLocation
@@ -83,7 +82,7 @@ class MapFragment : Fragment(), GoogleMap.OnMyLocationButtonClickListener,
 
         } else {
             // Permission to access the location is missing. Show rationale and request permission
-            requestPermissions(Array<String>(1){Manifest.permission.ACCESS_FINE_LOCATION}, 42)
+            requestPermissions(Array<String>(2){Manifest.permission.ACCESS_FINE_LOCATION; Manifest.permission.ACCESS_COARSE_LOCATION}, 42)
         }
     }
 
@@ -97,10 +96,6 @@ class MapFragment : Fragment(), GoogleMap.OnMyLocationButtonClickListener,
         // Return false so that we don't consume the event and the default behavior still occurs
         // (the camera animates to the user's current position).
         return false
-    }
-
-    override fun onLocationChanged(location: Location) {
-        Toast.makeText(context, "HO LA LOCHESCION", Toast.LENGTH_LONG).show()
     }
 
 }

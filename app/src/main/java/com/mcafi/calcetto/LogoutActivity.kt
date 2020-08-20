@@ -1,27 +1,22 @@
-package com.mcafi.calcetto;
+package com.mcafi.calcetto
 
-import androidx.appcompat.app.AppCompatActivity;
+import android.content.Intent
+import android.os.Bundle
+import android.view.View
+import android.widget.Button
+import androidx.appcompat.app.AppCompatActivity
+import com.google.firebase.auth.FirebaseAuth
 
-import android.content.Intent;
-import android.os.Bundle;
-import android.view.View;
-import android.widget.Button;
-
-import com.google.firebase.auth.FirebaseAuth;
-
-public class LogoutActivity extends AppCompatActivity implements View.OnClickListener {
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_logout);
-        Button logout = findViewById(R.id.logoutButton);
-        logout.setOnClickListener(this);
+class LogoutActivity : AppCompatActivity(), View.OnClickListener {
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_logout)
+        val logout = findViewById<Button>(R.id.logoutButton)
+        logout.setOnClickListener(this)
     }
 
-    @Override
-    public void onClick(View v) {
-        FirebaseAuth.getInstance().signOut();
-        startActivity(new Intent(LogoutActivity.this, LoginActivity.class));
+    override fun onClick(v: View) {
+        FirebaseAuth.getInstance().signOut()
+        startActivity(Intent(this@LogoutActivity, LoginActivity::class.java))
     }
 }
