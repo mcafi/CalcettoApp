@@ -82,8 +82,12 @@ class MapFragment : Fragment(), GoogleMap.OnMyLocationButtonClickListener,
             map.isMyLocationEnabled = true
             map.uiSettings.isMyLocationButtonEnabled = true
             fusedLocationClient.lastLocation
-                    .addOnSuccessListener { location: Location ->
-                        map.moveCamera(CameraUpdateFactory.newLatLngZoom(LatLng(location.latitude, location.longitude), 13F))
+                    .addOnSuccessListener { location: Location? ->
+                        if (location != null) {
+                            map.moveCamera(CameraUpdateFactory.newLatLngZoom(LatLng(location.latitude, location.longitude), 13F))
+                        } else {
+                            map.moveCamera(CameraUpdateFactory.newLatLngZoom(LatLng(44.414165, 8.942184), 13F))
+                        }
                     }
 
         } else {
