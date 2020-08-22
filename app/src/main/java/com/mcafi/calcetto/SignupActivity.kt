@@ -16,14 +16,6 @@ import com.mcafi.calcetto.model.User
 class SignupActivity : AppCompatActivity(), View.OnClickListener {
     private val mAuthReg = FirebaseAuth.getInstance()
     private val db = FirebaseFirestore.getInstance()
-    public override fun onStart() {
-        // Check if user is signed in (non-null) and update UI accordingly.
-        val currentUser = mAuthReg.currentUser
-        if (currentUser != null) {
-            startActivity(Intent(this@SignupActivity, MainActivity::class.java))
-        }
-        super.onStart()
-    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         setContentView(R.layout.activity_signup)
