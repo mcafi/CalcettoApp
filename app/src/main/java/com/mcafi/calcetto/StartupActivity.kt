@@ -6,14 +6,16 @@ import android.os.Bundle
 import com.google.firebase.auth.FirebaseAuth
 
 class StartupActivity : AppCompatActivity() {
+
     private val mAuth = FirebaseAuth.getInstance()
+
+    /*
+    Questa activity serve solo a verificare se l'utente è già loggato, mandandolo quindi alla schermata
+    di login o alla schermata principale dell'app.
+     */
     public override fun onStart() {
         val currentUser = mAuth.currentUser
-        if (currentUser != null) {
-            startActivity(Intent(this@StartupActivity, MainActivity::class.java))
-        } else {
-            startActivity(Intent(this@StartupActivity, LoginActivity::class.java))
-        }
+        startActivity(Intent(this@StartupActivity, if (currentUser == null) LoginActivity::class.java else MainActivity::class.java))
         super.onStart()
     }
 

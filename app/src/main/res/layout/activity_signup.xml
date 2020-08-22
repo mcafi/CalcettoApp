@@ -27,7 +27,7 @@
         app:layout_constraintTop_toTopOf="@id/calcetto">
 
         <EditText
-            android:id="@+id/nameReg"
+            android:id="@+id/et_signup_name"
             android:layout_width="wrap_content"
             android:layout_height="40dp"
             android:layout_marginTop="16dp"
@@ -38,12 +38,12 @@
             android:hint="@string/name"
             android:inputType="textPersonName"
             android:paddingHorizontal="10dp"
-            app:layout_constraintBottom_toTopOf="@+id/usernameReg"
+            app:layout_constraintBottom_toTopOf="@+id/et_signup_username"
             app:layout_constraintTop_toBottomOf="@+id/calcetto"
             tools:layout_editor_absoluteX="94dp" />
 
         <EditText
-            android:id="@+id/usernameReg"
+            android:id="@+id/et_signup_username"
             android:layout_width="wrap_content"
             android:layout_height="40dp"
             android:layout_marginTop="16dp"
@@ -54,12 +54,12 @@
             android:hint="@string/username"
             android:inputType="textPersonName"
             android:paddingHorizontal="10dp"
-            app:layout_constraintBottom_toTopOf="@+id/emailReg"
-            app:layout_constraintTop_toBottomOf="@+id/nameReg"
+            app:layout_constraintBottom_toTopOf="@+id/et_signup_email"
+            app:layout_constraintTop_toBottomOf="@+id/et_signup_name"
             tools:layout_editor_absoluteX="94dp" />
 
         <EditText
-            android:id="@+id/emailReg"
+            android:id="@+id/et_signup_email"
             android:layout_width="wrap_content"
             android:layout_height="40dp"
             android:layout_marginTop="16dp"
@@ -70,14 +70,14 @@
             android:hint="@string/email"
             android:inputType="textEmailAddress"
             android:paddingHorizontal="10dp"
-            app:layout_constraintBottom_toTopOf="@+id/passwordReg"
+            app:layout_constraintBottom_toTopOf="@+id/et_signup_password"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.474"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/usernameReg" />
+            app:layout_constraintTop_toBottomOf="@+id/et_signup_username" />
 
         <EditText
-            android:id="@+id/passwordReg"
+            android:id="@+id/et_signup_password"
             android:layout_width="wrap_content"
             android:layout_height="40dp"
             android:layout_marginTop="16dp"
@@ -88,27 +88,27 @@
             android:hint="@string/password"
             android:inputType="textPassword"
             android:paddingHorizontal="10dp"
-            app:layout_constraintBottom_toTopOf="@+id/ButtonReg"
+            app:layout_constraintBottom_toTopOf="@+id/btn_signup_signup"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.479"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/emailReg" />
+            app:layout_constraintTop_toBottomOf="@+id/et_signup_email" />
 
         <Button
-            android:id="@+id/ButtonReg"
+            android:id="@+id/btn_signup_signup"
             android:layout_width="221dp"
             android:layout_height="47dp"
             android:layout_marginTop="16dp"
             android:layout_marginBottom="16dp"
             android:text="@string/button_signup"
-            app:layout_constraintBottom_toBottomOf="@id/giaRegistrato"
+            app:layout_constraintBottom_toBottomOf="@id/btn_signup_login"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.497"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/passwordReg" />
+            app:layout_constraintTop_toBottomOf="@+id/et_signup_password" />
 
         <TextView
-            android:id="@+id/giaRegistrato"
+            android:id="@+id/btn_signup_login"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
@@ -118,7 +118,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.507"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/ButtonReg" />
+            app:layout_constraintTop_toBottomOf="@+id/btn_signup_signup" />
     </androidx.appcompat.widget.LinearLayoutCompat>
 
 

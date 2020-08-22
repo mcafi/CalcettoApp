@@ -60,11 +60,11 @@ class NewMatchActivity : AppCompatActivity(), View.OnClickListener {
         newMatchDate.setText(dateFormat.format(c.time))
         newMatchTime.setText(timeFormat.format(c.time))
 
-        dpd = DatePickerDialog(this@NewMatchActivity, R.style.DialogTheme, DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
+        dpd = DatePickerDialog(this@NewMatchActivity, R.style.DialogTheme, { _, year, monthOfYear, dayOfMonth ->
             c.set(year, monthOfYear, dayOfMonth)
             newMatchDate.setText(dateFormat.format(c.time))
         }, year, month, day)
-        tpd = TimePickerDialog(this@NewMatchActivity, R.style.DialogTheme, TimePickerDialog.OnTimeSetListener { view, hourOfDay, minute ->
+        tpd = TimePickerDialog(this@NewMatchActivity, R.style.DialogTheme, { _, hourOfDay, minute ->
             c.set(Calendar.HOUR_OF_DAY, hourOfDay)
             c.set(Calendar.MINUTE, minute)
             newMatchTime.setText(timeFormat.format(c.time))
@@ -102,7 +102,7 @@ class NewMatchActivity : AppCompatActivity(), View.OnClickListener {
                 tpd.show()
             }
             R.id.saveMatchButton -> {
-                val match = Match(firebaseUser.uid, DateTime(Calendar.getInstance()), DateTime(c), newMatchNotes.text.toString(), emptyList<String>(), parseInt(availableSpots.text.toString()), matchPlace!!)
+                val match = Match(firebaseUser.uid, DateTime(Calendar.getInstance()), DateTime(c), newMatchNotes.text.toString(), emptyList(), parseInt(availableSpots.text.toString()), matchPlace)
                 db.collection("partite").add(match)
             }
         }
