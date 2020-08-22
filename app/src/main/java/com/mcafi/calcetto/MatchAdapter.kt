@@ -20,9 +20,9 @@ class MatchAdapter(context: Context, private val dataSource: ArrayList<Match>): 
         val rowView = convertView ?: inflater.inflate(R.layout.match_item, parent, false)
         val match = getItem(position) as Match
 
-        val matchDate = rowView.findViewById(R.id.match_date) as TextView
-        val matchAvailable = rowView.findViewById(R.id.match_available) as TextView
-        val matchNotes = rowView.findViewById(R.id.match_notes) as TextView
+        val matchDate = rowView.findViewById(R.id.tv_match_datetime) as TextView
+        val matchAvailable = rowView.findViewById(R.id.tv_match_available) as TextView
+        val matchNotes = rowView.findViewById(R.id.tv_match_notes) as TextView
 
         c.set(match.matchDate.year, match.matchDate.month, match.matchDate.day, match.matchDate.hour, match.matchDate.minute)
 
