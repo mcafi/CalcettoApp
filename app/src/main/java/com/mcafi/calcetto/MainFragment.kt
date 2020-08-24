@@ -28,7 +28,7 @@ class MainFragment : Fragment() {
         addMatchButton.setOnClickListener { startActivity(Intent(activity, NewMatchActivity::class.java)) }
         listView = view.findViewById(R.id.matches_list)
 
-        val matchList = ArrayList<Match>();
+        val matchList = ArrayList<Match>()
 
         db.collection("partite")
                 .get()
@@ -45,7 +45,7 @@ class MainFragment : Fragment() {
                     Log.d("Main", "Error getting documents: ", exception)
                 }
 
-        listView.onItemClickListener = OnItemClickListener { parent, view, position, id ->
+        listView.onItemClickListener = OnItemClickListener { parent, _, position, _ ->
             val match = parent.getItemAtPosition(position) as Match
             val viewMatchIntent = Intent(activity, MatchViewActivity::class.java)
             viewMatchIntent.putExtra("MATCH_ID", match.id)
