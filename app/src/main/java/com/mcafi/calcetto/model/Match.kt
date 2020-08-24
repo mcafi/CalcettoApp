@@ -10,6 +10,7 @@ class Match(
         var participants: List<String> = ArrayList<String>(),
         var available: Int = 0,
         var place: MatchPlace = MatchPlace(),
+        var NameMatch: String = "",
         var id: String = ""
 ) {
 }
