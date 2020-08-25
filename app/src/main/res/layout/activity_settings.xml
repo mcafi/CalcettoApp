@@ -7,7 +7,7 @@
     tools:context=".SettingsActivity">
 
     <androidx.appcompat.widget.Toolbar
-        android:id="@+id/settingsToolbar"
+        android:id="@+id/settings_toolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="?attr/colorPrimary"
@@ -28,7 +28,7 @@
             tools:layout_editor_absoluteY="16dp">
 
             <TextView
-                android:id="@+id/settingsTitle"
+                android:id="@+id/tv_settings_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Modifica profilo"
@@ -38,7 +38,7 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
-                android:id="@+id/saveSettings"
+                android:id="@+id/btn_settings_save"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="16dp"
@@ -53,7 +53,7 @@
     </androidx.appcompat.widget.Toolbar>
 
     <EditText
-        android:id="@+id/nameText"
+        android:id="@+id/et_settings_name"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
@@ -64,10 +64,10 @@
         android:hint="@string/name"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/settingsToolbar" />
+        app:layout_constraintTop_toBottomOf="@+id/settings_toolbar" />
 
     <EditText
-        android:id="@+id/usernameText"
+        android:id="@+id/et_settings_username"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
@@ -78,7 +78,7 @@
         android:hint="@string/username"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/nameText" />
+        app:layout_constraintTop_toBottomOf="@+id/et_settings_name" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
