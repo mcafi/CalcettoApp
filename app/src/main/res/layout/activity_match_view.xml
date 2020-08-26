@@ -35,8 +35,8 @@
 
     <ImageView
         android:id="@+id/ImageMatchView"
-        android:layout_width="359dp"
-        android:layout_height="195dp"
+        android:layout_width="match_parent"
+        android:layout_height="203dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/matchToolbar"
@@ -47,7 +47,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="24dp"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="16dp"
         android:layout_marginEnd="24dp"
         android:text="Nome Match"
         android:textSize="36sp"
@@ -86,14 +86,15 @@
 
     <ScrollView
         android:id="@+id/PlayersMatchView"
-        android:layout_width="313dp"
-        android:layout_height="117dp"
+        android:layout_width="match_parent"
+        android:layout_height="74dp"
         android:layout_marginStart="24dp"
         android:layout_marginTop="16dp"
         android:layout_marginEnd="24dp"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/PlaceMatchView">
+        app:layout_constraintTop_toBottomOf="@+id/MatchPartecipanti">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -120,7 +121,30 @@
         android:layout_marginTop="16dp"
         android:layout_marginEnd="24dp"
         android:text="Elimina Partita"
+        android:visibility="invisible"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/PlayersMatchView" />
+
+    <TextView
+        android:id="@+id/MatchPartecipanti"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="16dp"
+        android:text="0 / 10"
+        android:textSize="30sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/PlaceMatchView" />
+
+    <TextView
+        android:id="@+id/textView3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="32dp"
+        android:text="partecipanti"
+        android:textSize="18sp"
+        app:layout_constraintStart_toEndOf="@+id/MatchPartecipanti"
+        app:layout_constraintTop_toBottomOf="@+id/PlaceMatchView" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -7,7 +7,7 @@ class Match(
         var creationDate: DateTime = DateTime(),
         var matchDate: DateTime = DateTime(),
         var notes: String = "",
-        var participants: List<String> = ArrayList<String>(),
+        var participants: MutableList<String> = ArrayList<String>(),
         var available: Int = 0,
         var place: MatchPlace = MatchPlace(),
         var NameMatch: String = "",

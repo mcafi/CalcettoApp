@@ -22,7 +22,7 @@ import com.google.firebase.firestore.FirebaseFirestoreSettings
 import com.mcafi.calcetto.model.Match
 
 class MapFragment : Fragment(), GoogleMap.OnMyLocationButtonClickListener,
-        GoogleMap.OnMyLocationClickListener, OnMapReadyCallback, GoogleMap.OnInfoWindowClickListener {
+    GoogleMap.OnMyLocationClickListener, OnMapReadyCallback, GoogleMap.OnInfoWindowClickListener {
     private val db = initializeDatabase()
     private lateinit var map: GoogleMap
     private lateinit var fusedLocationClient: FusedLocationProviderClient
