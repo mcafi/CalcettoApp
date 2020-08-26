@@ -14,7 +14,7 @@ import kotlin.collections.ArrayList
 class MatchAdapter(context: Context, private val dataSource: ArrayList<Match>): BaseAdapter() {
     private val inflater: LayoutInflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
     private val dateTimeFormat = SimpleDateFormat("dd/MMM/yyyy - HH:mm", Locale("it"))
-    private val c = Calendar.getInstance()
+    private val datetime = Calendar.getInstance()
 
     override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {
         val rowView = convertView ?: inflater.inflate(R.layout.match_item, parent, false)
@@ -24,9 +24,9 @@ class MatchAdapter(context: Context, private val dataSource: ArrayList<Match>): 
         val matchAvailable = rowView.findViewById(R.id.tv_match_available) as TextView
         val matchNotes = rowView.findViewById(R.id.tv_match_notes) as TextView
 
-        c.set(match.matchDate.year, match.matchDate.month, match.matchDate.day, match.matchDate.hour, match.matchDate.minute)
+        datetime.timeInMillis = match.matchDate
 
-        matchDate.text = dateTimeFormat.format(c.time)
+        matchDate.text = dateTimeFormat.format(datetime.time)
         matchAvailable.text = (match.available - match.participants.size).toString()
         matchNotes.text = match.notes
 
