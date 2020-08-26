@@ -5,9 +5,7 @@ import android.content.DialogInterface
 import android.content.Intent
 import android.graphics.BitmapFactory
 import android.os.Bundle
-import android.provider.MediaStore
 import android.view.View
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import com.google.firebase.auth.FirebaseAuth
@@ -26,15 +24,15 @@ class MatchViewActivity : AppCompatActivity(), View.OnClickListener {
     private lateinit var immagini: StorageReference
     private val mAuthReg = FirebaseAuth.getInstance()
     private lateinit var firebaseUser: FirebaseUser
-    private var Partecipa: Boolean = false
-    private var partita: Match? = null
-    private lateinit var Match :DocumentReference
+    private var partecipa: Boolean = false
+    private lateinit var partita: Match
+    private lateinit var matchReference: DocumentReference
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_match_view)
-        var IdMAtch=intent.getStringExtra("MATCH_ID");
+        val matchId = intent.getStringExtra("MATCH_ID");
         //Toast.makeText(baseContext, IdMAtch, Toast.LENGTH_LONG).show()
         val toolbar = findViewById<View>(R.id.matchToolbar) as Toolbar
         setSupportActionBar(toolbar)
@@ -44,86 +42,87 @@ class MatchViewActivity : AppCompatActivity(), View.OnClickListener {
 
         firebaseUser = mAuthReg.currentUser!!
 
-
         val settings = FirebaseFirestoreSettings.Builder()
                 .setPersistenceEnabled(true)
                 .build()
         val db = FirebaseFirestore.getInstance()
         db.firestoreSettings = settings
-        Match = db.collection("partite").document(IdMAtch)
-        Match.get().addOnSuccessListener { document ->
+        matchReference = db.collection("partite").document(matchId!!)
+        matchReference.get().addOnSuccessListener { document ->
             if (document != null) {
                 //Log.d(TAG, "DocumentSnapshot data: ${document.data}")
                 //println("dati: ${document.data}")
-                partita = document.toObject(com.mcafi.calcetto.model.Match::class.java)
+                partita = document.toObject(Match::class.java)!!
 
-                if (partita != null) {
-                    partita!!.participants= document.get("partecipants") as MutableList<String>;
-                    //println("dati: ${partita.matchDate}")
-                    DateTimeMatchView.text= partita!!.matchDate.toString()
-                    PlaceMatchView.text= partita!!.place.address
-                    nameMatchView.text= partita!!.NameMatch
-                    MatchPartecipanti.text= partita!!.participants.size.toString()+"/"+ partita!!.available.toString()
+                if (document.get("partecipants") != null) {
+                    partita.participants = document.get("partecipants") as ArrayList<String>
+                } else {
+                    partita.participants = ArrayList()
+                }
+
+                //println("dati: ${partita.matchDate}")
+                tv_match_view_datetime.text = partita.matchDate.toString()
+                tv_match_view_place.text = partita.place.address
+                tv_match_view_name.text = partita.NameMatch
+                tv_match_view_partecipants.text = "${partita.participants.size.toString()}/${partita.available.toString()}"
 
 
-                    //println("IndexOF: ${firebaseUser.uid}"+" Match: $IdMAtch")
-                    //println("IndexOF: ${}")
-                    if(partita!!.participants.indexOf(firebaseUser.uid)<0){
-                        PartecipaLasciaButtonMatchView.text="Partecipa"
-                        Partecipa=false
-                    }
-                    else{
-                        PartecipaLasciaButtonMatchView.text="Lascia Partita"
-                        Partecipa=true
-                    }
-                    if(partita!!.creator==firebaseUser.uid){
-                        DeleteMatchView.visibility=View.VISIBLE;
-                    }
+                //println("IndexOF: ${firebaseUser.uid}"+" Match: $IdMAtch")
+                //println("IndexOF: ${}")
+                if (partita.participants.indexOf(firebaseUser.uid) < 0) {
+                    btn_match_view_partecipate_leave.text = "Partecipa"
+                    partecipa = false
+                }
+                else {
+                    btn_match_view_partecipate_leave.text = "Lascia Partita"
+                    partecipa = true
+                }
+                if (partita.creator == firebaseUser.uid){
+                    btn_match_view_delete.visibility = View.VISIBLE;
                 }
             }
         }
-        immagini = storageRef.child("immagini_match/" + IdMAtch)
+        immagini = storageRef.child("immagini_match/$matchId")
         immagini.getBytes(MAX_SIZE).addOnSuccessListener { bytes ->
             val bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.size)
-            ImageMatchView.setImageBitmap(bitmap)
+            img_match_view.setImageBitmap(bitmap)
         }.addOnFailureListener {
             // Handle any errors
         }
 
-        PartecipaLasciaButtonMatchView.setOnClickListener(this)
-        DeleteMatchView.setOnClickListener(this)
+        btn_match_view_partecipate_leave.setOnClickListener(this)
+        btn_match_view_delete.setOnClickListener(this)
 
 
 
     }
 
     override fun onClick(v: View) {
-        println("IndexOF: $Partecipa")
+        println("IndexOF: $partecipa")
         when (v.id) {
-            R.id.PartecipaLasciaButtonMatchView -> {
-                if(Partecipa){
-                    partita!!.participants.remove(firebaseUser.uid)
-                    Match.update("partecipants",partita!!.participants)
+            R.id.btn_match_view_partecipate_leave -> {
+                if (partecipa) {
+                    partita.participants.remove(firebaseUser.uid)
+                    matchReference.update("partecipants", partita.participants)
                     recreate()
                 }
-                else{
-                    partita!!.participants.add(firebaseUser.uid)
-                    Match.update("partecipants",partita!!.participants)
+                else {
+                    partita.participants.add(firebaseUser.uid)
+                    matchReference.update("partecipants", partita.participants)
                     recreate()
                 }
             }
-            R.id.DeleteMatchView ->{
+            R.id.btn_match_view_delete -> {
                 val builder = AlertDialog.Builder(this)
                 builder.setTitle("Conferma Eliminazione")
                 builder.setMessage("Vuoi eliminare questa partita? ")
-                builder.setPositiveButton("SI") { dialogInterface: DialogInterface, i: Int ->
-                    Match.delete()
+                builder.setPositiveButton("SI") { _: DialogInterface, _: Int ->
+                    matchReference.delete()
                     val viewMatchIntent = Intent(applicationContext, MainActivity::class.java)
                     startActivity(viewMatchIntent)
                 }
-                builder.setNegativeButton("NO") { dialogInterface: DialogInterface, i: Int ->
-                }
-                builder.setNeutralButton("ANNULLA"){ dialogInterface: DialogInterface, i: Int -> }
+                builder.setNegativeButton("NO") { _: DialogInterface, _: Int -> }
+                builder.setNeutralButton("ANNULLA") { _: DialogInterface, _: Int -> }
                 builder.show()
             }
 
@@ -136,7 +135,6 @@ class MatchViewActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     companion object {
-        private const val PICK_IMAGE = 105
-        private const val MAX_SIZE = 3 * 1024 * 1024.toLong()
+        private const val MAX_SIZE = 8 * 1024 * 1024.toLong()
     }
 }
