@@ -17,6 +17,9 @@ import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
 import com.mcafi.calcetto.model.Match
 import kotlinx.android.synthetic.main.activity_match_view.*
+import java.text.SimpleDateFormat
+import java.util.*
+import kotlin.collections.ArrayList
 
 class MatchViewActivity : AppCompatActivity(), View.OnClickListener {
     private val storage = FirebaseStorage.getInstance()
@@ -27,7 +30,8 @@ class MatchViewActivity : AppCompatActivity(), View.OnClickListener {
     private var partecipa: Boolean = false
     private lateinit var partita: Match
     private lateinit var matchReference: DocumentReference
-
+    private val dateTimeFormat = SimpleDateFormat("dd/MMM/yyyy - HH:mm", Locale("it"))
+    private val dateTime = Calendar.getInstance()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -60,10 +64,12 @@ class MatchViewActivity : AppCompatActivity(), View.OnClickListener {
                     partita.participants = ArrayList()
                 }
 
+                dateTime.timeInMillis = partita.matchDate
+
                 //println("dati: ${partita.matchDate}")
-                tv_match_view_datetime.text = partita.matchDate.toString()
+                tv_match_view_datetime.text = dateTimeFormat.format(dateTime.time)
                 tv_match_view_place.text = partita.place.address
-                tv_match_view_name.text = partita.NameMatch
+                tv_match_view_name.text = partita.matchName
                 tv_match_view_partecipants.text = "${partita.participants.size.toString()}/${partita.available.toString()}"
 
 
