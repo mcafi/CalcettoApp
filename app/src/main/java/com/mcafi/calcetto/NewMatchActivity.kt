@@ -1,10 +1,16 @@
 package com.mcafi.calcetto
 
+import android.app.Activity
 import android.app.DatePickerDialog
 import android.app.TimePickerDialog
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
+import android.provider.MediaStore
 import android.util.Log
 import android.view.View
+import android.widget.ImageView
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import com.google.android.gms.common.api.Status
@@ -15,8 +21,9 @@ import com.google.android.libraries.places.widget.listener.PlaceSelectionListene
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.FirebaseFirestoreSettings
+import com.google.firebase.storage.FirebaseStorage
+import com.google.firebase.storage.StorageReference
 import com.mcafi.calcetto.model.Match
-import com.mcafi.calcetto.model.DateTime
 import com.mcafi.calcetto.model.MatchPlace
 import kotlinx.android.synthetic.main.activity_new_match.*
 import java.lang.Integer.parseInt
@@ -41,12 +48,16 @@ class NewMatchActivity : AppCompatActivity(), View.OnClickListener {
     private val timeFormat = SimpleDateFormat("HH:mm", Locale("it"))
     private var matchPlace: MatchPlace = MatchPlace()
 
+    private val storage = FirebaseStorage.getInstance()
+    private var imageUri: Uri? = null
+    private lateinit var ImageMatchCopertina: ImageView
+    private val storageRef = storage.reference
+    private lateinit var immagini: StorageReference
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_new_match)
-
-        val autocompleteFragment = supportFragmentManager.findFragmentById(R.id.autocomplete_fragment) as AutocompleteSupportFragment
-        autocompleteFragment.setCountry("IT")
 
         Places.initialize(this@NewMatchActivity, "AIzaSyDcEEGrjxw712L4SX0oUWQ0Cgn3BKPAbGE")
         //val placesClient = Places.createClient(this)
@@ -60,16 +71,17 @@ class NewMatchActivity : AppCompatActivity(), View.OnClickListener {
         newMatchDate.setText(dateFormat.format(c.time))
         newMatchTime.setText(timeFormat.format(c.time))
 
-        dpd = DatePickerDialog(this@NewMatchActivity, R.style.DialogTheme, DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
+        dpd = DatePickerDialog(this@NewMatchActivity, R.style.DialogTheme, { _, year, monthOfYear, dayOfMonth ->
             c.set(year, monthOfYear, dayOfMonth)
             newMatchDate.setText(dateFormat.format(c.time))
         }, year, month, day)
-        tpd = TimePickerDialog(this@NewMatchActivity, R.style.DialogTheme, TimePickerDialog.OnTimeSetListener { view, hourOfDay, minute ->
+        tpd = TimePickerDialog(this@NewMatchActivity, R.style.DialogTheme, { _, hourOfDay, minute ->
             c.set(Calendar.HOUR_OF_DAY, hourOfDay)
             c.set(Calendar.MINUTE, minute)
             newMatchTime.setText(timeFormat.format(c.time))
         }, hour, minute, true)
 
+        val autocompleteFragment = supportFragmentManager.findFragmentById(R.id.autocomplete_fragment) as AutocompleteSupportFragment
         autocompleteFragment.setPlaceFields(listOf(Place.Field.ID, Place.Field.NAME, Place.Field.LAT_LNG, Place.Field.ADDRESS))
         autocompleteFragment.setOnPlaceSelectedListener(object : PlaceSelectionListener {
             override fun onPlaceSelected(place: Place) {
@@ -86,6 +98,10 @@ class NewMatchActivity : AppCompatActivity(), View.OnClickListener {
         newMatchDate.setOnClickListener(this)
         newMatchTime.setOnClickListener(this)
         saveMatchButton.setOnClickListener(this)
+
+
+        ImageMatchCopertina = findViewById(R.id.ImageMatchCopertina)
+        ChangeImageMatch.setOnClickListener(this)
     }
 
     override fun onSupportNavigateUp(): Boolean {
@@ -102,9 +118,41 @@ class NewMatchActivity : AppCompatActivity(), View.OnClickListener {
                 tpd.show()
             }
             R.id.saveMatchButton -> {
-                val match = Match(firebaseUser.uid, DateTime(Calendar.getInstance()), DateTime(c), newMatchNotes.text.toString(), emptyList<String>(), parseInt(availableSpots.text.toString()), matchPlace!!)
-                db.collection("partite").add(match)
+                val match = Match(firebaseUser.uid, Calendar.getInstance().timeInMillis, c.timeInMillis, newMatchNotes.text.toString(), emptyList(), parseInt(availableSpots.text.toString()), matchPlace, nameMatch.text.toString())
+                db.collection("partite").add(match).addOnSuccessListener { documentReference ->
+                    //Toast.makeText(applicationContext, "id is ${documentReference.id}", Toast.LENGTH_LONG).show()
+                    if(imageUri!=null){
+                        immagini = storageRef.child("immagini_match/" + documentReference.id)
+                        val uploadTask = immagini.putFile(imageUri!!)
+                        // Register observers to listen for when the download is done or if it fails
+                        uploadTask.addOnFailureListener { // Handle unsuccessful uploads
+                            Toast.makeText(applicationContext, "Errore durante l'upload dell'immagine", Toast.LENGTH_LONG).show()
+                        }.addOnSuccessListener {
+                            val viewMatchIntent = Intent(applicationContext, MainActivity::class.java)
+                            viewMatchIntent.putExtra("MATCH_ID", documentReference.id)
+                            startActivity(viewMatchIntent)
+                        }
+                    }
+                    else{
+                        val viewMatchIntent = Intent(applicationContext, MatchViewActivity::class.java)
+                        viewMatchIntent.putExtra("MATCH_ID", documentReference.id)
+                        startActivity(viewMatchIntent)
+                    }
+                }
+
             }
+            R.id.ChangeImageMatch -> {
+                val gallery = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.INTERNAL_CONTENT_URI)
+                startActivityForResult(gallery, NewMatchActivity.PICK_IMAGE)
+            }
+        }
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (resultCode == Activity.RESULT_OK && requestCode == NewMatchActivity.PICK_IMAGE) {
+            imageUri = data?.data
+            ImageMatchCopertina.setImageURI(imageUri)
         }
     }
 
@@ -115,5 +163,11 @@ class NewMatchActivity : AppCompatActivity(), View.OnClickListener {
         val db = FirebaseFirestore.getInstance()
         db.firestoreSettings = settings
         return db
+    }
+
+
+    companion object {
+        private const val PICK_IMAGE = 200
+        private const val MAX_SIZE = 3 * 1024 * 1024.toLong()
     }
 }

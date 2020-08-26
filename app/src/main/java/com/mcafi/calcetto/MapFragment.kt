@@ -42,13 +42,14 @@ class MapFragment : Fragment(), GoogleMap.OnMyLocationButtonClickListener,
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(context!!)
 
         // il getMapAsync chiama la onMapReady
-        mMapView.getMapAsync(this);
+        mMapView.getMapAsync(this)
 
         return v
     }
 
     override fun onMapReady(googleMap: GoogleMap) {
         map = googleMap
+        map.moveCamera(CameraUpdateFactory.newLatLngZoom(LatLng(44.414165, 8.942184), 13F))
         db.collection("partite")
                 .get()
                 .addOnSuccessListener { result ->
@@ -57,7 +58,7 @@ class MapFragment : Fragment(), GoogleMap.OnMyLocationButtonClickListener,
                         if (match.participants.size < match.available) {
                             val marker = googleMap.addMarker(MarkerOptions()
                                     .position(LatLng(match.place.lat, match.place.lng))
-                                    .title(match.creationDate.toString() + ", " + (match.available - match.participants.size) + " posti disponibili"))
+                                    .title(match.matchDate.toString() + ", " + (match.available - match.participants.size) + " posti disponibili"))
                             marker.tag = document.id
                         }
                     }
@@ -92,7 +93,7 @@ class MapFragment : Fragment(), GoogleMap.OnMyLocationButtonClickListener,
 
         } else {
             // Permission to access the location is missing. Show rationale and request permission
-            requestPermissions(Array<String>(2) { Manifest.permission.ACCESS_FINE_LOCATION; Manifest.permission.ACCESS_COARSE_LOCATION }, 42)
+            requestPermissions(Array(2) { Manifest.permission.ACCESS_FINE_LOCATION; Manifest.permission.ACCESS_COARSE_LOCATION }, 42)
         }
     }
 
@@ -108,7 +109,7 @@ class MapFragment : Fragment(), GoogleMap.OnMyLocationButtonClickListener,
         return false
     }
 
-    override fun onInfoWindowClick(marker: Marker): Unit {
+    override fun onInfoWindowClick(marker: Marker) {
         val viewMatchIntent = Intent(activity, MatchViewActivity::class.java)
         viewMatchIntent.putExtra("MATCH_ID", marker.tag as String)
         startActivity(viewMatchIntent)
