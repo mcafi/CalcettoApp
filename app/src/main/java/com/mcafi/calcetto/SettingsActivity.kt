@@ -1,15 +1,16 @@
 package com.mcafi.calcetto
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.widget.Toolbar
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.FirebaseFirestoreSettings
 import com.mcafi.calcetto.model.User
+import kotlinx.android.synthetic.main.activity_settings.*
 
 class SettingsActivity : AppCompatActivity(), View.OnClickListener {
     private val mAuthReg = FirebaseAuth.getInstance()
@@ -21,14 +22,13 @@ class SettingsActivity : AppCompatActivity(), View.OnClickListener {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_settings)
-        val toolbar = findViewById<View>(R.id.settingsToolbar) as Toolbar
-        setSupportActionBar(toolbar)
+        setSupportActionBar(settings_toolbar)
         supportActionBar!!.setDisplayHomeAsUpEnabled(true)
         supportActionBar!!.setDisplayShowHomeEnabled(true)
         supportActionBar!!.setDisplayShowTitleEnabled(false)
-        val nameText = findViewById<TextView>(R.id.nameText)
-        val usernameText = findViewById<TextView>(R.id.usernameText)
-        val saveSettings = findViewById<TextView>(R.id.saveSettings)
+        val nameText = findViewById<TextView>(R.id.et_settings_name)
+        val usernameText = findViewById<TextView>(R.id.et_settings_username)
+        val saveSettings = findViewById<TextView>(R.id.btn_settings_save)
         saveSettings.setOnClickListener(this)
         userRef.get().addOnSuccessListener { documentSnapshot ->
             user = documentSnapshot.toObject(User::class.java)!!
@@ -43,12 +43,11 @@ class SettingsActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     override fun onClick(v: View) {
-        val nameText = findViewById<TextView>(R.id.nameText)
-        val usernameText = findViewById<TextView>(R.id.usernameText)
-        user.name = nameText.text.toString()
-        user.username = usernameText.text.toString()
+        user.name = et_settings_name.text.toString()
+        user.username = et_settings_username.text.toString()
         userRef.update(user.toMap())
         Toast.makeText(applicationContext, "Modifiche salvate!", Toast.LENGTH_LONG).show()
+        startActivity(Intent(this@SettingsActivity, MainActivity::class.java).putExtra("TAB", 2))
     }
 
     private fun initializeDatabase(): FirebaseFirestore {

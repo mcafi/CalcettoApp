@@ -58,7 +58,7 @@ class MapFragment : Fragment(), GoogleMap.OnMyLocationButtonClickListener,
                         if (match.participants.size < match.available) {
                             val marker = googleMap.addMarker(MarkerOptions()
                                     .position(LatLng(match.place.lat, match.place.lng))
-                                    .title(match.creationDate.toString() + ", " + (match.available - match.participants.size) + " posti disponibili"))
+                                    .title(match.matchDate.toString() + ", " + (match.available - match.participants.size) + " posti disponibili"))
                             marker.tag = document.id
                         }
                     }

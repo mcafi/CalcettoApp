@@ -23,7 +23,6 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.FirebaseFirestoreSettings
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
-import com.mcafi.calcetto.model.DateTime
 import com.mcafi.calcetto.model.Match
 import com.mcafi.calcetto.model.MatchPlace
 import kotlinx.android.synthetic.main.activity_new_match.*
@@ -72,11 +71,11 @@ class NewMatchActivity : AppCompatActivity(), View.OnClickListener {
         newMatchDate.setText(dateFormat.format(c.time))
         newMatchTime.setText(timeFormat.format(c.time))
 
-        dpd = DatePickerDialog(this@NewMatchActivity, R.style.DialogTheme, DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
+        dpd = DatePickerDialog(this@NewMatchActivity, R.style.DialogTheme, { _, year, monthOfYear, dayOfMonth ->
             c.set(year, monthOfYear, dayOfMonth)
             newMatchDate.setText(dateFormat.format(c.time))
         }, year, month, day)
-        tpd = TimePickerDialog(this@NewMatchActivity, R.style.DialogTheme, TimePickerDialog.OnTimeSetListener { view, hourOfDay, minute ->
+        tpd = TimePickerDialog(this@NewMatchActivity, R.style.DialogTheme, { _, hourOfDay, minute ->
             c.set(Calendar.HOUR_OF_DAY, hourOfDay)
             c.set(Calendar.MINUTE, minute)
             newMatchTime.setText(timeFormat.format(c.time))
@@ -119,8 +118,7 @@ class NewMatchActivity : AppCompatActivity(), View.OnClickListener {
                 tpd.show()
             }
             R.id.saveMatchButton -> {
-                val list : MutableList<String> = ArrayList<String>()
-                val match = Match(firebaseUser.uid, DateTime(Calendar.getInstance()), DateTime(c), newMatchNotes.text.toString(), list, parseInt(availableSpots.text.toString()), matchPlace!!, nameMatch.text.toString())
+                val match = Match(firebaseUser.uid, Calendar.getInstance().timeInMillis, c.timeInMillis, newMatchNotes.text.toString(), emptyList(), parseInt(availableSpots.text.toString()), matchPlace, nameMatch.text.toString())
                 db.collection("partite").add(match).addOnSuccessListener { documentReference ->
                     //Toast.makeText(applicationContext, "id is ${documentReference.id}", Toast.LENGTH_LONG).show()
                     if(imageUri!=null){
@@ -136,15 +134,11 @@ class NewMatchActivity : AppCompatActivity(), View.OnClickListener {
                         }
                     }
                     else{
-                        val viewMatchIntent = Intent(applicationContext, MainActivity::class.java)
+                        val viewMatchIntent = Intent(applicationContext, MatchViewActivity::class.java)
                         viewMatchIntent.putExtra("MATCH_ID", documentReference.id)
                         startActivity(viewMatchIntent)
-                        //println("ERRORE")
                     }
                 }
-                        .addOnFailureListener {documentReference ->
-                            println("ERRORE")
-                        }
 
             }
             R.id.ChangeImageMatch -> {
