@@ -29,6 +29,7 @@ import kotlinx.android.synthetic.main.activity_new_match.*
 import java.lang.Integer.parseInt
 import java.text.SimpleDateFormat
 import java.util.*
+import kotlin.collections.ArrayList
 
 class NewMatchActivity : AppCompatActivity(), View.OnClickListener {
 
@@ -118,7 +119,7 @@ class NewMatchActivity : AppCompatActivity(), View.OnClickListener {
                 tpd.show()
             }
             R.id.saveMatchButton -> {
-                val match = Match(firebaseUser.uid, Calendar.getInstance().timeInMillis, c.timeInMillis, newMatchNotes.text.toString(), emptyList(), parseInt(availableSpots.text.toString()), matchPlace, nameMatch.text.toString())
+                val match = Match(firebaseUser.uid, Calendar.getInstance().timeInMillis, c.timeInMillis, newMatchNotes.text.toString(), ArrayList(), parseInt(availableSpots.text.toString()), matchPlace, nameMatch.text.toString())
                 db.collection("partite").add(match).addOnSuccessListener { documentReference ->
                     //Toast.makeText(applicationContext, "id is ${documentReference.id}", Toast.LENGTH_LONG).show()
                     if(imageUri!=null){

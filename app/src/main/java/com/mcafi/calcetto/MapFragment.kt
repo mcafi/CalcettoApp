@@ -20,12 +20,15 @@ import com.google.android.gms.maps.model.MarkerOptions
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.FirebaseFirestoreSettings
 import com.mcafi.calcetto.model.Match
+import java.text.SimpleDateFormat
+import java.util.*
 
 class MapFragment : Fragment(), GoogleMap.OnMyLocationButtonClickListener,
-        GoogleMap.OnMyLocationClickListener, OnMapReadyCallback, GoogleMap.OnInfoWindowClickListener {
+    GoogleMap.OnMyLocationClickListener, OnMapReadyCallback, GoogleMap.OnInfoWindowClickListener {
     private val db = initializeDatabase()
     private lateinit var map: GoogleMap
     private lateinit var fusedLocationClient: FusedLocationProviderClient
+    private val dateTimeFormat = SimpleDateFormat("dd/MMM/yyyy - HH:mm", Locale("it"))
 
     override fun onCreateView(inflater: LayoutInflater, viewGroup: ViewGroup?, savedInstanceState: Bundle?): View? {
         val v = inflater.inflate(R.layout.fragment_map, viewGroup, false)
@@ -51,14 +54,18 @@ class MapFragment : Fragment(), GoogleMap.OnMyLocationButtonClickListener,
         map = googleMap
         map.moveCamera(CameraUpdateFactory.newLatLngZoom(LatLng(44.414165, 8.942184), 13F))
         db.collection("partite")
+                .whereGreaterThan("matchDate", Calendar.getInstance().timeInMillis)
                 .get()
                 .addOnSuccessListener { result ->
                     for (document in result) {
                         val match = document.toObject(Match::class.java)
                         if (match.participants.size < match.available) {
+                            val matchDateTime = Calendar.getInstance()
+                            matchDateTime.timeInMillis = match.matchDate
                             val marker = googleMap.addMarker(MarkerOptions()
                                     .position(LatLng(match.place.lat, match.place.lng))
-                                    .title(match.matchDate.toString() + ", " + (match.available - match.participants.size) + " posti disponibili"))
+                                    .title(dateTimeFormat.format(matchDateTime.time))
+                                    .snippet("${match.available - match.participants.size} posti disponibili"))
                             marker.tag = document.id
                         }
                     }
