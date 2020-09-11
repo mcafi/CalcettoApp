@@ -29,14 +29,14 @@ android:textStyle="bold" />
         android:text="Partecipanti" />
 
     <TextView
-        android:id="@+id/match_notes"
-        android:layout_width="wrap_content"
+        android:id="@+id/match_creator"
+        android:layout_width="123dp"
         android:layout_height="wrap_content"
         android:layout_below="@+id/match_available"
-        android:layout_marginStart="103dp"
-        android:layout_marginTop="-15dp"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="-21dp"
+        android:layout_marginEnd="14dp"
         android:layout_marginBottom="16dp"
-        android:layout_toEndOf="@+id/match_available"
         android:text="note" />
 
 

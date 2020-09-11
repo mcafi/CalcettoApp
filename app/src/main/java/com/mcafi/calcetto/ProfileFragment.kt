@@ -35,6 +35,7 @@ class ProfileFragment : Fragment(), View.OnClickListener {
     private val storageRef = storage.reference
     private lateinit var immagini: StorageReference
     private lateinit var listView: ListView
+    private lateinit var listView2: ListView
 
     override fun onCreateView(inflater: LayoutInflater, viewGroup: ViewGroup?, savedInstanceState: Bundle?): View? {
         v = inflater.inflate(R.layout.fragment_profile, viewGroup, false)
@@ -68,7 +69,9 @@ class ProfileFragment : Fragment(), View.OnClickListener {
 
         listView = v.findViewById(R.id.matches_list)
 
+
         val matchList = ArrayList<Match>();
+        val matchList2 = ArrayList<Match>();
 
         db.collection("partite")
                 .get()
@@ -76,10 +79,20 @@ class ProfileFragment : Fragment(), View.OnClickListener {
                     for (document in result) {
                         val match = document.toObject(Match::class.java)
                         match.id = document.id
-                        if(match.creator == firebaseUser.uid )
+                        if (document.get("partecipants") != null) {
+                            match.participants = document.get("partecipants") as ArrayList<String>
+                        } else {
+                            match.participants = ArrayList()
+                        }
+                        if(match.creator == firebaseUser.uid || match.participants.contains(firebaseUser.uid))
                         matchList.add(match)
+
+
+
                     }
+
                     val adapter = MatchAdapterProfile(context!!, matchList)
+
                     listView.adapter = adapter
                 }
                 .addOnFailureListener { exception ->
