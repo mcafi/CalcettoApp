@@ -50,6 +50,7 @@
         <activity
             android:name=".MainActivity"
             android:theme="@style/AppTheme.NoActionBar" />
+        <receiver android:name=".src.MatchNotificationManager"/>
     </application>
 
 </manifest>
