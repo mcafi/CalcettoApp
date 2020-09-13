@@ -12,9 +12,11 @@ import androidx.core.app.NotificationManagerCompat
 
 class MatchNotificationManager : BroadcastReceiver() {
 
-    val MATCH_CHANNEL_NAME = "Notifiche partite"
-    val MATCH_CHANNEL_DESCRIPTION = "Notifiche partite in arrivo"
-    val MATCH_CHANNEL_ID = "MATCH_CHANNEL"
+    companion object {
+        const val MATCH_CHANNEL_NAME = "Notifiche partite"
+        const val MATCH_CHANNEL_DESCRIPTION = "Notifiche partite in arrivo"
+        const val MATCH_CHANNEL_ID = "MATCH_CHANNEL"
+    }
 
     override fun onReceive(context: Context, intent: Intent) {
 

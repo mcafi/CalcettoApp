@@ -1,13 +1,19 @@
 package com.mcafi.calcetto
 
+import android.app.AlarmManager
 import android.app.AlertDialog
+import android.app.Notification
+import android.app.PendingIntent
 import android.content.DialogInterface
 import android.content.Intent
 import android.graphics.BitmapFactory
 import android.os.Bundle
+import android.os.SystemClock
+import android.util.Log
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
+import androidx.core.app.NotificationCompat
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.firestore.DocumentReference
@@ -16,6 +22,7 @@ import com.google.firebase.firestore.FirebaseFirestoreSettings
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
 import com.mcafi.calcetto.model.Match
+import com.mcafi.calcetto.src.MatchNotificationManager
 import kotlinx.android.synthetic.main.activity_match_view.*
 import java.text.SimpleDateFormat
 import java.util.*
@@ -37,7 +44,6 @@ class MatchViewActivity : AppCompatActivity(), View.OnClickListener {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_match_view)
         val matchId = intent.getStringExtra("MATCH_ID");
-        //Toast.makeText(baseContext, IdMAtch, Toast.LENGTH_LONG).show()
         val toolbar = findViewById<View>(R.id.matchToolbar) as Toolbar
         setSupportActionBar(toolbar)
         supportActionBar!!.setDisplayHomeAsUpEnabled(true)
@@ -98,9 +104,7 @@ class MatchViewActivity : AppCompatActivity(), View.OnClickListener {
 
         btn_match_view_partecipate_leave.setOnClickListener(this)
         btn_match_view_delete.setOnClickListener(this)
-
-
-
+        sw_match_notifications.setOnClickListener(this)
     }
 
     override fun onClick(v: View) {
@@ -131,8 +135,31 @@ class MatchViewActivity : AppCompatActivity(), View.OnClickListener {
                 builder.setNeutralButton("ANNULLA") { _: DialogInterface, _: Int -> }
                 builder.show()
             }
-
+            R.id.sw_match_notifications -> {
+                scheduleNotification(getNotification(partita.matchName), partita.matchDate)
+            }
         }
+    }
+
+    private fun scheduleNotification(notification: Notification, matchTime: Long) {
+        val notificationIntent = Intent(this, MatchNotificationManager::class.java)
+        notificationIntent.putExtra("NOTIFICATION_ID", partita.creationDate.toInt())
+        notificationIntent.putExtra("NOTIFICATION", notification)
+        val pendingIntent = PendingIntent.getBroadcast(this, 0, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT)
+        val delay = matchTime - Calendar.getInstance().timeInMillis
+        Log.d("T", delay.toString())
+        val futureInMillis = SystemClock.elapsedRealtime() + delay
+        val alarmManager = (getSystemService(ALARM_SERVICE) as AlarmManager)
+        alarmManager[AlarmManager.ELAPSED_REALTIME_WAKEUP, futureInMillis] = pendingIntent
+    }
+
+    private fun getNotification(matchName: String): Notification {
+        val builder = NotificationCompat.Builder(this, MatchNotificationManager.MATCH_CHANNEL_ID)
+                .setSmallIcon(R.drawable.common_google_signin_btn_icon_dark)
+                .setContentTitle("Manca poco alla partita!")
+                .setContentText(matchName)
+                .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+        return builder.build()
     }
 
     override fun onSupportNavigateUp(): Boolean {
