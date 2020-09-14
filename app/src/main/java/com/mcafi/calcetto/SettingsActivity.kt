@@ -12,6 +12,7 @@ import com.google.firebase.firestore.FirebaseFirestoreSettings
 import com.mcafi.calcetto.model.User
 import kotlinx.android.synthetic.main.activity_settings.*
 
+
 class SettingsActivity : AppCompatActivity(), View.OnClickListener {
     private val mAuthReg = FirebaseAuth.getInstance()
     private val db = initializeDatabase()
@@ -30,6 +31,7 @@ class SettingsActivity : AppCompatActivity(), View.OnClickListener {
         val usernameText = findViewById<TextView>(R.id.et_settings_username)
         val saveSettings = findViewById<TextView>(R.id.btn_settings_save)
         saveSettings.setOnClickListener(this)
+        btn_notification_test.setOnClickListener(this)
         userRef.get().addOnSuccessListener { documentSnapshot ->
             user = documentSnapshot.toObject(User::class.java)!!
             nameText.text = user.name
@@ -43,11 +45,15 @@ class SettingsActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     override fun onClick(v: View) {
-        user.name = et_settings_name.text.toString()
-        user.username = et_settings_username.text.toString()
-        userRef.update(user.toMap())
-        Toast.makeText(applicationContext, "Modifiche salvate!", Toast.LENGTH_LONG).show()
-        startActivity(Intent(this@SettingsActivity, MainActivity::class.java).putExtra("TAB", 2))
+        when (v.id) {
+            R.id.btn_settings_save -> {
+                user.name = et_settings_name.text.toString()
+                user.username = et_settings_username.text.toString()
+                userRef.update(user.toMap())
+                Toast.makeText(applicationContext, "Modifiche salvate!", Toast.LENGTH_LONG).show()
+                startActivity(Intent(this, MainActivity::class.java).putExtra("TAB", 2))
+            }
+        }
     }
 
     private fun initializeDatabase(): FirebaseFirestore {

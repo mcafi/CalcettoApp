@@ -14,7 +14,10 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.FirebaseFirestoreSettings
+import com.google.firebase.firestore.Query
 import com.mcafi.calcetto.model.Match
+import java.util.*
+import kotlin.collections.ArrayList
 
 class MainFragment : Fragment() {
     private val mAuthReg = FirebaseAuth.getInstance()
@@ -31,6 +34,8 @@ class MainFragment : Fragment() {
         val matchList = ArrayList<Match>()
 
         db.collection("partite")
+                .whereGreaterThan("matchDate", Calendar.getInstance().timeInMillis)
+                .orderBy("matchDate", Query.Direction.ASCENDING)
                 .get()
                 .addOnSuccessListener { result ->
                     for (document in result) {

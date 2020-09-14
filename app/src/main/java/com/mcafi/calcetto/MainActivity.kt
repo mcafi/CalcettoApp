@@ -8,6 +8,7 @@ import com.google.android.material.tabs.TabLayout
 import com.mcafi.calcetto.ui.main.SectionsPagerAdapter
 
 class MainActivity : AppCompatActivity() {
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -30,4 +31,5 @@ class MainActivity : AppCompatActivity() {
             startActivity(viewMatchIntent)
         }
     }
+
 }

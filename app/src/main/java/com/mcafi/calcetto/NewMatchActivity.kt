@@ -79,6 +79,7 @@ class NewMatchActivity : AppCompatActivity(), View.OnClickListener {
         tpd = TimePickerDialog(this@NewMatchActivity, R.style.DialogTheme, { _, hourOfDay, minute ->
             c.set(Calendar.HOUR_OF_DAY, hourOfDay)
             c.set(Calendar.MINUTE, minute)
+            c.set(Calendar.SECOND, 0)
             newMatchTime.setText(timeFormat.format(c.time))
         }, hour, minute, true)
 
