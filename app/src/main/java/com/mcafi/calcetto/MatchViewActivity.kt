@@ -36,6 +36,7 @@ class MatchViewActivity : AppCompatActivity(), View.OnClickListener {
     private lateinit var firebaseUser: FirebaseUser
     private var partecipa: Boolean = false
     private lateinit var partita: Match
+    private lateinit var matchId: String
     private lateinit var matchReference: DocumentReference
     private val dateTimeFormat = SimpleDateFormat("dd/MMM/yyyy - HH:mm", Locale("it"))
     private val dateTime = Calendar.getInstance()
@@ -43,7 +44,6 @@ class MatchViewActivity : AppCompatActivity(), View.OnClickListener {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_match_view)
-        val matchId = intent.getStringExtra("MATCH_ID");
         val toolbar = findViewById<View>(R.id.matchToolbar) as Toolbar
         setSupportActionBar(toolbar)
         supportActionBar!!.setDisplayHomeAsUpEnabled(true)
@@ -56,8 +56,11 @@ class MatchViewActivity : AppCompatActivity(), View.OnClickListener {
                 .setPersistenceEnabled(true)
                 .build()
         val db = FirebaseFirestore.getInstance()
+
+        matchId = intent.getStringExtra("MATCH_ID")!!
+        Log.d("T", matchId)
         db.firestoreSettings = settings
-        matchReference = db.collection("partite").document(matchId!!)
+        matchReference = db.collection("partite").document(matchId)
         matchReference.get().addOnSuccessListener { document ->
             if (document != null) {
                 //Log.d(TAG, "DocumentSnapshot data: ${document.data}")
@@ -136,7 +139,7 @@ class MatchViewActivity : AppCompatActivity(), View.OnClickListener {
                 builder.show()
             }
             R.id.sw_match_notifications -> {
-                scheduleNotification(getNotification(partita.matchName), partita.matchDate)
+                scheduleNotification(getNotification(partita), partita.matchDate)
             }
         }
     }
@@ -147,18 +150,24 @@ class MatchViewActivity : AppCompatActivity(), View.OnClickListener {
         notificationIntent.putExtra("NOTIFICATION", notification)
         val pendingIntent = PendingIntent.getBroadcast(this, 0, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT)
         val delay = matchTime - Calendar.getInstance().timeInMillis
-        Log.d("T", delay.toString())
+        Log.d("Test", delay.toString())
         val futureInMillis = SystemClock.elapsedRealtime() + delay
         val alarmManager = (getSystemService(ALARM_SERVICE) as AlarmManager)
         alarmManager[AlarmManager.ELAPSED_REALTIME_WAKEUP, futureInMillis] = pendingIntent
     }
 
-    private fun getNotification(matchName: String): Notification {
+    private fun getNotification(match: Match): Notification {
+        val intent = Intent(this, MatchViewActivity::class.java).apply {
+            flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+        }
+        intent.putExtra("MATCH_ID", matchId)
+        val pendingIntent: PendingIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT)
         val builder = NotificationCompat.Builder(this, MatchNotificationManager.MATCH_CHANNEL_ID)
                 .setSmallIcon(R.drawable.common_google_signin_btn_icon_dark)
                 .setContentTitle("Manca poco alla partita!")
-                .setContentText(matchName)
+                .setContentText(match.matchName + " - " + dateTimeFormat.format(dateTime.time))
                 .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+                .setContentIntent(pendingIntent)
         return builder.build()
     }
 
