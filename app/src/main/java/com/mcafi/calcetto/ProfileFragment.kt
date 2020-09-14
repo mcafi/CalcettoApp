@@ -17,6 +17,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.FirebaseFirestoreSettings
+import com.google.firebase.firestore.Query
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
 import com.mcafi.calcetto.model.Match
@@ -74,6 +75,7 @@ class ProfileFragment : Fragment(), View.OnClickListener {
         val matchList2 = ArrayList<Match>();
 
         db.collection("partite")
+                .orderBy("matchDate", Query.Direction.DESCENDING)
                 .get()
                 .addOnSuccessListener { result ->
                     for (document in result) {
