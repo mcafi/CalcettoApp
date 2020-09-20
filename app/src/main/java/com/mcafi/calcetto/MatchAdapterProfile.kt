@@ -39,12 +39,12 @@ class MatchAdapterProfile(context: Context, private val dataSource: ArrayList<Ma
         c.timeInMillis = match.matchDate
 
         matchDate.text = dateTimeFormat.format(c.time)
-        matchAvailable.text = (match.available - match.participants.size).toString()
+        matchAvailable.text = (match.available - match.partecipants.size).toString()
 
 
 
 
-        if(match.participants.contains(firebaseUser.uid) ) {
+        if(match.partecipants.contains(firebaseUser.uid) ) {
             matchDate.setTextColor((0xff5EBCC9).toInt())
             matchCreator.text = "partecipante"
         }

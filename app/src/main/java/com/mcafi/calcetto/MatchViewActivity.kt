@@ -11,6 +11,7 @@ import android.os.Bundle
 import android.os.SystemClock
 import android.util.Log
 import android.view.View
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.core.app.NotificationCompat
@@ -22,6 +23,7 @@ import com.google.firebase.firestore.FirebaseFirestoreSettings
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
 import com.mcafi.calcetto.model.Match
+import com.mcafi.calcetto.model.User
 import com.mcafi.calcetto.src.MatchNotificationManager
 import kotlinx.android.synthetic.main.activity_match_view.*
 import java.text.SimpleDateFormat
@@ -40,6 +42,7 @@ class MatchViewActivity : AppCompatActivity(), View.OnClickListener {
     private lateinit var matchReference: DocumentReference
     private val dateTimeFormat = SimpleDateFormat("dd/MMM/yyyy - HH:mm", Locale("it"))
     private val dateTime = Calendar.getInstance()
+    private var TextPartecipanti=""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -67,10 +70,25 @@ class MatchViewActivity : AppCompatActivity(), View.OnClickListener {
                 //println("dati: ${document.data}")
                 partita = document.toObject(Match::class.java)!!
 
+                var UserInPartita : User
+
                 if (document.get("partecipants") != null) {
-                    partita.participants = document.get("partecipants") as ArrayList<String>
+                    partita.partecipants = document.get("partecipants") as ArrayList<String>
+
+                    for(utenteInPartita in partita.partecipants) {
+
+                        matchReference = db.collection("utenti").document(utenteInPartita.toString())
+                        matchReference.get().addOnSuccessListener { doc ->
+                            UserInPartita= doc.toObject(User::class.java)!!
+                            list_match_view_partecipant.text= list_match_view_partecipant.text.toString()+UserInPartita.name+"<br>"
+
+                        }
+
+                    }
+
                 } else {
-                    partita.participants = ArrayList()
+                    partita.partecipants = ArrayList()
+                    TextPartecipanti="ancora nessun partecipante"
                 }
 
                 dateTime.timeInMillis = partita.matchDate
@@ -79,12 +97,13 @@ class MatchViewActivity : AppCompatActivity(), View.OnClickListener {
                 tv_match_view_datetime.text = dateTimeFormat.format(dateTime.time)
                 tv_match_view_place.text = partita.place.address
                 tv_match_view_name.text = partita.matchName
-                tv_match_view_partecipants.text = "${partita.participants.size.toString()}/${partita.available.toString()}"
+                tv_match_view_partecipants.text = "${partita.partecipants.size.toString()}/${partita.available.toString()}"
+
 
 
                 //println("IndexOF: ${firebaseUser.uid}"+" Match: $IdMAtch")
                 //println("IndexOF: ${}")
-                if (partita.participants.indexOf(firebaseUser.uid) < 0) {
+                if (partita.partecipants.indexOf(firebaseUser.uid) < 0) {
                     btn_match_view_partecipate_leave.text = "Partecipa"
                     partecipa = false
                 }
@@ -105,6 +124,8 @@ class MatchViewActivity : AppCompatActivity(), View.OnClickListener {
             // Handle any errors
         }
 
+
+
         btn_match_view_partecipate_leave.setOnClickListener(this)
         btn_match_view_delete.setOnClickListener(this)
         sw_match_notifications.setOnClickListener(this)
@@ -115,13 +136,13 @@ class MatchViewActivity : AppCompatActivity(), View.OnClickListener {
         when (v.id) {
             R.id.btn_match_view_partecipate_leave -> {
                 if (partecipa) {
-                    partita.participants.remove(firebaseUser.uid)
-                    matchReference.update("partecipants", partita.participants)
+                    partita.partecipants.remove(firebaseUser.uid)
+                    matchReference.update("partecipants", partita.partecipants)
                     recreate()
                 }
                 else {
-                    partita.participants.add(firebaseUser.uid)
-                    matchReference.update("partecipants", partita.participants)
+                    partita.partecipants.add(firebaseUser.uid)
+                    matchReference.update("partecipants", partita.partecipants)
                     recreate()
                 }
             }

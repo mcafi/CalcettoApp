@@ -82,11 +82,11 @@ class ProfileFragment : Fragment(), View.OnClickListener {
                         val match = document.toObject(Match::class.java)
                         match.id = document.id
                         if (document.get("partecipants") != null) {
-                            match.participants = document.get("partecipants") as ArrayList<String>
+                            match.partecipants = document.get("partecipants") as ArrayList<String>
                         } else {
-                            match.participants = ArrayList()
+                            match.partecipants = ArrayList()
                         }
-                        if(match.creator == firebaseUser.uid || match.participants.contains(firebaseUser.uid))
+                        if(match.creator == firebaseUser.uid || match.partecipants.contains(firebaseUser.uid))
                         matchList.add(match)
 
 

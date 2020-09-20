@@ -59,13 +59,13 @@ class MapFragment : Fragment(), GoogleMap.OnMyLocationButtonClickListener,
                 .addOnSuccessListener { result ->
                     for (document in result) {
                         val match = document.toObject(Match::class.java)
-                        if (match.participants.size < match.available) {
+                        if (match.partecipants.size < match.available) {
                             val matchDateTime = Calendar.getInstance()
                             matchDateTime.timeInMillis = match.matchDate
                             val marker = googleMap.addMarker(MarkerOptions()
                                     .position(LatLng(match.place.lat, match.place.lng))
                                     .title(dateTimeFormat.format(matchDateTime.time))
-                                    .snippet("${match.available - match.participants.size} posti disponibili"))
+                                    .snippet("${match.available - match.partecipants.size} posti disponibili"))
                             marker.tag = document.id
                         }
                     }

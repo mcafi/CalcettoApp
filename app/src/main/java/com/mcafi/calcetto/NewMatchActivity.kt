@@ -120,7 +120,9 @@ class NewMatchActivity : AppCompatActivity(), View.OnClickListener {
                 tpd.show()
             }
             R.id.saveMatchButton -> {
-                val match = Match(firebaseUser.uid, Calendar.getInstance().timeInMillis, c.timeInMillis, newMatchNotes.text.toString(), ArrayList(), parseInt(availableSpots.text.toString()), matchPlace, nameMatch.text.toString())
+                var part: MutableList<String> = ArrayList()
+                part.add(firebaseUser.uid.toString())
+                val match = Match(firebaseUser.uid, Calendar.getInstance().timeInMillis, c.timeInMillis, newMatchNotes.text.toString(),part, parseInt(availableSpots.text.toString()), matchPlace, nameMatch.text.toString())
                 db.collection("partite").add(match).addOnSuccessListener { documentReference ->
                     //Toast.makeText(applicationContext, "id is ${documentReference.id}", Toast.LENGTH_LONG).show()
                     if(imageUri!=null){
@@ -136,7 +138,7 @@ class NewMatchActivity : AppCompatActivity(), View.OnClickListener {
                         }
                     }
                     else{
-                        val viewMatchIntent = Intent(applicationContext, MatchViewActivity::class.java)
+                        val viewMatchIntent = Intent(applicationContext, MainActivity::class.java)
                         viewMatchIntent.putExtra("MATCH_ID", documentReference.id)
                         startActivity(viewMatchIntent)
                     }

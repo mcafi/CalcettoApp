@@ -27,7 +27,7 @@ class MatchAdapter(context: Context, private val dataSource: ArrayList<Match>): 
         datetime.timeInMillis = match.matchDate
 
         matchDate.text = dateTimeFormat.format(datetime.time)
-        matchAvailable.text = (match.available - match.participants.size).toString()
+        matchAvailable.text = (match.available - match.partecipants.size).toString()
         matchNotes.text = match.notes
 
         return rowView
