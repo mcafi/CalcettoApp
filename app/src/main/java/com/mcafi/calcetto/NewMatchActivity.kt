@@ -124,6 +124,7 @@ class NewMatchActivity : AppCompatActivity(), View.OnClickListener {
                 part.add(firebaseUser.uid.toString())
                 val match = Match(firebaseUser.uid, Calendar.getInstance().timeInMillis, c.timeInMillis, newMatchNotes.text.toString(),part, parseInt(availableSpots.text.toString()), matchPlace, nameMatch.text.toString())
                 db.collection("partite").add(match).addOnSuccessListener { documentReference ->
+                    documentReference.update("id", documentReference.id)
                     //Toast.makeText(applicationContext, "id is ${documentReference.id}", Toast.LENGTH_LONG).show()
                     if(imageUri!=null){
                         immagini = storageRef.child("immagini_match/" + documentReference.id)

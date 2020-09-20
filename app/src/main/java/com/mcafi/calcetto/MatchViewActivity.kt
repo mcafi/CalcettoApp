@@ -70,22 +70,16 @@ class MatchViewActivity : AppCompatActivity(), View.OnClickListener {
                 //println("dati: ${document.data}")
                 partita = document.toObject(Match::class.java)!!
 
-                var UserInPartita : User
-
                 if (document.get("partecipants") != null) {
                     partita.partecipants = document.get("partecipants") as ArrayList<String>
 
                     for(utenteInPartita in partita.partecipants) {
-
-                        matchReference = db.collection("utenti").document(utenteInPartita.toString())
-                        matchReference.get().addOnSuccessListener { doc ->
-                            UserInPartita= doc.toObject(User::class.java)!!
-                            list_match_view_partecipant.text= list_match_view_partecipant.text.toString()+UserInPartita.name+"<br>"
-
+                        val userReference = db.collection("utenti").document(utenteInPartita)
+                        userReference.get().addOnSuccessListener { doc ->
+                            val userInPartita = doc.toObject(User::class.java)
+                            list_match_view_partecipant.text= list_match_view_partecipant.text.toString()+userInPartita?.name+"<br>"
                         }
-
                     }
-
                 } else {
                     partita.partecipants = ArrayList()
                     TextPartecipanti="ancora nessun partecipante"
@@ -99,32 +93,25 @@ class MatchViewActivity : AppCompatActivity(), View.OnClickListener {
                 tv_match_view_name.text = partita.matchName
                 tv_match_view_partecipants.text = "${partita.partecipants.size.toString()}/${partita.available.toString()}"
 
-
-
                 //println("IndexOF: ${firebaseUser.uid}"+" Match: $IdMAtch")
                 //println("IndexOF: ${}")
-                if (partita.partecipants.indexOf(firebaseUser.uid) < 0) {
-                    btn_match_view_partecipate_leave.text = "Partecipa"
-                    partecipa = false
-                }
-                else {
-                    btn_match_view_partecipate_leave.text = "Lascia Partita"
-                    partecipa = true
-                }
+                partecipa = partita.partecipants.contains(firebaseUser.uid)
+                Log.d("MatchView", partecipa.toString())
+                btn_match_view_partecipate_leave.text = if (partecipa) "Lascia partita" else "Partecipa"
+
                 if (partita.creator == firebaseUser.uid){
                     btn_match_view_delete.visibility = View.VISIBLE;
                 }
             }
         }
+
         immagini = storageRef.child("immagini_match/$matchId")
         immagini.getBytes(MAX_SIZE).addOnSuccessListener { bytes ->
             val bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.size)
             img_match_view.setImageBitmap(bitmap)
         }.addOnFailureListener {
-            // Handle any errors
+            Log.e("MatchView", "Impossibile recuperare l'immagine")
         }
-
-
 
         btn_match_view_partecipate_leave.setOnClickListener(this)
         btn_match_view_delete.setOnClickListener(this)
@@ -132,7 +119,6 @@ class MatchViewActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     override fun onClick(v: View) {
-        println("IndexOF: $partecipa")
         when (v.id) {
             R.id.btn_match_view_partecipate_leave -> {
                 if (partecipa) {
@@ -171,7 +157,6 @@ class MatchViewActivity : AppCompatActivity(), View.OnClickListener {
         notificationIntent.putExtra("NOTIFICATION", notification)
         val pendingIntent = PendingIntent.getBroadcast(this, 0, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT)
         val delay = matchTime - Calendar.getInstance().timeInMillis
-        Log.d("Test", delay.toString())
         val futureInMillis = SystemClock.elapsedRealtime() + delay
         val alarmManager = (getSystemService(ALARM_SERVICE) as AlarmManager)
         alarmManager[AlarmManager.ELAPSED_REALTIME_WAKEUP, futureInMillis] = pendingIntent
