@@ -11,6 +11,7 @@ import android.os.Bundle
 import android.os.SystemClock
 import android.util.Log
 import android.view.View
+import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
@@ -72,12 +73,14 @@ class MatchViewActivity : AppCompatActivity(), View.OnClickListener {
 
                 if (document.get("partecipants") != null) {
                     partita.partecipants = document.get("partecipants") as ArrayList<String>
-
-                    for(utenteInPartita in partita.partecipants) {
+                    val participantsNames = ArrayList<String>()
+                    for (utenteInPartita in partita.partecipants) {
                         val userReference = db.collection("utenti").document(utenteInPartita)
                         userReference.get().addOnSuccessListener { doc ->
-                            val userInPartita = doc.toObject(User::class.java)
-                            list_match_view_partecipant.text= list_match_view_partecipant.text.toString()+userInPartita?.name+"<br>"
+                            val userInPartita = doc.toObject(User::class.java)!!
+                            participantsNames.add(userInPartita.name.toString())
+                            val participantsListAdapter = ArrayAdapter(this, android.R.layout.simple_list_item_1, participantsNames)
+                            list_match_view_participants.adapter = participantsListAdapter
                         }
                     }
                 } else {
@@ -104,6 +107,7 @@ class MatchViewActivity : AppCompatActivity(), View.OnClickListener {
                 }
             }
         }
+
 
         immagini = storageRef.child("immagini_match/$matchId")
         immagini.getBytes(MAX_SIZE).addOnSuccessListener { bytes ->
@@ -157,7 +161,7 @@ class MatchViewActivity : AppCompatActivity(), View.OnClickListener {
         notificationIntent.putExtra("NOTIFICATION", notification)
         val pendingIntent = PendingIntent.getBroadcast(this, 0, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT)
         val delay = matchTime - Calendar.getInstance().timeInMillis
-        val futureInMillis = SystemClock.elapsedRealtime() + delay
+        val futureInMillis = SystemClock.elapsedRealtime() + delay - 7200000 // due ore di anticipo
         val alarmManager = (getSystemService(ALARM_SERVICE) as AlarmManager)
         alarmManager[AlarmManager.ELAPSED_REALTIME_WAKEUP, futureInMillis] = pendingIntent
     }
