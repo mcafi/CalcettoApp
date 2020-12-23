@@ -5,5 +5,5 @@
     <color name="colorButton">#007935</color>
     <color name="colorAccent">#000000</color>
     <color name="colorBorderMenu">#FFFFFF</color>
-
+    <color name="colorTextButton">#fff</color>
 </resources>

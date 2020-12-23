@@ -12,4 +12,5 @@
     <string name="date_time">Data e ora</string>
     <string name="participants">Partecipanti</string>
     <string name="notes">Note</string>
+    <string name="non_sei_ancora_registrato_registrati">Non sei ancora registrato? Registrati</string>
 </resources>
