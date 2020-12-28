@@ -11,13 +11,13 @@
         android:id="@+id/calcetto"
         android:layout_width="wrap_content"
         android:layout_height="170dp"
+        android:layout_marginTop="24dp"
         android:contentDescription="@string/app_name"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.063"
+        app:layout_constraintVertical_bias="0.0"
         app:srcCompat="@drawable/calcetto" />
 
     <EditText
@@ -32,18 +32,19 @@
         android:hint="@string/email"
         android:inputType="textEmailAddress"
         android:paddingHorizontal="10dp"
+        android:textSize="18sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/calcetto"
-        app:layout_constraintVertical_bias="0.0"
+        app:layout_constraintVertical_bias="0.003"
         app:layout_constraintWidth_min="200dp" />
 
     <EditText
         android:id="@+id/et_login_password"
         android:layout_width="wrap_content"
         android:layout_height="40dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="24dp"
         android:autofillHints=""
         android:background="@android:color/white"
         android:backgroundTint="@android:color/white"
@@ -55,7 +56,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/et_login_email"
-        app:layout_constraintVertical_bias="0.062"
+        app:layout_constraintVertical_bias="0.0"
         app:layout_constraintWidth_min="200dp" />
 
     <Button
@@ -77,25 +78,27 @@
         android:id="@+id/btn_login_google"
         android:layout_width="wrap_content"
         android:layout_height="40dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="24dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.501"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/et_login_password"
-        app:layout_constraintVertical_bias="0.005" />
+        app:layout_constraintVertical_bias="0.0" />
 
     <TextView
         android:id="@+id/btn_login_signup"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="24dp"
         android:text="@string/non_sei_ancora_registrato_registrati"
         android:textColor="@android:color/white"
         android:textSize="18sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.502"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/btn_login_login"
-        app:layout_constraintVertical_bias="0.036" />
+        app:layout_constraintVertical_bias="0.0" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
