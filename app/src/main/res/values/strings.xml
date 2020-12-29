@@ -16,4 +16,8 @@
     <string name="settingimage">Immagine delle impostazioni</string>
     <string name="prossime_partite">Prossime partite</string>
     <string name="immagine_del_logo_del_calcetto">Immagine del logo del Calcetto</string>
+    <string name="logout">Logout</string>
+    <string name="modifica_immagine">Modifica Immagine</string>
+    <string name="immagine_del_profilo">Immagine del Profilo</string>
+    <string name="sei_gi_registrato_accedi">Sei già registrato? Accedi</string>
 </resources>

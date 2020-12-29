@@ -10,8 +10,8 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="75dp"
-        android:background="@color/colorPrimary"
+        android:layout_height="50dp"
+        android:background="@color/colorPrimaryDark"
         app:layout_constraintBottom_toBottomOf="@+id/matches_list"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
@@ -25,7 +25,7 @@
             android:layout_height="match_parent"
             android:layout_alignParentStart="true"
             android:layout_alignParentTop="true"
-            android:layout_marginStart="0dp"
+            android:layout_marginStart="10dp"
             android:layout_marginTop="0dp"
             android:contentDescription="@string/immagine_del_logo_del_calcetto"
             android:src="@drawable/calcetto" />
@@ -36,7 +36,7 @@
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
             android:layout_marginStart="15dp"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="7dp"
             android:layout_toEndOf="@+id/LogoCalcetto"
             android:text="@string/prossime_partite"
             android:textColor="@color/colorTextButton"
@@ -66,10 +66,10 @@
         android:id="@+id/matches_list"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="75dp"
+        android:layout_marginTop="50dp"
         android:paddingBottom="60dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
