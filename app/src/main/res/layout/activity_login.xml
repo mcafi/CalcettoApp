@@ -1,105 +1,88 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/campo_da_calcio">
+    android:background="@drawable/campo_da_calcio"
+    android:orientation="vertical">
 
     <ImageView
-        android:id="@+id/calcetto"
-        android:layout_width="wrap_content"
-        android:layout_height="170dp"
-        android:layout_marginTop="24dp"
-        android:contentDescription="@string/app_name"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
+        android:id="@+id/imageView3"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight=".25"
         app:srcCompat="@drawable/calcetto" />
 
     <EditText
         android:id="@+id/et_login_email"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_marginStart="64dp"
-        android:layout_marginTop="24dp"
-        android:layout_marginEnd="64dp"
+        android:layout_marginStart="30dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="30dp"
+        android:layout_weight=".10"
+        android:autofillHints=""
         android:background="@android:color/white"
         android:backgroundTint="@android:color/white"
         android:hint="@string/email"
         android:inputType="textEmailAddress"
-        android:minHeight="40dp"
-        android:paddingHorizontal="10dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/calcetto"
-        android:autofillHints="" />
+        android:paddingHorizontal="10dp" />
 
     <EditText
         android:id="@+id/et_login_password"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_marginStart="64dp"
-        android:layout_marginTop="24dp"
-        android:layout_marginEnd="64dp"
+        android:layout_marginStart="30dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="30dp"
+        android:layout_weight=".10"
         android:autofillHints=""
         android:background="@android:color/white"
         android:backgroundTint="@android:color/white"
         android:hint="@string/password"
         android:inputType="textPassword"
-        android:minHeight="40dp"
-        android:minEms="10"
-        android:paddingHorizontal="10dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/et_login_email" />
+        android:paddingHorizontal="10dp" />
 
     <com.google.android.gms.common.SignInButton
         android:id="@+id/btn_login_google"
-        android:layout_width="0dp"
-        android:layout_height="40dp"
-        android:layout_marginStart="64dp"
-        android:layout_marginTop="24dp"
-        android:layout_marginEnd="64dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.501"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/et_login_password"
-        app:layout_constraintVertical_bias="0.0" />
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginStart="30dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="30dp"
+        android:layout_weight=".10" />
 
     <Button
         android:id="@+id/btn_login_login"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_marginStart="64dp"
-        android:layout_marginTop="24dp"
-        android:layout_marginEnd="64dp"
+        android:layout_marginStart="30dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="30dp"
+        android:layout_weight=".10"
         android:background="@color/colorButton"
         android:minEms="10"
         android:text="@string/button_login"
-        android:textColor="@color/colorTextButton"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btn_login_google"
-        app:layout_constraintWidth_min="200dp" />
+        android:textColor="@color/colorTextButton" />
 
     <TextView
         android:id="@+id/btn_login_signup"
-        android:layout_width="0dp"
-        android:layout_height="50dp"
-        android:layout_marginStart="64dp"
-        android:layout_marginTop="24dp"
-        android:layout_marginEnd="64dp"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginStart="30dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="30dp"
+        android:layout_weight=".10"
+        android:padding="5dp"
         android:text="@string/non_sei_ancora_registrato_registrati"
         android:textAlignment="center"
         android:textColor="@android:color/white"
-        app:autoSizeTextType="uniform"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btn_login_login"
-        app:layout_constraintVertical_bias="0.0" />
+        app:autoSizeTextType="uniform" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight=".25" />
+
+</LinearLayout>
