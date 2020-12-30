@@ -8,46 +8,38 @@
     tools:context=".ui.main.PlaceholderFragment">
 
 
-    <RelativeLayout
+    <LinearLayout
+        android:id="@+id/linearLayout"
         android:layout_width="match_parent"
-        android:layout_height="50dp"
+        android:layout_height="0dp"
         android:background="@color/colorPrimaryDark"
-        app:layout_constraintBottom_toBottomOf="@+id/matches_list"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toTopOf="@+id/matches_list"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.0">
+        app:layout_constraintTop_toTopOf="parent">
 
         <ImageView
             android:id="@+id/LogoCalcetto"
-            android:layout_width="120dp"
-            android:layout_height="match_parent"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentTop="true"
-            android:layout_marginStart="10dp"
-            android:layout_marginTop="0dp"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight=".60"
             android:contentDescription="@string/immagine_del_logo_del_calcetto"
             android:src="@drawable/calcetto" />
 
         <TextView
             android:id="@+id/section_label"
-            android:layout_width="269dp"
-            android:layout_height="wrap_content"
-            android:layout_alignParentTop="true"
-            android:layout_marginStart="15dp"
-            android:layout_marginTop="7dp"
-            android:layout_toEndOf="@+id/LogoCalcetto"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight=".40"
+            android:padding="15dp"
             android:text="@string/prossime_partite"
+            android:textAlignment="center"
             android:textColor="@color/colorTextButton"
-            android:textSize="24sp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
+            app:autoSizeTextType="uniform"
             tools:layout_constraintLeft_creator="1"
             tools:layout_constraintTop_creator="1" />
-    </RelativeLayout>
+    </LinearLayout>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/addMatchButton"
@@ -66,7 +58,7 @@
         android:id="@+id/matches_list"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="50dp"
+        android:layout_marginTop="100dp"
         android:paddingBottom="60dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
