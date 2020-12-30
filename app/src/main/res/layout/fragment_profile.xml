@@ -40,6 +40,7 @@
                 android:layout_height="match_parent"
                 android:layout_weight=".40"
                 android:contentDescription="@string/immagine_del_profilo"
+                android:padding="5dp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:srcCompat="@drawable/ic_account_circle_black_64dp" />
@@ -51,23 +52,12 @@
                 android:orientation="vertical">
 
                 <TextView
-                    android:id="@+id/nameText"
-                    android:layout_width="match_parent"
-                    android:layout_height="0dp"
-                    android:layout_marginStart="16dp"
-                    android:layout_marginTop="8dp"
-                    android:layout_marginEnd="16dp"
-                    android:layout_weight=".33"
-                    android:text="@string/name"
-                    android:textColor="@color/colorText"
-                    app:autoSizeTextType="uniform" />
-
-                <TextView
                     android:id="@+id/usernameText"
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
-                    android:layout_marginStart="16dp"
-                    android:layout_marginEnd="16dp"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginEnd="8dp"
                     android:layout_weight=".33"
                     android:text="@string/username"
                     android:textColor="@color/colorText"
@@ -75,12 +65,24 @@
                     app:autoSizeTextType="uniform" />
 
                 <TextView
+                    android:id="@+id/nameText"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginEnd="8dp"
+                    android:layout_weight=".33"
+                    android:text="@string/name"
+                    android:textColor="@color/colorText"
+                    app:autoSizeTextType="uniform" />
+
+                <TextView
                     android:id="@+id/emailText"
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
-                    android:layout_marginStart="16dp"
+                    android:layout_marginStart="8dp"
                     android:layout_marginTop="8dp"
-                    android:layout_marginEnd="16dp"
+                    android:layout_marginEnd="8dp"
                     android:layout_weight=".33"
                     android:text="@string/email"
                     android:textColor="@color/colorText"
@@ -93,6 +95,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
+            android:layout_marginBottom="10dp"
             android:layout_weight=".10"
             android:orientation="horizontal">
 
@@ -100,7 +103,9 @@
                 android:id="@+id/editPicturebutton"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="8dp"
                 android:layout_weight=".40"
                 android:background="@color/colorButton"
                 android:text="@string/modifica_immagine"
@@ -111,7 +116,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
-                android:layout_marginTop="20dp"
+                android:layout_marginTop="10dp"
                 android:layout_marginEnd="16dp"
                 android:layout_weight=".60"
                 android:text="@string/logout" />
@@ -130,7 +135,7 @@
                 android:id="@+id/DataEOra"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_weight=".33"
+                android:layout_weight=".30"
                 android:padding="5dp"
                 android:text="@string/date_time"
                 android:textAlignment="center"
@@ -141,7 +146,7 @@
                 android:id="@+id/Partecipanti"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_weight=".33"
+                android:layout_weight=".28"
                 android:padding="5dp"
                 android:text="@string/participants"
                 android:textAlignment="center"
@@ -152,7 +157,7 @@
                 android:id="@+id/Note"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_weight=".33"
+                android:layout_weight=".42"
                 android:padding="5dp"
                 android:text="@string/notes"
                 android:textAlignment="center"
@@ -164,9 +169,7 @@
             android:id="@+id/scrollView2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight=".45"
-            android:paddingLeft="16dp"
-            android:paddingRight="16dp">
+            android:layout_weight=".45">
 
             <LinearLayout
                 android:layout_width="match_parent"
