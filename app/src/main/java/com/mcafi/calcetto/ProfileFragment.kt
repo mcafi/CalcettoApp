@@ -36,7 +36,6 @@ class ProfileFragment : Fragment(), View.OnClickListener {
     private val storageRef = storage.reference
     private lateinit var immagini: StorageReference
     private lateinit var listView: ListView
-    private lateinit var listView2: ListView
 
     override fun onCreateView(inflater: LayoutInflater, viewGroup: ViewGroup?, savedInstanceState: Bundle?): View? {
         v = inflater.inflate(R.layout.fragment_profile, viewGroup, false)
@@ -72,7 +71,6 @@ class ProfileFragment : Fragment(), View.OnClickListener {
 
 
         val matchList = ArrayList<Match>();
-        val matchList2 = ArrayList<Match>();
 
         db.collection("partite")
                 .orderBy("matchDate", Query.Direction.DESCENDING)

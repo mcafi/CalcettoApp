@@ -1,24 +1,26 @@
 package com.mcafi.calcetto
 
-import android.app.AlarmManager
-import android.app.AlertDialog
-import android.app.Notification
-import android.app.PendingIntent
+import android.app.*
 import android.content.DialogInterface
 import android.content.Intent
 import android.graphics.BitmapFactory
+import android.os.Build
 import android.os.Bundle
 import android.os.SystemClock
 import android.util.Log
 import android.view.View
+import android.view.ViewGroup
 import android.widget.ArrayAdapter
-import android.widget.Toast
+import android.widget.LinearLayout
+import android.widget.TextView
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.core.app.NotificationCompat
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.firestore.DocumentReference
+import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.FirebaseFirestoreSettings
 import com.google.firebase.storage.FirebaseStorage
@@ -30,6 +32,7 @@ import kotlinx.android.synthetic.main.activity_match_view.*
 import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.ArrayList
+
 
 class MatchViewActivity : AppCompatActivity(), View.OnClickListener {
     private val storage = FirebaseStorage.getInstance()
@@ -62,31 +65,16 @@ class MatchViewActivity : AppCompatActivity(), View.OnClickListener {
         val db = FirebaseFirestore.getInstance()
 
         matchId = intent.getStringExtra("MATCH_ID")!!
-        Log.d("T", matchId)
         db.firestoreSettings = settings
         matchReference = db.collection("partite").document(matchId)
         matchReference.get().addOnSuccessListener { document ->
             if (document != null) {
                 //Log.d(TAG, "DocumentSnapshot data: ${document.data}")
                 //println("dati: ${document.data}")
-                partita = document.toObject(Match::class.java)!!
 
-                if (document.get("partecipants") != null) {
-                    partita.partecipants = document.get("partecipants") as ArrayList<String>
-                    val participantsNames = ArrayList<String>()
-                    for (utenteInPartita in partita.partecipants) {
-                        val userReference = db.collection("utenti").document(utenteInPartita)
-                        userReference.get().addOnSuccessListener { doc ->
-                            val userInPartita = doc.toObject(User::class.java)!!
-                            participantsNames.add(userInPartita.name.toString())
-                            val participantsListAdapter = ArrayAdapter(this, android.R.layout.simple_list_item_1, participantsNames)
-                            list_match_view_participants.adapter = participantsListAdapter
-                        }
-                    }
-                } else {
-                    partita.partecipants = ArrayList()
-                    TextPartecipanti="ancora nessun partecipante"
-                }
+                partita = document.toObject(Match::class.java)!!
+                getPartecipants(db)
+
 
                 dateTime.timeInMillis = partita.matchDate
 
@@ -94,16 +82,17 @@ class MatchViewActivity : AppCompatActivity(), View.OnClickListener {
                 tv_match_view_datetime.text = dateTimeFormat.format(dateTime.time)
                 tv_match_view_place.text = partita.place.address
                 tv_match_view_name.text = partita.matchName
-                tv_match_view_partecipants.text = "${partita.partecipants.size.toString()}/${partita.available.toString()}"
+
 
                 //println("IndexOF: ${firebaseUser.uid}"+" Match: $IdMAtch")
                 //println("IndexOF: ${}")
                 partecipa = partita.partecipants.contains(firebaseUser.uid)
-                Log.d("MatchView", partecipa.toString())
+                //Log.d("MatchView", partecipa.toString())
                 btn_match_view_partecipate_leave.text = if (partecipa) "Lascia partita" else "Partecipa"
 
                 if (partita.creator == firebaseUser.uid){
                     btn_match_view_delete.visibility = View.VISIBLE;
+                    btn_match_view_partecipate_leave.visibility = View.INVISIBLE;
                 }
             }
         }
@@ -122,18 +111,71 @@ class MatchViewActivity : AppCompatActivity(), View.OnClickListener {
         sw_match_notifications.setOnClickListener(this)
     }
 
+    private fun getPartecipants(db:FirebaseFirestore){
+        matchReference = db.collection("partite").document(matchId)
+        matchReference.get().addOnSuccessListener { document ->
+            if (document != null) {
+                //Log.d(TAG, "DocumentSnapshot data: ${document.data}")
+                //println("dati: ${document.data}")
+                partita = document.toObject(Match::class.java)!!
+
+
+                if (document.get("partecipants") != null) {
+                    partita.partecipants = document.get("partecipants") as ArrayList<String>
+
+
+                    val participantsNames = ArrayList<String>()
+                    for (utenteInPartita in partita.partecipants) {
+                        val userReference = db.collection("utenti").document(utenteInPartita)
+                        userReference.get().addOnSuccessListener { doc ->
+                            val userInPartita = doc.toObject(User::class.java)!!
+                            participantsNames.add(userInPartita.name.toString())
+                            /*val participantsListAdapter = ArrayAdapter(this, android.R.layout.simple_list_item_1, participantsNames)*/
+
+
+                            val adapter: ArrayAdapter<String> = object : ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, participantsNames) {
+                                @RequiresApi(Build.VERSION_CODES.O)
+                                override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
+                                    val view = super.getView(position, convertView, parent)
+                                    val textView = view.findViewById<View>(android.R.id.text1) as TextView
+                                    textView.setTextColor((0xffffffff).toInt())
+                                    val params: LinearLayout.LayoutParams = LinearLayout.LayoutParams(200, 10)
+                                    params.setMargins(0, 0, 0, 0)
+                                    textView.setPadding(0, 0, 0, 0)
+                                    textView.setTextSize(1, 22F)
+                                    return view
+                                }
+                            }
+                            list_match_view_participants.adapter = adapter
+                        }
+                    }
+                } else {
+                    partita.partecipants = ArrayList()
+                    TextPartecipanti = "ancora nessun partecipante"
+                }
+                tv_match_view_partecipants.text = "${partita.partecipants.size.toString()}/${partita.available.toString()}"
+                partecipa = partita.partecipants.contains(firebaseUser.uid)
+                btn_match_view_partecipate_leave.text = if (partecipa) "Lascia partita" else "Partecipa"
+            }
+        }
+    }
+
     override fun onClick(v: View) {
         when (v.id) {
             R.id.btn_match_view_partecipate_leave -> {
+                val settings = FirebaseFirestoreSettings.Builder()
+                        .setPersistenceEnabled(true)
+                        .build()
+                val db = FirebaseFirestore.getInstance()
+                db.firestoreSettings = settings
                 if (partecipa) {
                     partita.partecipants.remove(firebaseUser.uid)
                     matchReference.update("partecipants", partita.partecipants)
-                    recreate()
-                }
-                else {
+                    getPartecipants(db)
+                } else {
                     partita.partecipants.add(firebaseUser.uid)
                     matchReference.update("partecipants", partita.partecipants)
-                    recreate()
+                    getPartecipants(db)
                 }
             }
             R.id.btn_match_view_delete -> {
@@ -189,4 +231,8 @@ class MatchViewActivity : AppCompatActivity(), View.OnClickListener {
     companion object {
         private const val MAX_SIZE = 8 * 1024 * 1024.toLong()
     }
+
+
+
+
 }

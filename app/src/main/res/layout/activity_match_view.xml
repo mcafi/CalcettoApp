@@ -25,7 +25,7 @@
             android:id="@+id/tv_match_view_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Dettagli partita"
+            android:text="@string/dettagli_partita"
             android:textSize="18sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -38,6 +38,7 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight=".25"
+        android:contentDescription="@string/immagine_copertina_del_match"
         android:paddingTop="5dp"
         app:srcCompat="@drawable/calcio_pred" />
 
@@ -48,7 +49,7 @@
         android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp"
         android:layout_weight=".11"
-        android:text="Nome Match"
+        android:text="@string/nome_match"
         android:textColor="@color/colorText"
         android:textSize="36sp"
         app:autoSizeTextType="uniform" />
@@ -60,7 +61,7 @@
         android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp"
         android:layout_weight=".06"
-        android:text="Data - Ora"
+        android:text="@string/date_time"
         android:textColor="@color/colorText"
         android:textSize="18sp"
         app:autoSizeMaxTextSize="22sp"
@@ -73,7 +74,7 @@
         android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp"
         android:layout_weight=".06"
-        android:text="Luogo"
+        android:text="@string/luogo"
         android:textColor="@color/colorText"
         android:textSize="18sp"
         app:autoSizeMaxTextSize="22sp"
@@ -85,16 +86,16 @@
         android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp"
         android:layout_weight=".06"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:background="@drawable/border">
 
         <TextView
             android:id="@+id/tv_match_view_partecipants_label"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight=".6"
-            android:text="partecipanti"
+            android:text="@string/participants"
             android:textColor="@color/colorText"
-            android:textSize="18sp"
             app:autoSizeMaxTextSize="33sp"
             app:autoSizeTextType="uniform" />
 
@@ -107,6 +108,7 @@
             android:textColor="@color/colorText"
             app:autoSizeMaxTextSize="33sp"
             app:autoSizeTextType="uniform" />
+
     </LinearLayout>
 
     <ListView
@@ -115,7 +117,7 @@
         android:layout_height="0dp"
         android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp"
-        android:layout_weight=".27">
+        android:layout_weight=".26">
 
     </ListView>
 
@@ -136,7 +138,7 @@
             android:layout_marginEnd="1dp"
             android:layout_weight=".33"
             android:background="@color/colorButton"
-            android:text="Partecipa"
+            android:text="@string/partecipa"
             android:textColor="@color/colorTextButton" />
 
         <Button
@@ -146,7 +148,7 @@
             android:layout_marginStart="1dp"
             android:layout_weight=".33"
             android:background="@color/colorButton"
-            android:text="Elimina Partita"
+            android:text="@string/elimina_partita"
             android:textColor="@color/colorTextButton"
             android:visibility="invisible" />
 
@@ -155,7 +157,7 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight=".33"
-            android:text="Ricevi notifiche"
+            android:text="@string/ricevi_notifiche"
             android:textAlignment="center"
             android:textColor="@color/colorText" />
     </LinearLayout>

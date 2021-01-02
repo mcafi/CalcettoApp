@@ -20,4 +20,11 @@
     <string name="modifica_immagine">Modifica Immagine</string>
     <string name="immagine_del_profilo">Immagine del Profilo</string>
     <string name="sei_gi_registrato_accedi">Sei già registrato? Accedi</string>
+    <string name="dettagli_partita">Dettagli partita</string>
+    <string name="nome_match">Nome Match</string>
+    <string name="ricevi_notifiche">Ricevi notifiche</string>
+    <string name="partecipa">Partecipa</string>
+    <string name="elimina_partita">Elimina Partita</string>
+    <string name="luogo">Luogo</string>
+    <string name="immagine_copertina_del_match">Immagine copertina del match</string>
 </resources>
