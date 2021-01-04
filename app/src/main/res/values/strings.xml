@@ -27,4 +27,5 @@
     <string name="elimina_partita">Elimina Partita</string>
     <string name="luogo">Luogo</string>
     <string name="immagine_copertina_del_match">Immagine copertina del match</string>
+    <string name="posti_liberi">Posti Liberi</string>
 </resources>

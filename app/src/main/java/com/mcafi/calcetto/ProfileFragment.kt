@@ -52,10 +52,10 @@ class ProfileFragment : Fragment(), View.OnClickListener {
                 writeUserData(snapshot.toObject(User::class.java)!!)
             }
         }
-        v.findViewById<Button>(R.id.logoutButton).setOnClickListener(this)
+
         v.findViewById<Button>(R.id.editPicturebutton).setOnClickListener(this)
-        val settingsButton: FloatingActionButton = v.findViewById(R.id.settingsButton)
-        settingsButton.setOnClickListener(this)
+        val LogoutButton: FloatingActionButton = v.findViewById(R.id.logoutButton)
+        LogoutButton.setOnClickListener(this)
 
         profileIcon = v.findViewById(R.id.profileIcon)
         immagini.getBytes(MAX_SIZE).addOnSuccessListener { bytes ->
@@ -116,7 +116,6 @@ class ProfileFragment : Fragment(), View.OnClickListener {
                 FirebaseAuth.getInstance().signOut()
                 startActivity(Intent(activity, LoginActivity::class.java))
             }
-            R.id.settingsButton -> startActivity(Intent(activity, SettingsActivity::class.java))
             R.id.editPicturebutton -> {
                 val gallery = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.INTERNAL_CONTENT_URI)
                 startActivityForResult(gallery, PICK_IMAGE)

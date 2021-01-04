@@ -7,7 +7,7 @@
 
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/settingsButton"
+        android:id="@+id/logoutButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="16dp"
@@ -17,7 +17,7 @@
         android:focusable="true"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:srcCompat="@drawable/setting" />
+        app:srcCompat="@drawable/logout" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -60,7 +60,7 @@
                     android:layout_marginStart="8dp"
                     android:layout_marginTop="8dp"
                     android:layout_marginEnd="8dp"
-                    android:layout_weight=".35"
+                    android:layout_weight=".30"
                     android:text="@string/username"
                     android:textColor="@color/colorText"
                     android:textStyle="bold"
@@ -73,7 +73,7 @@
                     android:layout_marginStart="8dp"
                     android:layout_marginTop="8dp"
                     android:layout_marginEnd="8dp"
-                    android:layout_weight=".2"
+                    android:layout_weight=".18"
                     android:text="@string/name"
                     android:textColor="@color/colorText"
                     app:autoSizeTextType="uniform" />
@@ -85,7 +85,7 @@
                     android:layout_marginStart="8dp"
                     android:layout_marginTop="8dp"
                     android:layout_marginEnd="8dp"
-                    android:layout_weight=".2"
+                    android:layout_weight=".17"
                     android:text="@string/email"
                     android:textColor="@color/colorText"
                     app:autoSizeTextType="uniform" />
@@ -93,7 +93,7 @@
                 <Space
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
-                    android:layout_weight=".25" />
+                    android:layout_weight=".35" />
             </LinearLayout>
 
         </LinearLayout>
@@ -118,15 +118,11 @@
                 android:text="@string/modifica_immagine"
                 android:textColor="@color/colorPrimaryDark" />
 
-            <Button
-                android:id="@+id/logoutButton"
-                android:layout_width="0dp"
+            <Space
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="10dp"
-                android:layout_marginEnd="16dp"
-                android:layout_weight=".60"
-                android:text="@string/logout" />
+                android:layout_weight=".6" />
+
         </LinearLayout>
 
         <LinearLayout
@@ -153,9 +149,9 @@
                 android:id="@+id/Partecipanti"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_weight=".28"
+                android:layout_weight=".3"
                 android:padding="5dp"
-                android:text="@string/participants"
+                android:text="@string/posti_liberi"
                 android:textAlignment="center"
                 android:textColor="@color/colorAccent"
                 app:autoSizeTextType="uniform" />
@@ -164,19 +160,18 @@
                 android:id="@+id/Note"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_weight=".42"
+                android:layout_weight=".40"
                 android:padding="5dp"
-                android:text="@string/notes"
                 android:textAlignment="center"
                 android:textColor="@color/colorAccent"
                 app:autoSizeTextType="uniform" />
         </LinearLayout>
 
-        <ScrollView
-            android:id="@+id/scrollView2"
+        <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight=".45">
+            android:layout_height="0dp"
+            android:layout_weight="0.45"
+            android:fillViewport="true">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -190,7 +185,7 @@
 
                 </ListView>
             </LinearLayout>
-        </ScrollView>
+        </androidx.core.widget.NestedScrollView>
 
 
     </LinearLayout>
