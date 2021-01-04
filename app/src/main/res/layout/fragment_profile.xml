@@ -33,7 +33,6 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight=".35"
-            android:background="@color/quantum_googgreen900"
             android:orientation="horizontal">
 
             <ImageView
@@ -102,7 +101,6 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight=".10"
-            android:background="@color/quantum_googgreen900"
             android:orientation="horizontal">
 
             <Button
@@ -167,25 +165,19 @@
                 app:autoSizeTextType="uniform" />
         </LinearLayout>
 
-        <androidx.core.widget.NestedScrollView
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="0.45"
-            android:fillViewport="true">
+            android:layout_weight=".45"
+            android:orientation="vertical">
 
-            <LinearLayout
+            <ListView
+                android:id="@+id/matches_list"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical">
+                android:layout_height="wrap_content">
 
-                <ListView
-                    android:id="@+id/matches_list"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-
-                </ListView>
-            </LinearLayout>
-        </androidx.core.widget.NestedScrollView>
+            </ListView>
+        </LinearLayout>
 
 
     </LinearLayout>
