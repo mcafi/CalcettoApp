@@ -17,7 +17,7 @@
         android:focusable="true"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:srcCompat="@drawable/ic_edit_black_48dp" />
+        app:srcCompat="@drawable/setting" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -28,10 +28,12 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight=".35"
+            android:background="@color/quantum_googgreen900"
             android:orientation="horizontal">
 
             <ImageView
@@ -40,7 +42,7 @@
                 android:layout_height="match_parent"
                 android:layout_weight=".40"
                 android:contentDescription="@string/immagine_del_profilo"
-                android:padding="5dp"
+                android:padding="8dp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:srcCompat="@drawable/ic_account_circle_black_64dp" />
@@ -58,7 +60,7 @@
                     android:layout_marginStart="8dp"
                     android:layout_marginTop="8dp"
                     android:layout_marginEnd="8dp"
-                    android:layout_weight=".33"
+                    android:layout_weight=".35"
                     android:text="@string/username"
                     android:textColor="@color/colorText"
                     android:textStyle="bold"
@@ -71,7 +73,7 @@
                     android:layout_marginStart="8dp"
                     android:layout_marginTop="8dp"
                     android:layout_marginEnd="8dp"
-                    android:layout_weight=".33"
+                    android:layout_weight=".2"
                     android:text="@string/name"
                     android:textColor="@color/colorText"
                     app:autoSizeTextType="uniform" />
@@ -83,20 +85,24 @@
                     android:layout_marginStart="8dp"
                     android:layout_marginTop="8dp"
                     android:layout_marginEnd="8dp"
-                    android:layout_weight=".33"
+                    android:layout_weight=".2"
                     android:text="@string/email"
                     android:textColor="@color/colorText"
                     app:autoSizeTextType="uniform" />
+
+                <Space
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight=".25" />
             </LinearLayout>
 
         </LinearLayout>
 
-
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_marginBottom="10dp"
             android:layout_weight=".10"
+            android:background="@color/quantum_googgreen900"
             android:orientation="horizontal">
 
             <Button
@@ -106,10 +112,11 @@
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="10dp"
                 android:layout_marginEnd="8dp"
+                android:layout_marginBottom="10dp"
                 android:layout_weight=".40"
-                android:background="@color/colorButton"
+                android:background="@color/colorTextButton"
                 android:text="@string/modifica_immagine"
-                android:textColor="@color/colorTextButton" />
+                android:textColor="@color/colorPrimaryDark" />
 
             <Button
                 android:id="@+id/logoutButton"

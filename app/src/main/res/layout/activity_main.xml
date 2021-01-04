@@ -30,11 +30,12 @@
                     app:tabIndicatorColor="#FFFFFF" />
 
                 <ImageView
-                    android:id="@+id/imageView2"
+                    android:id="@+id/SettingLink"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight=".12"
                     android:contentDescription="@string/settingimage"
+                    android:padding="7dp"
                     app:srcCompat="@drawable/setting" />
 
             </LinearLayout>

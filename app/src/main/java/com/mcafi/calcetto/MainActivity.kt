@@ -2,12 +2,17 @@ package com.mcafi.calcetto
 
 import android.content.Intent
 import android.os.Bundle
+import android.provider.MediaStore
+import android.view.View
+import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
 import androidx.viewpager.widget.ViewPager
 import com.google.android.material.tabs.TabLayout
+import com.google.firebase.auth.FirebaseAuth
 import com.mcafi.calcetto.ui.main.SectionsPagerAdapter
+import kotlinx.android.synthetic.main.activity_main.*
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(),View.OnClickListener {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -30,6 +35,11 @@ class MainActivity : AppCompatActivity() {
             viewMatchIntent.putExtra("MATCH_ID", intent.getStringExtra("MATCH_ID"))
             startActivity(viewMatchIntent)
         }
+        SettingLink.setOnClickListener(this)
     }
-
+    override fun onClick(v: View) {
+        when (v.id) {
+            R.id.SettingLink -> startActivity(Intent(this, SettingsActivity::class.java))
+        }
+    }
 }

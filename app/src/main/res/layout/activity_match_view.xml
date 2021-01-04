@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/campo_da_calcio"
+    android:background="@color/quantum_googgreen900"
     android:orientation="vertical"
     tools:context=".MatchViewActivity">
 
@@ -86,8 +86,8 @@
         android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp"
         android:layout_weight=".06"
-        android:orientation="horizontal"
-        android:background="@drawable/border">
+        android:background="@drawable/border"
+        android:orientation="horizontal">
 
         <TextView
             android:id="@+id/tv_match_view_partecipants_label"
@@ -137,9 +137,9 @@
             android:layout_height="match_parent"
             android:layout_marginEnd="1dp"
             android:layout_weight=".33"
-            android:background="@color/colorButton"
+            android:background="@color/colorTextButton"
             android:text="@string/partecipa"
-            android:textColor="@color/colorTextButton" />
+            android:textColor="@color/colorPrimaryDark" />
 
         <Button
             android:id="@+id/btn_match_view_delete"
@@ -147,9 +147,9 @@
             android:layout_height="match_parent"
             android:layout_marginStart="1dp"
             android:layout_weight=".33"
-            android:background="@color/colorButton"
+            android:background="@color/colorTextButton"
             android:text="@string/elimina_partita"
-            android:textColor="@color/colorTextButton"
+            android:textColor="@color/colorPrimaryDark"
             android:visibility="invisible" />
 
         <com.google.android.material.switchmaterial.SwitchMaterial
