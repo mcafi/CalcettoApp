@@ -1,206 +1,173 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context=".NewMatchActivity">
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight=".08"
         android:background="?attr/colorPrimary"
         android:minHeight="?attr/actionBarSize"
         android:theme="?attr/actionBarTheme"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:contentInsetStart="0dp"
+        app:contentInsetStartWithNavigation="0dp">
 
         <TextView
             android:id="@+id/new_match_title"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:padding="17dp"
             android:text="Nuova partita"
-            android:textSize="18sp"
+            android:textColor="@color/colorText"
+            app:autoSizeTextType="uniform"
             tools:layout_editor_absoluteX="16dp"
             tools:layout_editor_absoluteY="18dp" />
 
     </androidx.appcompat.widget.Toolbar>
 
-    <ScrollView
-        android:id="@+id/scrollView2"
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginTop="60dp"
-        android:paddingBottom="30dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/toolbar"
-        app:layout_constraintVertical_bias="1.0">
+        android:layout_height="0dp"
+        android:layout_weight=".25">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/ScrollView"
+        <ImageView
+            android:id="@+id/ImageMatchCopertina"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="0dp"
+            android:paddingTop="0dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/calcio_pred" />
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/ChangeImageMatch"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:clickable="true"
+            app:backgroundTint="#00FFFFFF"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:srcCompat="@drawable/ic_edit_black_48dp" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <EditText
+        android:id="@+id/nameMatch"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginBottom="10dp"
+        android:layout_weight=".09"
+        android:hint="Nome Match"
+        android:inputType="textPersonName"
+        android:textColorHint="@color/colorAccent"
+        android:textColorLink="#000000"
+        android:textSize="30sp" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginBottom="10dp"
+        android:layout_weight=".09"
+        android:orientation="horizontal">
+
+        <EditText
+            android:id="@+id/newMatchDate"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight=".5"
+            android:focusable="auto"
+            android:hint="Data"
+            android:inputType="date"
+            android:textColorHint="@color/colorAccent"
+            android:textSize="30sp" />
+
+        <EditText
+            android:id="@+id/newMatchTime"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight=".5"
+            android:focusable="auto"
+            android:hint="Ora"
+            android:inputType="time"
+            android:textColorHint="@color/colorAccent"
+            android:textSize="30sp" />
+    </LinearLayout>
+
+    <fragment
+        android:id="@+id/autocomplete_fragment"
+        android:name="com.google.android.libraries.places.widget.AutocompleteSupportFragment"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginBottom="10dp"
+        android:layout_weight=".09"
+        android:hint="Posizione partita" />
+
+    <EditText
+        android:id="@+id/availableSpots"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginBottom="10dp"
+        android:layout_weight=".09"
+        android:hint="Posti disponibili"
+        android:inputType="number"
+        android:textColorHint="@color/colorAccent"
+        android:textSize="30sp" />
+
+    <EditText
+        android:id="@+id/newMatchNotes"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginBottom="10dp"
+        android:layout_weight=".09"
+        android:gravity="start|top"
+        android:hint="Descrizione e Note"
+        android:inputType="textMultiLine"
+        android:textColorHint="@color/colorAccent"
+        android:textSize="30sp" />
+
+    <Button
+        android:id="@+id/saveMatchButton"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginBottom="10dp"
+        android:layout_weight=".10"
+        android:background="@color/colorButton"
+        android:elegantTextHeight="false"
+        android:text="Crea"
+        android:textAlignment="center"
+        android:textColor="@color/colorTextButton"
+        android:textSize="30sp" />
+
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight=".04" />
 
 
-            <ImageView
-                android:id="@+id/ImageMatchCopertina"
-                android:layout_width="match_parent"
-                android:layout_height="229dp"
-                android:layout_marginTop="8dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.0"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@drawable/calcio_pred" />
-
-
-            <ImageView
-                android:id="@+id/ChangeImageMatch"
-                android:layout_width="60dp"
-                android:layout_height="55dp"
-                android:background="@color/colorPrimaryDark"
-                android:clickable="true"
-                app:layout_constraintBottom_toBottomOf="@+id/ImageMatchCopertina"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="1.0"
-                app:layout_constraintStart_toStartOf="@+id/ImageMatchCopertina"
-                app:layout_constraintTop_toTopOf="@+id/ImageMatchCopertina"
-                app:layout_constraintVertical_bias="1.0"
-                app:srcCompat="@drawable/ic_edit_black_48dp" />
-
-            <TextView
-                android:id="@+id/dateTimeTitle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="16dp"
-                android:text="Data e ora"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.0"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/nameMatch" />
-
-            <EditText
-                android:id="@+id/newMatchDate"
-                android:layout_width="wrap_content"
-                android:layout_height="45dp"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="16dp"
-                android:ems="10"
-                android:focusable="false"
-                android:inputType="date"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/dateTimeTitle" />
-
-            <EditText
-                android:id="@+id/newMatchTime"
-                android:layout_width="wrap_content"
-                android:layout_height="45dp"
-                android:layout_marginStart="12dp"
-                android:layout_marginEnd="16dp"
-                android:ems="10"
-                android:focusable="false"
-                android:inputType="time"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.0"
-                app:layout_constraintStart_toEndOf="@+id/newMatchDate"
-                app:layout_constraintTop_toTopOf="@+id/newMatchDate" />
-
-            <EditText
-                android:id="@+id/availableSpots"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="16dp"
-                android:layout_marginEnd="16dp"
-                android:ems="10"
-                android:hint="Posti disponibili"
-                android:inputType="number"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.0"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/newMatchDate" />
-
-            <EditText
-                android:id="@+id/newMatchNotes"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="28dp"
-                android:layout_marginEnd="16dp"
-                android:ems="10"
-                android:gravity="start|top"
-                android:hint="Descrizione e Note"
-                android:inputType="textMultiLine"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.0"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/autocomplete_fragment" />
-
-            <fragment
-                android:id="@+id/autocomplete_fragment"
-                android:name="com.google.android.libraries.places.widget.AutocompleteSupportFragment"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="16dp"
-                android:layout_marginEnd="16dp"
-                android:hint="Posizione partita"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.0"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textView" />
-
-            <Button
-                android:id="@+id/saveMatchButton"
-                android:layout_width="200dp"
-                android:layout_height="48dp"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="20dp"
-                android:text="Crea"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.0"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/newMatchNotes"
-                app:layout_constraintVertical_bias="0.0" />
-
-            <EditText
-                android:id="@+id/nameMatch"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="16dp"
-                android:layout_marginEnd="16dp"
-                android:ems="10"
-                android:hint="Nome Match"
-                android:inputType="textPersonName"
-                android:textColorLink="#000000"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.0"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/ImageMatchCopertina" />
-
-            <TextView
-                android:id="@+id/textView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="20dp"
-                android:text="Posizione Partita"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.0"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/availableSpots" />
-
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
-    </ScrollView>
-
-
-</androidx.constraintlayout.widget.ConstraintLayout>
+</LinearLayout>

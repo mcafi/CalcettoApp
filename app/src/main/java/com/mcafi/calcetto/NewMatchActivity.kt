@@ -103,6 +103,7 @@ class NewMatchActivity : AppCompatActivity(), View.OnClickListener {
 
 
         ImageMatchCopertina = findViewById(R.id.ImageMatchCopertina)
+        ImageMatchCopertina.setOnClickListener(this)
         ChangeImageMatch.setOnClickListener(this)
     }
 
@@ -147,6 +148,10 @@ class NewMatchActivity : AppCompatActivity(), View.OnClickListener {
 
             }
             R.id.ChangeImageMatch -> {
+                val gallery = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.INTERNAL_CONTENT_URI)
+                startActivityForResult(gallery, NewMatchActivity.PICK_IMAGE)
+            }
+            R.id.ImageMatchCopertina -> {
                 val gallery = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.INTERNAL_CONTENT_URI)
                 startActivityForResult(gallery, NewMatchActivity.PICK_IMAGE)
             }
