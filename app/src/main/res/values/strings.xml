@@ -28,4 +28,10 @@
     <string name="luogo">Luogo</string>
     <string name="immagine_copertina_del_match">Immagine copertina del match</string>
     <string name="posti_liberi">Posti Liberi</string>
+    <string name="ora">Ora</string>
+    <string name="posti_disponibili">Posti disponibili</string>
+    <string name="descrizione_e_note">Descrizione e Note</string>
+    <string name="crea">Crea</string>
+    <string name="nuova_partita">Nuova partita</string>
+    <string name="data">Data</string>
 </resources>

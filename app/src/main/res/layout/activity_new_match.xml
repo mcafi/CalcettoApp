@@ -26,7 +26,7 @@
             android:paddingTop="17dp"
             android:paddingEnd="17dp"
             android:paddingBottom="17dp"
-            android:text="Nuova partita"
+            android:text="@string/nuova_partita"
             android:textColor="@color/colorText"
             app:autoSizeTextType="uniform"
             tools:layout_editor_absoluteX="16dp"
@@ -43,6 +43,7 @@
             android:id="@+id/ImageMatchCopertina"
             android:layout_width="match_parent"
             android:layout_height="0dp"
+            android:contentDescription="@string/immagine_copertina_del_match"
             android:paddingTop="0dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -56,6 +57,7 @@
             android:layout_height="wrap_content"
             android:layout_marginEnd="8dp"
             android:clickable="true"
+            android:focusable="true"
             app:backgroundTint="#00FFFFFF"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -72,11 +74,12 @@
         android:layout_marginEnd="10dp"
         android:layout_marginBottom="10dp"
         android:layout_weight=".09"
-        android:hint="Nome Match"
+        android:hint="@string/nome_match"
         android:inputType="textPersonName"
         android:textColor="@color/colorAccent"
         android:textColorHint="#99000000"
-        android:textSize="30sp" />
+        android:textSize="30sp"
+        android:autofillHints="" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -96,7 +99,7 @@
             android:layout_weight=".5"
             android:background="@drawable/underline_text_new_match"
             android:focusable="auto"
-            android:hint="Data"
+            android:hint="@string/data"
             android:inputType="date"
             android:textColor="@color/colorAccent"
             android:textColorHint="#99000000"
@@ -109,7 +112,7 @@
             android:layout_weight=".5"
             android:background="@drawable/underline_text_new_match"
             android:focusable="auto"
-            android:hint="Ora"
+            android:hint="@string/ora"
             android:inputType="time"
             android:textColor="@color/colorAccent"
             android:textColorHint="#99000000"
@@ -126,7 +129,7 @@
         android:layout_marginBottom="10dp"
         android:layout_weight=".09"
         android:background="@drawable/underline_text_new_match"
-        android:hint="Luogo Partita"
+        android:hint="@string/luogo"
         android:inputType="text"
         android:textColor="@color/colorAccent"
         android:textColorHint="#99000000"
@@ -141,11 +144,12 @@
         android:layout_marginEnd="10dp"
         android:layout_marginBottom="10dp"
         android:layout_weight=".09"
-        android:hint="Posti disponibili"
+        android:hint="@string/posti_disponibili"
         android:inputType="number"
         android:textColor="@color/colorAccent"
         android:textColorHint="#99000000"
-        android:textSize="30sp" />
+        android:textSize="30sp"
+        android:autofillHints="" />
 
     <EditText
         android:id="@+id/newMatchNotes"
@@ -157,11 +161,12 @@
         android:layout_marginBottom="10dp"
         android:layout_weight=".09"
         android:gravity="start|top"
-        android:hint="Descrizione e Note"
+        android:hint="@string/descrizione_e_note"
         android:inputType="textMultiLine"
         android:textColor="@color/colorAccent"
         android:textColorHint="#99000000"
-        android:textSize="30sp" />
+        android:textSize="30sp"
+        android:autofillHints="" />
 
     <Button
         android:id="@+id/saveMatchButton"
@@ -174,7 +179,7 @@
         android:layout_weight=".10"
         android:background="@color/colorButton"
         android:elegantTextHeight="false"
-        android:text="Crea"
+        android:text="@string/crea"
         android:textAlignment="center"
         android:textColor="@color/colorTextButton"
         android:textSize="30sp" />
