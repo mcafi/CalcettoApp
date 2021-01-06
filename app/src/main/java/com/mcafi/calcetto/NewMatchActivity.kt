@@ -16,8 +16,11 @@ import androidx.appcompat.widget.Toolbar
 import com.google.android.gms.common.api.Status
 import com.google.android.libraries.places.api.Places
 import com.google.android.libraries.places.api.model.Place
+import com.google.android.libraries.places.widget.Autocomplete
+import com.google.android.libraries.places.widget.AutocompleteActivity
 import com.google.android.libraries.places.widget.AutocompleteSupportFragment
 import com.google.android.libraries.places.widget.listener.PlaceSelectionListener
+import com.google.android.libraries.places.widget.model.AutocompleteActivityMode
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.FirebaseFirestoreSettings
@@ -83,7 +86,7 @@ class NewMatchActivity : AppCompatActivity(), View.OnClickListener {
             newMatchTime.setText(timeFormat.format(c.time))
         }, hour, minute, true)
 
-        val autocompleteFragment = supportFragmentManager.findFragmentById(R.id.autocomplete_fragment) as AutocompleteSupportFragment
+        /*val autocompleteFragment = supportFragmentManager.findFragmentById(R.id.autocomplete_fragment) as AutocompleteSupportFragment
         autocompleteFragment.setPlaceFields(listOf(Place.Field.ID, Place.Field.NAME, Place.Field.LAT_LNG, Place.Field.ADDRESS))
         autocompleteFragment.setOnPlaceSelectedListener(object : PlaceSelectionListener {
             override fun onPlaceSelected(place: Place) {
@@ -92,15 +95,16 @@ class NewMatchActivity : AppCompatActivity(), View.OnClickListener {
             }
 
             override fun onError(p0: Status) {
-                // TODO: Handle the error.
+
                 Log.i("TAG", "An error occurred: $p0")
             }
-        })
+        })*/
+
 
         newMatchDate.setOnClickListener(this)
         newMatchTime.setOnClickListener(this)
         saveMatchButton.setOnClickListener(this)
-
+        autocomplete_fragment.setOnClickListener(this)
 
         ImageMatchCopertina = findViewById(R.id.ImageMatchCopertina)
         ImageMatchCopertina.setOnClickListener(this)
@@ -119,6 +123,13 @@ class NewMatchActivity : AppCompatActivity(), View.OnClickListener {
             }
             R.id.newMatchTime -> {
                 tpd.show()
+            }
+            R.id.autocomplete_fragment->{
+                val AUTOCOMPLETE_REQUEST_CODE = 1234
+                val fields = listOf(Place.Field.ID, Place.Field.NAME, Place.Field.LAT_LNG, Place.Field.ADDRESS)
+                val intent = Autocomplete.IntentBuilder(AutocompleteActivityMode.FULLSCREEN, fields)
+                        .build(this)
+                startActivityForResult(intent, AUTOCOMPLETE_REQUEST_CODE)
             }
             R.id.saveMatchButton -> {
                 var part: MutableList<String> = ArrayList()
@@ -159,6 +170,29 @@ class NewMatchActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        if (requestCode == 1234) {
+            when (resultCode) {
+                Activity.RESULT_OK -> {
+                    data?.let {
+                        val place = Autocomplete.getPlaceFromIntent(data)
+                        matchPlace = MatchPlace(place.id!!, place.latLng!!.latitude, place.latLng!!.longitude, place.name!!, place.address!!)
+                        autocomplete_fragment.setText(matchPlace.address)
+
+                    }
+                }
+                AutocompleteActivity.RESULT_ERROR -> {
+                    // TODO: Handle the error.
+                    data?.let {
+                        val status = Autocomplete.getStatusFromIntent(data)
+                        Toast.makeText(applicationContext, "Errore", Toast.LENGTH_LONG).show()
+                    }
+                }
+                Activity.RESULT_CANCELED -> {
+                    // The user canceled the operation.
+                }
+            }
+            return
+        }
         super.onActivityResult(requestCode, resultCode, data)
         if (resultCode == Activity.RESULT_OK && requestCode == NewMatchActivity.PICK_IMAGE) {
             imageUri = data?.data

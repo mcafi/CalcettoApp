@@ -22,7 +22,10 @@
             android:id="@+id/new_match_title"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:padding="17dp"
+            android:paddingStart="2dp"
+            android:paddingTop="17dp"
+            android:paddingEnd="17dp"
+            android:paddingBottom="17dp"
             android:text="Nuova partita"
             android:textColor="@color/colorText"
             app:autoSizeTextType="uniform"
@@ -56,6 +59,7 @@
             app:backgroundTint="#00FFFFFF"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
+            app:rippleColor="#000000"
             app:srcCompat="@drawable/ic_edit_black_48dp" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -70,8 +74,8 @@
         android:layout_weight=".09"
         android:hint="Nome Match"
         android:inputType="textPersonName"
-        android:textColorHint="@color/colorAccent"
-        android:textColorLink="#000000"
+        android:textColor="@color/colorAccent"
+        android:textColorHint="#99000000"
         android:textSize="30sp" />
 
     <LinearLayout
@@ -84,32 +88,36 @@
         android:layout_weight=".09"
         android:orientation="horizontal">
 
-        <EditText
+        <TextView
             android:id="@+id/newMatchDate"
             android:layout_width="0dp"
             android:layout_height="match_parent"
+            android:layout_marginEnd="5dp"
             android:layout_weight=".5"
+            android:background="@drawable/underline_text_new_match"
             android:focusable="auto"
             android:hint="Data"
             android:inputType="date"
-            android:textColorHint="@color/colorAccent"
+            android:textColor="@color/colorAccent"
+            android:textColorHint="#99000000"
             android:textSize="30sp" />
 
-        <EditText
+        <TextView
             android:id="@+id/newMatchTime"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight=".5"
+            android:background="@drawable/underline_text_new_match"
             android:focusable="auto"
             android:hint="Ora"
             android:inputType="time"
-            android:textColorHint="@color/colorAccent"
+            android:textColor="@color/colorAccent"
+            android:textColorHint="#99000000"
             android:textSize="30sp" />
     </LinearLayout>
 
-    <fragment
+    <TextView
         android:id="@+id/autocomplete_fragment"
-        android:name="com.google.android.libraries.places.widget.AutocompleteSupportFragment"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_marginStart="10dp"
@@ -117,7 +125,12 @@
         android:layout_marginEnd="10dp"
         android:layout_marginBottom="10dp"
         android:layout_weight=".09"
-        android:hint="Posizione partita" />
+        android:background="@drawable/underline_text_new_match"
+        android:hint="Luogo Partita"
+        android:inputType="text"
+        android:textColor="@color/colorAccent"
+        android:textColorHint="#99000000"
+        android:textSize="30sp" />
 
     <EditText
         android:id="@+id/availableSpots"
@@ -130,7 +143,8 @@
         android:layout_weight=".09"
         android:hint="Posti disponibili"
         android:inputType="number"
-        android:textColorHint="@color/colorAccent"
+        android:textColor="@color/colorAccent"
+        android:textColorHint="#99000000"
         android:textSize="30sp" />
 
     <EditText
@@ -145,7 +159,8 @@
         android:gravity="start|top"
         android:hint="Descrizione e Note"
         android:inputType="textMultiLine"
-        android:textColorHint="@color/colorAccent"
+        android:textColor="@color/colorAccent"
+        android:textColorHint="#99000000"
         android:textSize="30sp" />
 
     <Button
