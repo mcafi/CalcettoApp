@@ -31,7 +31,7 @@ class SettingsActivity : AppCompatActivity(), View.OnClickListener {
         val usernameText = findViewById<TextView>(R.id.et_settings_username)
         val saveSettings = findViewById<TextView>(R.id.btn_settings_save)
         saveSettings.setOnClickListener(this)
-        btn_notification_test.setOnClickListener(this)
+
         userRef.get().addOnSuccessListener { documentSnapshot ->
             user = documentSnapshot.toObject(User::class.java)!!
             nameText.text = user.name
@@ -52,6 +52,10 @@ class SettingsActivity : AppCompatActivity(), View.OnClickListener {
                 userRef.update(user.toMap())
                 Toast.makeText(applicationContext, "Modifiche salvate!", Toast.LENGTH_LONG).show()
                 startActivity(Intent(this, MainActivity::class.java).putExtra("TAB", 2))
+            }
+            R.id.logoutButton -> {
+                FirebaseAuth.getInstance().signOut()
+                startActivity(Intent(this, LoginActivity::class.java))
             }
         }
     }

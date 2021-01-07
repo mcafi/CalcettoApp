@@ -34,4 +34,10 @@
     <string name="crea">Crea</string>
     <string name="nuova_partita">Nuova partita</string>
     <string name="data">Data</string>
+    <string name="time">Time</string>
+    <string name="year">Year</string>
+    <string name="date">Date</string>
+    <string name="salva">SALVA</string>
+    <string name="modifica_profilo">Modifica profilo</string>
+    <string name="notifiche_partite">Notifiche partite</string>
 </resources>
