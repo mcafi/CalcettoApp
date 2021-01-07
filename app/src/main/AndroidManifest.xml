@@ -49,6 +49,9 @@
         <activity
             android:name=".MainActivity"
             android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".ArchivioMatch"
+            android:theme="@style/AppTheme.NoActionBar" />
         <receiver android:name=".src.MatchNotificationManager" android:enabled="true" android:exported="true"/>
     </application>
 

@@ -21,7 +21,7 @@ import kotlin.collections.ArrayList
 
 class MatchAdapterProfile(context: Context, private val dataSource: ArrayList<Match>): BaseAdapter() {
     private val inflater: LayoutInflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
-    private val dateTimeFormat = SimpleDateFormat("dd/MMM/yyyy - HH:mm", Locale("it"))
+    private val dateTimeFormat = SimpleDateFormat("dd/MMM/yyyy   HH:mm", Locale("it"))
     private val c = Calendar.getInstance()
     private val mAuthReg = FirebaseAuth.getInstance()
     private lateinit var firebaseUser: FirebaseUser
@@ -33,11 +33,12 @@ class MatchAdapterProfile(context: Context, private val dataSource: ArrayList<Ma
         val match = getItem(position) as Match
         firebaseUser = mAuthReg.currentUser!!
         val matchDate = rowView.findViewById(R.id.match_date) as TextView
+        val matchName = rowView.findViewById(R.id.name_match) as TextView
         val matchAvailable = rowView.findViewById(R.id.match_available) as TextView
         val matchCreator = rowView.findViewById(R.id.match_creator) as TextView
 
         c.timeInMillis = match.matchDate
-
+        matchName.text= match.matchName
         matchDate.text = dateTimeFormat.format(c.time)
         matchAvailable.text = (match.available - match.partecipants.size).toString()
 

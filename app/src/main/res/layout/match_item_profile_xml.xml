@@ -9,17 +9,29 @@
     android:minHeight="40dp"
     android:orientation="horizontal"
     android:paddingLeft="16dp"
-    android:paddingRight="16dp">
+    android:paddingRight="4dp">
 
+
+    <TextView
+        android:id="@+id/name_match"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight=".27"
+        android:paddingEnd="12dp"
+        android:text="@string/nome_match"
+        android:textAlignment="center"
+        android:textColor="@color/colorText"
+        app:autoSizeTextType="uniform" />
 
     <TextView
         android:id="@+id/match_date"
         android:layout_width="0dp"
         android:layout_height="match_parent"
-        android:layout_weight=".30"
+        android:layout_weight=".25"
         android:padding="5dp"
         android:text="@string/date_time"
         android:textAlignment="center"
+        android:textColor="@color/colorText"
         android:textStyle="bold"
         app:autoSizeTextType="uniform" />
 
@@ -27,7 +39,7 @@
         android:id="@+id/match_available"
         android:layout_width="0dp"
         android:layout_height="match_parent"
-        android:layout_weight=".28"
+        android:layout_weight=".15"
         android:padding="5dp"
         android:text="@string/participants"
         android:textAlignment="center"
@@ -38,8 +50,10 @@
         android:id="@+id/match_creator"
         android:layout_width="0dp"
         android:layout_height="match_parent"
-        android:layout_weight=".42"
-        android:padding="5dp"
+        android:layout_weight=".30"
+        android:paddingStart="10dp"
+        android:paddingTop="10dp"
+        android:paddingBottom="10dp"
         android:text="@string/notes"
         android:textAlignment="center"
         android:textColor="@color/colorTextButton"

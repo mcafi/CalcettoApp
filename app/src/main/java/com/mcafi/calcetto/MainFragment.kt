@@ -7,7 +7,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView.OnItemClickListener
+import android.widget.ImageView
 import android.widget.ListView
+import android.widget.ProgressBar
 import androidx.fragment.app.Fragment
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.firebase.auth.FirebaseAuth
@@ -45,6 +47,7 @@ class MainFragment : Fragment() {
                     }
                     val adapter = MatchAdapter(context!!, matchList)
                     listView.adapter = adapter
+                    view.findViewById<ProgressBar>(R.id.progressBarMatch).visibility = View.INVISIBLE;
                 }
                 .addOnFailureListener { exception ->
                     Log.d("Main", "Error getting documents: ", exception)

@@ -12,7 +12,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.*
 import androidx.fragment.app.Fragment
-import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.firestore.FirebaseFirestore
@@ -23,6 +22,8 @@ import com.google.firebase.storage.StorageReference
 import com.mcafi.calcetto.model.Match
 import com.mcafi.calcetto.model.User
 import kotlinx.android.synthetic.main.fragment_profile.*
+import java.util.*
+import kotlin.collections.ArrayList
 
 class ProfileFragment : Fragment(), View.OnClickListener {
 
@@ -54,6 +55,7 @@ class ProfileFragment : Fragment(), View.OnClickListener {
         }
 
         v.findViewById<Button>(R.id.editPicturebutton).setOnClickListener(this)
+        v.findViewById<Button>(R.id.archivioMatch).setOnClickListener(this)
         profileIcon = v.findViewById(R.id.profileIcon)
         immagini.getBytes(MAX_SIZE).addOnSuccessListener { bytes ->
             val bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.size)
@@ -70,6 +72,7 @@ class ProfileFragment : Fragment(), View.OnClickListener {
         val matchList = ArrayList<Match>();
 
         db.collection("partite")
+                .whereGreaterThan("matchDate", Calendar.getInstance().timeInMillis)
                 .orderBy("matchDate", Query.Direction.DESCENDING)
                 .get()
                 .addOnSuccessListener { result ->
@@ -82,10 +85,7 @@ class ProfileFragment : Fragment(), View.OnClickListener {
                             match.partecipants = ArrayList()
                         }
                         if(match.creator == firebaseUser.uid || match.partecipants.contains(firebaseUser.uid))
-                        matchList.add(match)
-
-
-
+                            matchList.add(match)
                     }
 
                     val adapter = MatchAdapterProfile(context!!, matchList)
@@ -103,7 +103,6 @@ class ProfileFragment : Fragment(), View.OnClickListener {
             startActivity(viewMatchIntent)
         }
 
-
         return v
     }
 
@@ -112,6 +111,9 @@ class ProfileFragment : Fragment(), View.OnClickListener {
             R.id.editPicturebutton -> {
                 val gallery = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.INTERNAL_CONTENT_URI)
                 startActivityForResult(gallery, PICK_IMAGE)
+            }
+            R.id.archivioMatch->{
+                startActivity(Intent(activity, ArchivioMatch::class.java))
             }
         }
     }
