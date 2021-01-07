@@ -13,22 +13,30 @@ import kotlin.collections.ArrayList
 
 class MatchAdapter(context: Context, private val dataSource: ArrayList<Match>): BaseAdapter() {
     private val inflater: LayoutInflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
-    private val dateTimeFormat = SimpleDateFormat("dd/MMM/yyyy - HH:mm", Locale("it"))
     private val datetime = Calendar.getInstance()
 
     override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {
         val rowView = convertView ?: inflater.inflate(R.layout.match_item, parent, false)
         val match = getItem(position) as Match
 
-        val matchDate = rowView.findViewById(R.id.tv_match_datetime) as TextView
+        val nameMatch = rowView.findViewById(R.id.tv_match_name_match) as TextView
         val matchAvailable = rowView.findViewById(R.id.tv_match_available) as TextView
         val matchNotes = rowView.findViewById(R.id.tv_match_notes) as TextView
+        val matchDay = rowView.findViewById(R.id.Day) as TextView
+        val matchDate = rowView.findViewById(R.id.Date) as TextView
+        val matchTime = rowView.findViewById(R.id.Time) as TextView
 
         datetime.timeInMillis = match.matchDate
 
-        matchDate.text = dateTimeFormat.format(datetime.time)
-        matchAvailable.text = (match.available - match.partecipants.size).toString()
+
+        matchDay.text=SimpleDateFormat("dd",Locale("it")).format(datetime.time)
+        matchDate.text=SimpleDateFormat("MMMyy",Locale("it")).format(datetime.time)
+        matchTime.text=SimpleDateFormat("HH:mm",Locale("it")).format(datetime.time)
+        nameMatch.text=match.matchName.capitalize()
+        matchAvailable.text = "partecipanti: "+"${match.partecipants.size.toString()}/${match.available.toString()}"
         matchNotes.text = match.notes
+
+
 
         return rowView
     }
