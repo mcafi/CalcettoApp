@@ -116,6 +116,20 @@
             android:text="@string/notifiche_partite" />
     </LinearLayout>
 
+    <Button
+        android:id="@+id/activeNot"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight=".10"
+        android:text="activeNot" />
+
+    <Button
+        android:id="@+id/disactiveNot"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight=".10"
+        android:text="disactiveNot" />
+
     <Space
         android:layout_width="match_parent"
         android:layout_height="0dp"
