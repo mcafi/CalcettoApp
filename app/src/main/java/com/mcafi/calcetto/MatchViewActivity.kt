@@ -192,7 +192,10 @@ class MatchViewActivity : AppCompatActivity(), View.OnClickListener {
                 builder.show()
             }
             R.id.sw_match_notifications -> {
-                scheduleNotification(getNotification(partita), partita.matchDate)
+                Log.d("Notifiche", "Button not active: ${sw_match_notifications.isChecked}")
+                if(sw_match_notifications.isChecked){
+                    scheduleNotification(getNotification(partita), partita.matchDate)
+                }
             }
         }
     }
