@@ -91,12 +91,20 @@
         android:layout_weight=".09"
         android:orientation="horizontal">
 
+        <ImageView
+            android:id="@+id/imageView5"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight=".11"
+            app:srcCompat="@drawable/datetimeico_nera" />
+
         <TextView
             android:id="@+id/newMatchDate"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_marginEnd="5dp"
-            android:layout_weight=".5"
+            android:layout_marginStart="4dp"
+            android:layout_marginEnd="4dp"
+            android:layout_weight=".46"
             android:background="@drawable/underline_text_new_match"
             android:focusable="auto"
             android:hint="@string/data"
@@ -109,7 +117,7 @@
             android:id="@+id/newMatchTime"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight=".5"
+            android:layout_weight=".45"
             android:background="@drawable/underline_text_new_match"
             android:focusable="auto"
             android:hint="@string/ora"
@@ -119,54 +127,94 @@
             android:textSize="30sp" />
     </LinearLayout>
 
-    <TextView
-        android:id="@+id/autocomplete_fragment"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_marginStart="10dp"
-        android:layout_marginTop="10dp"
-        android:layout_marginEnd="10dp"
-        android:layout_marginBottom="10dp"
+        android:layout_margin="10dp"
         android:layout_weight=".09"
-        android:background="@drawable/underline_text_new_match"
-        android:hint="@string/luogo"
-        android:inputType="text"
-        android:textColor="@color/colorAccent"
-        android:textColorHint="#99000000"
-        android:textSize="30sp" />
+        android:orientation="horizontal">
 
-    <EditText
-        android:id="@+id/availableSpots"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_marginStart="10dp"
-        android:layout_marginTop="10dp"
-        android:layout_marginEnd="10dp"
-        android:layout_marginBottom="10dp"
-        android:layout_weight=".09"
-        android:hint="@string/posti_disponibili"
-        android:inputType="number"
-        android:textColor="@color/colorAccent"
-        android:textColorHint="#99000000"
-        android:textSize="30sp"
-        android:autofillHints="" />
+        <ImageView
+            android:id="@+id/imageView6"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight=".11"
+            app:srcCompat="@drawable/maps_icon_gmm" />
 
-    <EditText
-        android:id="@+id/newMatchNotes"
+        <TextView
+            android:id="@+id/autocomplete_fragment"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_marginStart="4dp"
+            android:layout_weight=".89"
+            android:background="@drawable/underline_text_new_match"
+            android:hint="@string/luogo"
+            android:inputType="text"
+            android:textColor="@color/colorAccent"
+            android:textColorHint="#99000000"
+            android:textSize="30sp" />
+    </LinearLayout>
+
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_marginStart="10dp"
-        android:layout_marginTop="10dp"
-        android:layout_marginEnd="10dp"
-        android:layout_marginBottom="10dp"
+        android:layout_margin="10dp"
         android:layout_weight=".09"
-        android:gravity="start|top"
-        android:hint="@string/descrizione_e_note"
-        android:inputType="textMultiLine"
-        android:textColor="@color/colorAccent"
-        android:textColorHint="#99000000"
-        android:textSize="30sp"
-        android:autofillHints="" />
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/textView2"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight=".11"
+            android:text="#"
+            android:textAlignment="center"
+            android:textColor="#000000"
+            android:textStyle="bold"
+            app:autoSizeTextType="uniform" />
+
+        <EditText
+            android:id="@+id/availableSpots"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_marginStart="4dp"
+            android:layout_weight=".89"
+            android:autofillHints=""
+            android:hint="@string/posti_disponibili"
+            android:inputType="number"
+            android:textColor="@color/colorAccent"
+            android:textColorHint="#99000000"
+            android:textSize="30sp" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_margin="10dp"
+        android:layout_weight=".09"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:id="@+id/imageView7"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight=".11"
+            app:srcCompat="@android:drawable/ic_menu_edit" />
+
+        <EditText
+            android:id="@+id/newMatchNotes"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_marginStart="4dp"
+            android:layout_weight=".89"
+            android:autofillHints=""
+            android:gravity="start|top"
+            android:hint="@string/descrizione_e_note"
+            android:inputType="textMultiLine"
+            android:textColor="@color/colorAccent"
+            android:textColorHint="#99000000"
+            android:textSize="30sp" />
+    </LinearLayout>
 
     <Button
         android:id="@+id/saveMatchButton"
