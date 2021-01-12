@@ -140,7 +140,7 @@ class NewMatchActivity : AppCompatActivity(), View.OnClickListener {
                     documentReference.update("id", documentReference.id)
 
                     val DbSql = DbCreator(this)
-                    DbSql.execQuery("INSERT INTO partita (id_match,id_user,notify) VALUES ('" + mAuthReg.currentUser!!.uid + "','" + documentReference.id + "',"+DbSql.getUser(mAuthReg.currentUser!!.uid)+")");
+                    DbSql.execQuery("INSERT INTO partita VALUES ('" + mAuthReg.currentUser!!.uid + documentReference.id+"', '" + mAuthReg.currentUser!!.uid + "','" + documentReference.id + "',"+DbSql.getUser(mAuthReg.currentUser!!.uid)+")");
                     if(imageUri!=null){
                         immagini = storageRef.child("immagini_match/" + documentReference.id)
                         val uploadTask = immagini.putFile(imageUri!!)

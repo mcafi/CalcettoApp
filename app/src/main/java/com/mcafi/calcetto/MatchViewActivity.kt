@@ -13,6 +13,7 @@ import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.LinearLayout
 import android.widget.TextView
+import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
@@ -108,18 +109,19 @@ class MatchViewActivity : AppCompatActivity(), View.OnClickListener {
         }.addOnFailureListener {
             Log.e("MatchView", "Impossibile recuperare l'immagine")
         }
-
-        val notify_active = DbSql.getMatch(mAuthReg.currentUser!!.uid,matchId)
-        if(notify_active==1){
+        val id_partita = mAuthReg.currentUser!!.uid+""+matchId
+        val notify_active = DbSql.getMatch(id_partita)
+        val notify_user=DbSql.getUser(mAuthReg.currentUser!!.uid)
+        Toast.makeText(applicationContext, "Notify_active:"+notify_active, Toast.LENGTH_LONG).show()
+        if(notify_active==1&&notify_user==1){
             sw_match_notifications.isChecked=true
         }
         else if(notify_active==0){
             sw_match_notifications.isChecked=false
         }
-        else{
-            val notify_user=DbSql.getUser(mAuthReg.currentUser!!.uid)
-            sw_match_notifications.isChecked = notify_user==1
-            //DbSql.execQuery("INSERT INTO partita (id_match,id_user,notify) VALUES ('" + mAuthReg.currentUser!!.uid + "','" + matchId + "',"+notify_user+")");
+        else if(notify_user==0){
+            sw_match_notifications.visibility=View.INVISIBLE
+            sw_match_notifications.isChecked=false
         }
 
         btn_match_view_partecipate_leave.setOnClickListener(this)
@@ -214,9 +216,15 @@ class MatchViewActivity : AppCompatActivity(), View.OnClickListener {
                 builder.show()
             }
             R.id.sw_match_notifications -> {
-                Log.d("Notifiche", "Button not active: ${sw_match_notifications.isChecked}")
+                //Log.d("Notifiche", "Button not active: ${sw_match_notifications.isChecked}")
                 if(sw_match_notifications.isChecked){
-                    scheduleNotification(getNotification(partita), partita.matchDate)
+                    DbSql.execQuery("UPDATE partita SET notify = 1 WHERE id_table_partita= '"+mAuthReg.currentUser!!.uid+""+matchId+"';");
+                    //scheduleNotification(getNotification(partita), partita.matchDate)
+                    Toast.makeText(applicationContext, "Uno", Toast.LENGTH_LONG).show()
+                }
+                else{
+                    DbSql.execQuery("UPDATE partita SET notify = 0 WHERE id_table_partita= '"+mAuthReg.currentUser!!.uid+""+matchId+"';");
+                    Toast.makeText(applicationContext, "Zero", Toast.LENGTH_LONG).show()
                 }
             }
         }

@@ -12,7 +12,7 @@ public class DbCreator {
 
         // database constants
         public static final String DB_NAME = "calcetto.db";
-        public static final int    DB_VERSION = 1;
+        public static final int    DB_VERSION = 2;
 
         // user table constants
         public static final String USER_TABLE = "user";
@@ -47,9 +47,9 @@ public class DbCreator {
 
         public static final String CREATE_MATCH_TABLE =
                 "CREATE TABLE " + MATCH_TABLE + " (" +
-                        MATCH_TABLE_ID         + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                        MATCH_ID         + " STRING PRIMARY KEY, " +
-                        MATCH_USER_ID    + " STRING PRIMARY KEY, " +
+                        MATCH_TABLE_ID         + " STRING PRIMARY KEY, " +
+                        MATCH_ID         + " STRING, " +
+                        MATCH_USER_ID    + " STRING, " +
                         MATCH_NOTIFY       + " INTEGER    NOT NULL);";
 
         public static final String DROP_USER_TABLE =
@@ -139,9 +139,9 @@ public class DbCreator {
             return user_id;
         }
 
-        public int getMatch(String id_user,String id_match) {
-            String where = MATCH_ID + "= ? and "+ MATCH_USER_ID + "= ?";
-            String[] whereArgs = { id_match,id_user };
+        public int getMatch(String id_partita) {
+            String where = MATCH_TABLE_ID + "= ?";
+            String[] whereArgs = { id_partita };
 
             this.openReadableDB();
             Cursor cursor = db.query(MATCH_TABLE,
