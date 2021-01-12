@@ -66,7 +66,6 @@ class SettingsActivity : AppCompatActivity(), View.OnClickListener {
                 user.name = et_settings_name.text.toString()
                 user.username = et_settings_username.text.toString()
                 userRef.update(user.toMap())
-                Toast.makeText(applicationContext, "Modifiche salvate!", Toast.LENGTH_LONG).show()
                 startActivity(Intent(this, MainActivity::class.java).putExtra("TAB", 2))
             }
             R.id.logoutButton -> {
@@ -75,12 +74,10 @@ class SettingsActivity : AppCompatActivity(), View.OnClickListener {
             }
             R.id.notification_switch->{
                 if(notification_switch.isChecked){
-                    DbSql.execQuery("UPDATE user SET notify = 1 WHERE id_user= '"+mAuthReg.currentUser!!.uid+"';");
-                    Toast.makeText(applicationContext, "Uno", Toast.LENGTH_LONG).show()
+                    DbSql.execQuery("UPDATE user SET notify = 1 WHERE id_user= '"+mAuthReg.currentUser!!.uid+"';")
                 }
                 else{
                     DbSql.execQuery("UPDATE user SET notify = 0 WHERE id_user= '"+mAuthReg.currentUser!!.uid+"'  ;");
-                    Toast.makeText(applicationContext, "Zero", Toast.LENGTH_LONG).show()
                 }
             }
 

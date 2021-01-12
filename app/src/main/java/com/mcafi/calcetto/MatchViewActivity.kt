@@ -13,7 +13,6 @@ import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.LinearLayout
 import android.widget.TextView
-import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
@@ -21,7 +20,6 @@ import androidx.core.app.NotificationCompat
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.firestore.DocumentReference
-import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.FirebaseFirestoreSettings
 import com.google.firebase.storage.FirebaseStorage
@@ -72,32 +70,26 @@ class MatchViewActivity : AppCompatActivity(), View.OnClickListener {
         matchReference = db.collection("partite").document(matchId)
         matchReference.get().addOnSuccessListener { document ->
             if (document != null) {
-                //Log.d(TAG, "DocumentSnapshot data: ${document.data}")
-                //println("dati: ${document.data}")
+
 
                 partita = document.toObject(Match::class.java)!!
+                if (partita.creator == firebaseUser.uid){
+                    btn_match_view_delete.visibility = View.VISIBLE
+                    btn_match_view_partecipate_leave.visibility = View.INVISIBLE
+                }
                 getPartecipants(db)
-
-
                 dateTime.timeInMillis = partita.matchDate
 
-                //println("dati: ${partita.matchDate}")
                 tv_match_view_datetime.text = dateTimeFormat.format(dateTime.time)
                 tv_match_view_place.text = partita.place.address
                 tv_match_view_name.text = partita.matchName
 
 
-                //println("IndexOF: ${firebaseUser.uid}"+" Match: $IdMAtch")
-                //println("IndexOF: ${}")
                 partecipa = partita.partecipants.contains(firebaseUser.uid)
-                //Log.d("MatchView", partecipa.toString())
+
                 btn_match_view_partecipate_leave.text = if (partecipa) "Lascia partita" else "Partecipa"
 
-                if (partita.creator == firebaseUser.uid){
-                    btn_match_view_delete.visibility = View.VISIBLE
-                    btn_match_view_partecipate_leave.visibility = View.INVISIBLE
-                    sw_match_notifications.visibility=View.VISIBLE
-                }
+
             }
         }
 
@@ -112,29 +104,33 @@ class MatchViewActivity : AppCompatActivity(), View.OnClickListener {
         val id_partita = mAuthReg.currentUser!!.uid+""+matchId
         val notify_active = DbSql.getMatch(id_partita)
         val notify_user=DbSql.getUser(mAuthReg.currentUser!!.uid)
-        Toast.makeText(applicationContext, "Notify_active:"+notify_active, Toast.LENGTH_LONG).show()
+
         if(notify_active==1&&notify_user==1){
             sw_match_notifications.isChecked=true
+            sw_match_notifications.visibility=View.VISIBLE
+            sw_match_notifications.setOnClickListener(this)
         }
-        else if(notify_active==0){
+        else if(notify_active==0&&notify_user==1){
             sw_match_notifications.isChecked=false
+            sw_match_notifications.visibility=View.VISIBLE
+            sw_match_notifications.setOnClickListener(this)
         }
-        else if(notify_user==0){
+        else if(notify_user<=0){
+
             sw_match_notifications.visibility=View.INVISIBLE
             sw_match_notifications.isChecked=false
         }
 
         btn_match_view_partecipate_leave.setOnClickListener(this)
         btn_match_view_delete.setOnClickListener(this)
-        sw_match_notifications.setOnClickListener(this)
+
     }
 
     private fun getPartecipants(db:FirebaseFirestore){
         matchReference = db.collection("partite").document(matchId)
         matchReference.get().addOnSuccessListener { document ->
             if (document != null) {
-                //Log.d(TAG, "DocumentSnapshot data: ${document.data}")
-                //println("dati: ${document.data}")
+
                 partita = document.toObject(Match::class.java)!!
 
 
@@ -148,7 +144,6 @@ class MatchViewActivity : AppCompatActivity(), View.OnClickListener {
                         userReference.get().addOnSuccessListener { doc ->
                             val userInPartita = doc.toObject(User::class.java)!!
                             participantsNames.add(userInPartita.name.toString())
-                            /*val participantsListAdapter = ArrayAdapter(this, android.R.layout.simple_list_item_1, participantsNames)*/
 
 
                             val adapter: ArrayAdapter<String> = object : ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, participantsNames) {
@@ -194,6 +189,9 @@ class MatchViewActivity : AppCompatActivity(), View.OnClickListener {
                     sw_match_notifications.visibility=View.INVISIBLE
                     getPartecipants(db)
                 } else {
+
+                    scheduleNotification(getNotification(partita), partita.matchDate)
+
                     partita.partecipants.add(firebaseUser.uid)
                     DbSql.execQuery("INSERT INTO partita (id_match,id_user,notify) VALUES ('" + mAuthReg.currentUser!!.uid + "','" + matchId + "',"+DbSql.getUser(mAuthReg.currentUser!!.uid)+")");
                     matchReference.update("partecipants", partita.partecipants)
@@ -216,15 +214,12 @@ class MatchViewActivity : AppCompatActivity(), View.OnClickListener {
                 builder.show()
             }
             R.id.sw_match_notifications -> {
-                //Log.d("Notifiche", "Button not active: ${sw_match_notifications.isChecked}")
                 if(sw_match_notifications.isChecked){
                     DbSql.execQuery("UPDATE partita SET notify = 1 WHERE id_table_partita= '"+mAuthReg.currentUser!!.uid+""+matchId+"';");
-                    //scheduleNotification(getNotification(partita), partita.matchDate)
-                    Toast.makeText(applicationContext, "Uno", Toast.LENGTH_LONG).show()
+                    scheduleNotification(getNotification(partita), partita.matchDate)
                 }
                 else{
                     DbSql.execQuery("UPDATE partita SET notify = 0 WHERE id_table_partita= '"+mAuthReg.currentUser!!.uid+""+matchId+"';");
-                    Toast.makeText(applicationContext, "Zero", Toast.LENGTH_LONG).show()
                 }
             }
         }
@@ -234,6 +229,8 @@ class MatchViewActivity : AppCompatActivity(), View.OnClickListener {
         val notificationIntent = Intent(this, MatchNotificationManager::class.java)
         notificationIntent.putExtra("NOTIFICATION_ID", partita.creationDate.toInt())
         notificationIntent.putExtra("NOTIFICATION", notification)
+        notificationIntent.putExtra("MATCH_ID", matchId)
+        notificationIntent.putExtra("USER_ID", mAuthReg.currentUser!!.uid)
         val pendingIntent = PendingIntent.getBroadcast(this, 0, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT)
         val delay = matchTime - Calendar.getInstance().timeInMillis
         val futureInMillis = SystemClock.elapsedRealtime() + delay - 7200000 // due ore di anticipo

@@ -1,11 +1,10 @@
 package com.mcafi.calcetto
 
-import android.app.Activity
-import android.app.DatePickerDialog
-import android.app.TimePickerDialog
+import android.app.*
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.os.SystemClock
 import android.provider.MediaStore
 import android.util.Log
 import android.view.View
@@ -13,6 +12,7 @@ import android.widget.ImageView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
+import androidx.core.app.NotificationCompat
 import com.google.android.gms.common.api.Status
 import com.google.android.libraries.places.api.Places
 import com.google.android.libraries.places.api.model.Place
@@ -29,6 +29,7 @@ import com.google.firebase.storage.StorageReference
 import com.mcafi.calcetto.db.DbCreator
 import com.mcafi.calcetto.model.Match
 import com.mcafi.calcetto.model.MatchPlace
+import com.mcafi.calcetto.src.MatchNotificationManager
 import kotlinx.android.synthetic.main.activity_new_match.*
 import java.lang.Integer.parseInt
 import java.text.SimpleDateFormat
@@ -58,7 +59,7 @@ class NewMatchActivity : AppCompatActivity(), View.OnClickListener {
     private lateinit var ImageMatchCopertina: ImageView
     private val storageRef = storage.reference
     private lateinit var immagini: StorageReference
-
+    private lateinit var match: Match
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -135,12 +136,13 @@ class NewMatchActivity : AppCompatActivity(), View.OnClickListener {
             R.id.saveMatchButton -> {
                 var part: MutableList<String> = ArrayList()
                 part.add(firebaseUser.uid.toString())
-                val match = Match(firebaseUser.uid, Calendar.getInstance().timeInMillis, c.timeInMillis, newMatchNotes.text.toString(),part, parseInt(availableSpots.text.toString()), matchPlace, nameMatch.text.toString())
+                match = Match(firebaseUser.uid, Calendar.getInstance().timeInMillis, c.timeInMillis, newMatchNotes.text.toString(),part, parseInt(availableSpots.text.toString()), matchPlace, nameMatch.text.toString())
                 db.collection("partite").add(match).addOnSuccessListener { documentReference ->
                     documentReference.update("id", documentReference.id)
 
                     val DbSql = DbCreator(this)
                     DbSql.execQuery("INSERT INTO partita VALUES ('" + mAuthReg.currentUser!!.uid + documentReference.id+"', '" + mAuthReg.currentUser!!.uid + "','" + documentReference.id + "',"+DbSql.getUser(mAuthReg.currentUser!!.uid)+")");
+                    scheduleNotification(getNotification(match,documentReference.id), match.matchDate,documentReference.id)
                     if(imageUri!=null){
                         immagini = storageRef.child("immagini_match/" + documentReference.id)
                         val uploadTask = immagini.putFile(imageUri!!)
@@ -211,7 +213,33 @@ class NewMatchActivity : AppCompatActivity(), View.OnClickListener {
         db.firestoreSettings = settings
         return db
     }
+    private fun scheduleNotification(notification: Notification, matchTime: Long,matchId:String) {
+        val notificationIntent = Intent(this, MatchNotificationManager::class.java)
+        notificationIntent.putExtra("NOTIFICATION_ID", match.creationDate.toInt())
+        notificationIntent.putExtra("NOTIFICATION", notification)
+        notificationIntent.putExtra("MATCH_ID", matchId)
+        notificationIntent.putExtra("USER_ID", mAuthReg.currentUser!!.uid)
+        val pendingIntent = PendingIntent.getBroadcast(this, 0, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT)
+        val delay = matchTime - Calendar.getInstance().timeInMillis
+        val futureInMillis = SystemClock.elapsedRealtime() + delay - 7200000 // due ore di anticipo
+        val alarmManager = (getSystemService(ALARM_SERVICE) as AlarmManager)
+        alarmManager[AlarmManager.ELAPSED_REALTIME_WAKEUP, futureInMillis] = pendingIntent
+    }
 
+    private fun getNotification(match: Match,matchId:String): Notification {
+        val intent = Intent(this, MatchViewActivity::class.java).apply {
+            flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+        }
+        intent.putExtra("MATCH_ID", matchId)
+        val pendingIntent: PendingIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT)
+        val builder = NotificationCompat.Builder(this, MatchNotificationManager.MATCH_CHANNEL_ID)
+                .setSmallIcon(R.drawable.common_google_signin_btn_icon_dark)
+                .setContentTitle("Manca poco alla partita!")
+                .setContentText(match.matchName + " - " + SimpleDateFormat("dd/MMM/yyyy - HH:mm", Locale("it")).format(Calendar.getInstance().time))
+                .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+                .setContentIntent(pendingIntent)
+        return builder.build()
+    }
 
     companion object {
         private const val PICK_IMAGE = 200
