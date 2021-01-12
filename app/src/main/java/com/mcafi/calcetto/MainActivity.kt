@@ -40,10 +40,9 @@ class MainActivity : AppCompatActivity(),View.OnClickListener {
         }
         val db = DbCreator(this)
         val id_user = db.getUser(mAuthReg.currentUser!!.uid)
-        if(id_user==null){
+        if(id_user==-1){
             db.execQuery("INSERT INTO user VALUES ('" + mAuthReg.currentUser!!.uid + "',1)");
         }
-
         SettingLink.setOnClickListener(this)
     }
     override fun onClick(v: View) {

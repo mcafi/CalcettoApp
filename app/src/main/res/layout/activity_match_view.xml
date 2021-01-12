@@ -160,7 +160,8 @@
             android:layout_weight=".33"
             android:text="@string/ricevi_notifiche"
             android:textAlignment="center"
-            android:textColor="@color/colorText" />
+            android:textColor="@color/colorText"
+            android:visibility="invisible" />
     </LinearLayout>
 
 </LinearLayout>

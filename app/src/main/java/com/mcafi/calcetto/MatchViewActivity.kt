@@ -25,6 +25,7 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.FirebaseFirestoreSettings
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
+import com.mcafi.calcetto.db.DbCreator
 import com.mcafi.calcetto.model.Match
 import com.mcafi.calcetto.model.User
 import com.mcafi.calcetto.src.MatchNotificationManager
@@ -47,6 +48,7 @@ class MatchViewActivity : AppCompatActivity(), View.OnClickListener {
     private val dateTimeFormat = SimpleDateFormat("dd/MMM/yyyy - HH:mm", Locale("it"))
     private val dateTime = Calendar.getInstance()
     private var TextPartecipanti=""
+    private val DbSql = DbCreator(this)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -91,8 +93,9 @@ class MatchViewActivity : AppCompatActivity(), View.OnClickListener {
                 btn_match_view_partecipate_leave.text = if (partecipa) "Lascia partita" else "Partecipa"
 
                 if (partita.creator == firebaseUser.uid){
-                    btn_match_view_delete.visibility = View.VISIBLE;
-                    btn_match_view_partecipate_leave.visibility = View.INVISIBLE;
+                    btn_match_view_delete.visibility = View.VISIBLE
+                    btn_match_view_partecipate_leave.visibility = View.INVISIBLE
+                    sw_match_notifications.visibility=View.VISIBLE
                 }
             }
         }
@@ -104,6 +107,19 @@ class MatchViewActivity : AppCompatActivity(), View.OnClickListener {
             img_match_view.setImageBitmap(bitmap)
         }.addOnFailureListener {
             Log.e("MatchView", "Impossibile recuperare l'immagine")
+        }
+
+        val notify_active = DbSql.getMatch(mAuthReg.currentUser!!.uid,matchId)
+        if(notify_active==1){
+            sw_match_notifications.isChecked=true
+        }
+        else if(notify_active==0){
+            sw_match_notifications.isChecked=false
+        }
+        else{
+            val notify_user=DbSql.getUser(mAuthReg.currentUser!!.uid)
+            sw_match_notifications.isChecked = notify_user==1
+            //DbSql.execQuery("INSERT INTO partita (id_match,id_user,notify) VALUES ('" + mAuthReg.currentUser!!.uid + "','" + matchId + "',"+notify_user+")");
         }
 
         btn_match_view_partecipate_leave.setOnClickListener(this)
@@ -171,10 +187,16 @@ class MatchViewActivity : AppCompatActivity(), View.OnClickListener {
                 if (partecipa) {
                     partita.partecipants.remove(firebaseUser.uid)
                     matchReference.update("partecipants", partita.partecipants)
+                    DbSql.execQuery("DELETE FROM partita WHERE id_match= '"+matchId+"' and id_user = '"+mAuthReg.currentUser!!.uid+"' ;");
+
+                    sw_match_notifications.visibility=View.INVISIBLE
                     getPartecipants(db)
                 } else {
                     partita.partecipants.add(firebaseUser.uid)
+                    DbSql.execQuery("INSERT INTO partita (id_match,id_user,notify) VALUES ('" + mAuthReg.currentUser!!.uid + "','" + matchId + "',"+DbSql.getUser(mAuthReg.currentUser!!.uid)+")");
                     matchReference.update("partecipants", partita.partecipants)
+
+                    sw_match_notifications.visibility=View.VISIBLE
                     getPartecipants(db)
                 }
             }

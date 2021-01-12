@@ -119,107 +119,43 @@ public class DbCreator {
         public void execQuery(String query){
             db.execSQL(query);
         }
-        // public methods
-        /*public ArrayList<List> getLists() {
-            ArrayList<List> lists = new ArrayList<List>();
-            openReadableDB();
-            Cursor cursor = db.query(LIST_TABLE,
-                    null, null, null, null, null, null);
-            while (cursor.moveToNext()) {
-                List list = new List();
-                list.setId(cursor.getInt(LIST_ID_COL));
-                list.setName(cursor.getString(LIST_NAME_COL));
 
-                lists.add(list);
-            }
-            if (cursor != null)
-                cursor.close();
-            closeDB();
-
-            return lists;
-        }*/
-
-        public String getUser(String id) {
+        public int getUser(String id) {
             String where = USER_ID + "= ?";
             String[] whereArgs = { id };
 
             openReadableDB();
             Cursor cursor = db.query(USER_TABLE, null,
                     where, whereArgs, null, null, null);
-            String user_id=null;
+            int user_id=-1;
 
             cursor.moveToFirst();
 
             if(cursor.getCount()!=0){
-                user_id = cursor.getString(USER_ID_COL);
-            }
-            else{
-
+                user_id = cursor.getInt(USER_NOTIFY_COL);
             }
             if(cursor!=null)cursor.close();
-
 
             return user_id;
         }
 
-        /*public ArrayList<Task> getTasks(String listName) {
-            String where =
-                    TASK_LIST_ID + "= ? AND " +
-                            TASK_HIDDEN + "!='1'";
-            int listID = getList(listName).getId();
-            String[] whereArgs = { Integer.toString(listID) };
+        public int getMatch(String id_user,String id_match) {
+            String where = MATCH_ID + "= ? and "+ MATCH_USER_ID + "= ?";
+            String[] whereArgs = { id_match,id_user };
 
             this.openReadableDB();
-            Cursor cursor = db.query(TASK_TABLE, null,
-                    where, whereArgs,
-                    null, null, null);
-            ArrayList<Task> tasks = new ArrayList<Task>();
-            while (cursor.moveToNext()) {
-                tasks.add(getTaskFromCursor(cursor));
-            }
-            if (cursor != null)
-                cursor.close();
-            this.closeDB();
-
-            return tasks;
-        }*/
-
-        /*public Task getTask(int id) {
-            String where = TASK_ID + "= ?";
-            String[] whereArgs = { Integer.toString(id) };
-
-            this.openReadableDB();
-            Cursor cursor = db.query(TASK_TABLE,
+            Cursor cursor = db.query(MATCH_TABLE,
                     null, where, whereArgs, null, null, null);
+            int notify=-1;
             cursor.moveToFirst();
-            Task task = getTaskFromCursor(cursor);
-            if (cursor != null)
-                cursor.close();
-            this.closeDB();
 
-            return task;
+            if(cursor.getCount()!=0){
+                notify = cursor.getInt(MATCH_NOTIFY_COL);
+            }
+            if(cursor!=null)cursor.close();
+
+            return notify;
         }
-*/
-        /*private static Task getTaskFromCursor(Cursor cursor) {
-            if (cursor == null || cursor.getCount() == 0){
-                return null;
-            }
-            else {
-                try {
-                    Task task = new Task(
-                            cursor.getInt(TASK_ID_COL),
-                            cursor.getInt(TASK_LIST_ID_COL),
-                            cursor.getString(TASK_NAME_COL),
-                            cursor.getString(TASK_NOTES_COL),
-                            cursor.getString(TASK_COMPLETED_COL),
-                            cursor.getString(TASK_HIDDEN_COL));
-                    return task;
-                }
-                catch(Exception e) {
-                    return null;
-                }
-            }
-        }*/
 
         /*public long insertTask(Task task) {
             ContentValues cv = new ContentValues();

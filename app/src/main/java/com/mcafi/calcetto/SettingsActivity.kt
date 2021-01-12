@@ -12,7 +12,9 @@ import androidx.core.content.ContextCompat
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.FirebaseFirestoreSettings
+import com.mcafi.calcetto.db.DbCreator
 import com.mcafi.calcetto.model.User
+import kotlinx.android.synthetic.main.activity_match_view.*
 import kotlinx.android.synthetic.main.activity_settings.*
 
 
@@ -22,7 +24,7 @@ class SettingsActivity : AppCompatActivity(), View.OnClickListener {
     private val firebaseUser = mAuthReg.currentUser
     private val userRef = db.collection("utenti").document(firebaseUser!!.uid)
     private lateinit var user: User
-
+    private val DbSql = DbCreator(this)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -35,8 +37,7 @@ class SettingsActivity : AppCompatActivity(), View.OnClickListener {
         val usernameText = findViewById<TextView>(R.id.et_settings_username)
         val saveSettings = findViewById<TextView>(R.id.btn_settings_save)
         saveSettings.setOnClickListener(this)
-        activeNot.setOnClickListener(this)
-        disactiveNot.setOnClickListener(this)
+
 
         userRef.get().addOnSuccessListener { documentSnapshot ->
             user = documentSnapshot.toObject(User::class.java)!!
@@ -44,6 +45,14 @@ class SettingsActivity : AppCompatActivity(), View.OnClickListener {
             usernameText.text = user.username
         }
 
+        val notify_user=DbSql.getUser(mAuthReg.currentUser!!.uid)
+        if(notify_user==1){
+            notification_switch.isChecked=true
+        }
+        else if(notify_user==0){
+            notification_switch.isChecked=false
+        }
+        notification_switch.setOnClickListener(this)
     }
 
     override fun onSupportNavigateUp(): Boolean {
@@ -63,6 +72,16 @@ class SettingsActivity : AppCompatActivity(), View.OnClickListener {
             R.id.logoutButton -> {
                 FirebaseAuth.getInstance().signOut()
                 startActivity(Intent(this, LoginActivity::class.java))
+            }
+            R.id.notification_switch->{
+                if(notification_switch.isChecked){
+                    DbSql.execQuery("UPDATE user SET notify = 1 WHERE id_user= '"+mAuthReg.currentUser!!.uid+"';");
+                    Toast.makeText(applicationContext, "Uno", Toast.LENGTH_LONG).show()
+                }
+                else{
+                    DbSql.execQuery("UPDATE user SET notify = 0 WHERE id_user= '"+mAuthReg.currentUser!!.uid+"'  ;");
+                    Toast.makeText(applicationContext, "Zero", Toast.LENGTH_LONG).show()
+                }
             }
 
         }

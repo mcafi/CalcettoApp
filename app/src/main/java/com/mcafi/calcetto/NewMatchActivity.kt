@@ -26,6 +26,7 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.FirebaseFirestoreSettings
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
+import com.mcafi.calcetto.db.DbCreator
 import com.mcafi.calcetto.model.Match
 import com.mcafi.calcetto.model.MatchPlace
 import kotlinx.android.synthetic.main.activity_new_match.*
@@ -137,7 +138,9 @@ class NewMatchActivity : AppCompatActivity(), View.OnClickListener {
                 val match = Match(firebaseUser.uid, Calendar.getInstance().timeInMillis, c.timeInMillis, newMatchNotes.text.toString(),part, parseInt(availableSpots.text.toString()), matchPlace, nameMatch.text.toString())
                 db.collection("partite").add(match).addOnSuccessListener { documentReference ->
                     documentReference.update("id", documentReference.id)
-                    //Toast.makeText(applicationContext, "id is ${documentReference.id}", Toast.LENGTH_LONG).show()
+
+                    val DbSql = DbCreator(this)
+                    DbSql.execQuery("INSERT INTO partita (id_match,id_user,notify) VALUES ('" + mAuthReg.currentUser!!.uid + "','" + documentReference.id + "',"+DbSql.getUser(mAuthReg.currentUser!!.uid)+")");
                     if(imageUri!=null){
                         immagini = storageRef.child("immagini_match/" + documentReference.id)
                         val uploadTask = immagini.putFile(imageUri!!)
