@@ -46,8 +46,8 @@ class MatchViewActivity : AppCompatActivity(), View.OnClickListener {
     private lateinit var matchReference: DocumentReference
     private val dateTimeFormat = SimpleDateFormat("dd/MMM/yyyy - HH:mm", Locale("it"))
     private val dateTime = Calendar.getInstance()
-    private var TextPartecipanti=""
-    private val DbSql = DbCreator(this)
+    private var textPartecipanti = ""
+    private val dbSql = DbCreator(this)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -70,8 +70,6 @@ class MatchViewActivity : AppCompatActivity(), View.OnClickListener {
         matchReference = db.collection("partite").document(matchId)
         matchReference.get().addOnSuccessListener { document ->
             if (document != null) {
-
-
                 partita = document.toObject(Match::class.java)!!
                 if (partita.creator == firebaseUser.uid){
                     btn_match_view_delete.visibility = View.VISIBLE
@@ -83,13 +81,9 @@ class MatchViewActivity : AppCompatActivity(), View.OnClickListener {
                 tv_match_view_datetime.text = dateTimeFormat.format(dateTime.time)
                 tv_match_view_place.text = partita.place.address
                 tv_match_view_name.text = partita.matchName
-
-
                 partecipa = partita.partecipants.contains(firebaseUser.uid)
 
                 btn_match_view_partecipate_leave.text = if (partecipa) "Lascia partita" else "Partecipa"
-
-
             }
         }
 
@@ -101,25 +95,15 @@ class MatchViewActivity : AppCompatActivity(), View.OnClickListener {
         }.addOnFailureListener {
             Log.e("MatchView", "Impossibile recuperare l'immagine")
         }
-        val id_partita = mAuthReg.currentUser!!.uid+""+matchId
-        val notify_active = DbSql.getMatch(id_partita)
-        val notify_user=DbSql.getUser(mAuthReg.currentUser!!.uid)
+        val id_partita = mAuthReg.currentUser!!.uid + "" + matchId
+        val notify_active = dbSql.getMatch(id_partita)
+        val notify_user = dbSql.getUser(mAuthReg.currentUser!!.uid)
 
-        if(notify_active==1&&notify_user==1){
-            sw_match_notifications.isChecked=true
-            sw_match_notifications.visibility=View.VISIBLE
-            sw_match_notifications.setOnClickListener(this)
-        }
-        else if(notify_active==0&&notify_user==1){
-            sw_match_notifications.isChecked=false
-            sw_match_notifications.visibility=View.VISIBLE
-            sw_match_notifications.setOnClickListener(this)
-        }
-        else if(notify_user<=0){
+        Log.d("notify", notify_user.toString());
 
-            sw_match_notifications.visibility=View.INVISIBLE
-            sw_match_notifications.isChecked=false
-        }
+        sw_match_notifications.visibility = if (notify_user == 1) View.VISIBLE else View.INVISIBLE
+        sw_match_notifications.isChecked = notify_active == 1
+        sw_match_notifications.setOnClickListener(this)
 
         btn_match_view_partecipate_leave.setOnClickListener(this)
         btn_match_view_delete.setOnClickListener(this)
@@ -133,19 +117,14 @@ class MatchViewActivity : AppCompatActivity(), View.OnClickListener {
 
                 partita = document.toObject(Match::class.java)!!
 
-
                 if (document.get("partecipants") != null) {
                     partita.partecipants = document.get("partecipants") as ArrayList<String>
-
-
                     val participantsNames = ArrayList<String>()
                     for (utenteInPartita in partita.partecipants) {
                         val userReference = db.collection("utenti").document(utenteInPartita)
                         userReference.get().addOnSuccessListener { doc ->
                             val userInPartita = doc.toObject(User::class.java)!!
                             participantsNames.add(userInPartita.name.toString())
-
-
                             val adapter: ArrayAdapter<String> = object : ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, participantsNames) {
                                 @RequiresApi(Build.VERSION_CODES.O)
                                 override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
@@ -164,7 +143,7 @@ class MatchViewActivity : AppCompatActivity(), View.OnClickListener {
                     }
                 } else {
                     partita.partecipants = ArrayList()
-                    TextPartecipanti = "ancora nessun partecipante"
+                    textPartecipanti = "ancora nessun partecipante"
                 }
                 tv_match_view_partecipants.text = "${partita.partecipants.size.toString()}/${partita.available.toString()}"
                 partecipa = partita.partecipants.contains(firebaseUser.uid)
@@ -184,16 +163,15 @@ class MatchViewActivity : AppCompatActivity(), View.OnClickListener {
                 if (partecipa) {
                     partita.partecipants.remove(firebaseUser.uid)
                     matchReference.update("partecipants", partita.partecipants)
-                    DbSql.execQuery("DELETE FROM partita WHERE id_match= '"+matchId+"' and id_user = '"+mAuthReg.currentUser!!.uid+"' ;");
+                    dbSql.execQuery("DELETE FROM partita WHERE id_match= '"+matchId+"' and id_user = '"+mAuthReg.currentUser!!.uid+"' ;");
 
                     sw_match_notifications.visibility=View.INVISIBLE
                     getPartecipants(db)
                 } else {
-
                     scheduleNotification(getNotification(partita), partita.matchDate)
 
                     partita.partecipants.add(firebaseUser.uid)
-                    DbSql.execQuery("INSERT INTO partita (id_match,id_user,notify) VALUES ('" + mAuthReg.currentUser!!.uid + "','" + matchId + "',"+DbSql.getUser(mAuthReg.currentUser!!.uid)+")");
+                    dbSql.execQuery("INSERT INTO partita (id_match,id_user,notify) VALUES ('" + mAuthReg.currentUser!!.uid + "','" + matchId + "',"+dbSql.getUser(mAuthReg.currentUser!!.uid)+")");
                     matchReference.update("partecipants", partita.partecipants)
 
                     sw_match_notifications.visibility=View.VISIBLE
@@ -215,11 +193,11 @@ class MatchViewActivity : AppCompatActivity(), View.OnClickListener {
             }
             R.id.sw_match_notifications -> {
                 if(sw_match_notifications.isChecked){
-                    DbSql.execQuery("UPDATE partita SET notify = 1 WHERE id_table_partita= '"+mAuthReg.currentUser!!.uid+""+matchId+"';");
+                    dbSql.execQuery("UPDATE partita SET notify = 1 WHERE id_table_partita= '"+mAuthReg.currentUser!!.uid+""+matchId+"';");
                     scheduleNotification(getNotification(partita), partita.matchDate)
                 }
                 else{
-                    DbSql.execQuery("UPDATE partita SET notify = 0 WHERE id_table_partita= '"+mAuthReg.currentUser!!.uid+""+matchId+"';");
+                    dbSql.execQuery("UPDATE partita SET notify = 0 WHERE id_table_partita= '"+mAuthReg.currentUser!!.uid+""+matchId+"';");
                 }
             }
         }
