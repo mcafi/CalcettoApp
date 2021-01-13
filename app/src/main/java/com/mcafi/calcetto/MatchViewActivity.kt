@@ -171,7 +171,7 @@ class MatchViewActivity : AppCompatActivity(), View.OnClickListener {
                     scheduleNotification(getNotification(partita), partita.matchDate)
 
                     partita.partecipants.add(firebaseUser.uid)
-                    dbSql.execQuery("INSERT INTO partita (id_match,id_user,notify) VALUES ('" + mAuthReg.currentUser!!.uid + "','" + matchId + "',"+dbSql.getUser(mAuthReg.currentUser!!.uid)+")");
+                    dbSql.execQuery("INSERT INTO partita (id_table_partita,id_user,id_match,notify) VALUES ('" + mAuthReg.currentUser!!.uid + "" + matchId + "','" + mAuthReg.currentUser!!.uid + "','" + matchId + "',"+dbSql.getUser(mAuthReg.currentUser!!.uid)+")");
                     matchReference.update("partecipants", partita.partecipants)
 
                     sw_match_notifications.visibility=View.VISIBLE
