@@ -26,7 +26,7 @@ class MatchNotificationManager : BroadcastReceiver() {
         val notify_user=DbSql.getUser(id_user)
         val notify_active = DbSql.getMatch(id_partita)
 
-        val notification = intent.getParcelableExtra("NOTIFICATION") as Notification
+        val notification = intent.getParcelableExtra<Notification>("NOTIFICATION")!!
         val notificatonId = intent.getIntExtra("NOTIFICATION_ID", 1)
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
             val channel = NotificationChannel(MATCH_CHANNEL_ID, MATCH_CHANNEL_NAME, NotificationManager.IMPORTANCE_DEFAULT).apply { description = MATCH_CHANNEL_DESCRIPTION }
