@@ -14,7 +14,7 @@
         android:layout_height="0dp"
         android:background="@color/colorPrimaryDark"
         android:orientation="horizontal"
-        app:layout_constraintBottom_toTopOf="@+id/matches_list"
+        app:layout_constraintBottom_toTopOf="@+id/LayoutSearch"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
@@ -23,7 +23,7 @@
             android:id="@+id/LogoCalcetto"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight=".60"
+            android:layout_weight=".30"
             android:contentDescription="@string/immagine_del_logo_del_calcetto"
             android:src="@drawable/calcetto" />
 
@@ -39,6 +39,13 @@
             app:autoSizeTextType="uniform"
             tools:layout_constraintLeft_creator="1"
             tools:layout_constraintTop_creator="1" />
+
+        <ImageView
+            android:id="@+id/SearchIco"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight=".10"
+            android:src="@android:drawable/ic_menu_search" />
     </LinearLayout>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -54,16 +61,64 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:srcCompat="@drawable/ic_add_white_24dp" />
 
+    <LinearLayout
+        android:id="@+id/LayoutSearch"
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:layout_marginTop="90dp"
+        android:background="@color/colorPrimaryDark"
+        android:orientation="horizontal"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <EditText
+            android:id="@+id/NameMatchSearch"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight=".35"
+            android:ems="10"
+            android:hint="@string/nome_match"
+            android:inputType="textPersonName"
+            android:textColor="@color/colorText"
+            android:textColorHighlight="#FFFFFF"
+            android:textColorHint="#FFFFFF"
+            android:textColorLink="#FFFFFF"
+            android:textSize="20sp" />
+
+        <EditText
+            android:id="@+id/CittaSearch"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight=".35"
+            android:ems="10"
+            android:hint="Città"
+            android:inputType="text"
+            android:textColor="@color/colorText"
+            android:textColorHighlight="#FFFFFF"
+            android:textColorHint="#FFFFFF"
+            android:textColorLink="#FFFFFF"
+            android:textSize="20sp" />
+
+        <Button
+            android:id="@+id/SearchButton"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight=".3"
+            android:background="#FFFFFF"
+            android:text="Cerca"
+            android:textColor="@color/colorPrimaryDark"
+            android:textSize="18sp" />
+    </LinearLayout>
+
     <ListView
         android:id="@+id/matches_list"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="100dp"
+        android:cacheColorHint="@color/colorText"
         android:paddingBottom="100dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toBottomOf="@+id/LayoutSearch">
 
     </ListView>
 
