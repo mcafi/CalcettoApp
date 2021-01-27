@@ -7,11 +7,10 @@
     android:layout_height="match_parent"
     tools:context=".ui.main.PlaceholderFragment">
 
-
     <LinearLayout
-        android:id="@+id/linearLayout"
+        android:id="@+id/layout_search_bar"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
+        android:layout_height="64dp"
         android:background="@color/colorPrimaryDark"
         android:orientation="horizontal"
         app:layout_constraintBottom_toTopOf="@+id/LayoutSearch"
@@ -22,19 +21,20 @@
         <ImageView
             android:id="@+id/LogoCalcetto"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight=".30"
+            android:layout_height="64dp"
+            android:layout_weight=".2"
+            android:padding="8dp"
             android:contentDescription="@string/immagine_del_logo_del_calcetto"
             android:src="@drawable/calcetto" />
 
         <TextView
             android:id="@+id/section_label"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight=".40"
-            android:padding="15dp"
+            android:layout_width="wrap_content"
+            android:layout_height="64dp"
+            android:layout_weight=".3"
+            android:padding="16dp"
             android:text="@string/prossime_partite"
-            android:textAlignment="center"
+            android:textAlignment="textStart"
             android:textColor="@color/colorTextButton"
             app:autoSizeTextType="uniform"
             tools:layout_constraintLeft_creator="1"
@@ -42,9 +42,9 @@
 
         <ImageView
             android:id="@+id/SearchIco"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight=".10"
+            android:layout_width="64dp"
+            android:layout_height="64dp"
+            android:padding="16dp"
             android:src="@android:drawable/ic_menu_search" />
     </LinearLayout>
 
@@ -65,10 +65,9 @@
         android:id="@+id/LayoutSearch"
         android:layout_width="match_parent"
         android:layout_height="1px"
-        android:layout_marginTop="90dp"
         android:background="@color/colorPrimaryDark"
         android:orientation="horizontal"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toBottomOf="@+id/layout_search_bar">
 
         <EditText
             android:id="@+id/NameMatchSearch"
@@ -82,7 +81,8 @@
             android:textColorHighlight="#FFFFFF"
             android:textColorHint="#FFFFFF"
             android:textColorLink="#FFFFFF"
-            android:textSize="20sp" />
+            android:textSize="20sp"
+            android:autofillHints="" />
 
         <EditText
             android:id="@+id/CittaSearch"
@@ -90,7 +90,7 @@
             android:layout_height="match_parent"
             android:layout_weight=".35"
             android:ems="10"
-            android:hint="Città"
+            android:hint="@string/city"
             android:inputType="text"
             android:textColor="@color/colorText"
             android:textColorHighlight="#FFFFFF"
@@ -104,7 +104,7 @@
             android:layout_height="match_parent"
             android:layout_weight=".3"
             android:background="#FFFFFF"
-            android:text="Cerca"
+            android:text="@string/search"
             android:textColor="@color/colorPrimaryDark"
             android:textSize="18sp" />
     </LinearLayout>
@@ -130,6 +130,6 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/linearLayout" />
+        app:layout_constraintTop_toTopOf="@+id/layout_search_bar" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

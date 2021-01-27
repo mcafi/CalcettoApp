@@ -41,4 +41,6 @@
     <string name="modifica_profilo">Modifica profilo</string>
     <string name="notifiche_partite">Notifiche partite</string>
     <string name="logo_applicazione">Logo applicazione</string>
+    <string name="city">Città</string>
+    <string name="search">Cerca</string>
 </resources>

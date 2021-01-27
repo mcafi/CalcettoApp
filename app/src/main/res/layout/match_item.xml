@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
-    android:layout_marginTop="5dp"
+    android:layout_marginTop="4dp"
     android:minHeight="140dp"
     android:orientation="horizontal"
     app:layout_constraintHeight_min="wrap"
@@ -12,14 +12,14 @@
     <LinearLayout
         android:layout_width="0dp"
         android:layout_height="match_parent"
-        android:layout_weight=".20"
+        android:layout_weight=".25"
+        android:background="@color/colorPrimary"
         android:orientation="vertical">
 
         <TextView
             android:id="@+id/Day"
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight=".50"
+            android:layout_height="64dp"
             android:padding="2dp"
             android:text="@string/date"
             android:textAlignment="center"
@@ -30,8 +30,8 @@
         <TextView
             android:id="@+id/Date"
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight=".20"
+            android:layout_height="24dp"
+            android:padding="2dp"
             android:text="@string/year"
             android:textAlignment="center"
             android:textColor="@color/colorText"
@@ -40,17 +40,12 @@
         <TextView
             android:id="@+id/Time"
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight=".20"
+            android:layout_height="36dp"
+            android:padding="2dp"
             android:text="@string/time"
             android:textAlignment="center"
             android:textColor="@color/colorText"
             app:autoSizeTextType="uniform" />
-
-        <Space
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight=".10" />
     </LinearLayout>
 
     <LinearLayout
@@ -63,10 +58,9 @@
         <TextView
             android:id="@+id/tv_match_name_match"
             android:layout_width="match_parent"
-            android:layout_height="0dp"
+            android:layout_height="48dp"
             android:layout_marginStart="4dp"
             android:layout_marginEnd="4dp"
-            android:layout_weight=".50"
             android:text="@string/nome_match"
             android:textAllCaps="false"
             android:textColor="@color/colorPrimaryDark"
@@ -76,11 +70,10 @@
         <TextView
             android:id="@+id/tv_match_available"
             android:layout_width="match_parent"
-            android:layout_height="0dp"
+            android:layout_height="32dp"
             android:layout_marginStart="4dp"
             android:layout_marginTop="4dp"
             android:layout_marginEnd="4dp"
-            android:layout_weight=".20"
             android:text="@string/participants"
             android:textColor="@color/colorAccent"
             app:autoSizeTextType="uniform" />
@@ -88,11 +81,10 @@
         <TextView
             android:id="@+id/tv_match_notes"
             android:layout_width="match_parent"
-            android:layout_height="0dp"
+            android:layout_height="32dp"
             android:layout_marginStart="4dp"
             android:layout_marginTop="4dp"
             android:layout_marginEnd="4dp"
-            android:layout_weight=".30"
             android:text="@string/notes"
             android:textColor="@color/colorAccent"
             app:autoSizeTextType="uniform" />

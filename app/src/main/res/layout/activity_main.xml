@@ -13,8 +13,7 @@
 
         <com.google.android.material.appbar.AppBarLayout
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight=".08"
+            android:layout_height="64dp"
             android:theme="@style/AppTheme.AppBarOverlay">
 
             <LinearLayout
@@ -25,17 +24,17 @@
                     android:id="@+id/tabs"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
-                    android:layout_weight=".88"
+                    android:layout_weight="1"
                     android:background="@color/colorPrimary"
                     app:tabIndicatorColor="#FFFFFF" />
 
                 <ImageView
                     android:id="@+id/SettingLink"
-                    android:layout_width="0dp"
+                    android:layout_width="64dp"
                     android:layout_height="match_parent"
-                    android:layout_weight=".12"
+                    android:maxWidth="72dp"
                     android:contentDescription="@string/settingimage"
-                    android:padding="7dp"
+                    android:padding="16dp"
                     app:srcCompat="@drawable/setting" />
 
             </LinearLayout>
@@ -46,7 +45,7 @@
             android:id="@+id/view_pager"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight=".92"
+            android:layout_weight="1"
             android:background="@drawable/campo_da_calcio"
             app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
