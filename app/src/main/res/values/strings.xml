@@ -43,4 +43,6 @@
     <string name="logo_applicazione">Logo applicazione</string>
     <string name="city">Città</string>
     <string name="search">Cerca</string>
+    <string name="icon_calendar">Icona calendario</string>
+    <string name="icon_google_maps">Icona Google Maps</string>
 </resources>
