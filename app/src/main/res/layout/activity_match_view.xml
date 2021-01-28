@@ -11,8 +11,7 @@
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/matchToolbar"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight=".08"
+        android:layout_height="64dp"
         android:background="?attr/colorPrimary"
         android:minHeight="?attr/actionBarSize"
         android:theme="?attr/actionBarTheme"
@@ -51,97 +50,88 @@
         <TextView
             android:id="@+id/tv_match_view_name"
             android:layout_width="match_parent"
-            android:layout_height="42dp"
+            android:layout_height="36dp"
             android:text="@string/nome_match"
             android:textColor="@color/colorText"
             android:textSize="42sp"
             app:autoSizeTextType="uniform"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <LinearLayout
-            android:id="@+id/layout_match_datetime"
-            android:layout_width="match_parent"
-            android:layout_height="48dp"
-            android:orientation="horizontal"
-            app:layout_constraintTop_toBottomOf="@id/tv_match_view_name">
+        <ImageView
+            android:id="@+id/img_calendar"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:layout_marginTop="8dp"
+            android:contentDescription="@string/icon_calendar"
+            android:padding="3dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_match_view_name"
+            app:srcCompat="@drawable/datetimeico" />
 
-            <ImageView
-                android:id="@+id/imageView2"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight=".11"
-                app:srcCompat="@drawable/datetimeico"
-                android:contentDescription="@string/icon_calendar" />
+        <TextView
+            android:id="@+id/tv_match_view_datetime"
+            android:layout_width="0dp"
+            android:layout_height="32dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="8dp"
+            android:textColor="@color/colorText"
+            android:textSize="18sp"
+            app:autoSizeMaxTextSize="22sp"
+            app:autoSizeTextType="uniform"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/img_calendar"
+            app:layout_constraintTop_toBottomOf="@+id/tv_match_view_name" />
 
-            <TextView
-                android:id="@+id/tv_match_view_datetime"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_marginStart="4dp"
-                android:layout_weight=".89"
-                android:text="@string/date_time"
-                android:textColor="@color/colorText"
-                android:textSize="18sp"
-                app:autoSizeMaxTextSize="22sp"
-                app:autoSizeTextType="uniform" />
-        </LinearLayout>
+        <ImageView
+            android:id="@+id/img_google_maps"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            app:srcCompat="@drawable/maps_icon_gmm"
+            android:padding="4dp"
+            android:contentDescription="@string/icon_google_maps"
+            app:layout_constraintTop_toBottomOf="@id/img_calendar"
+            app:layout_constraintStart_toStartOf="parent"/>
 
-        <LinearLayout
-            android:id="@+id/layout_match_location"
-            android:layout_width="match_parent"
-            android:layout_height="48dp"
-            android:orientation="horizontal"
-            app:layout_constraintTop_toBottomOf="@id/layout_match_datetime">
+        <TextView
+            android:id="@+id/tv_match_view_place"
+            android:layout_width="0dp"
+            android:layout_height="32dp"
+            android:layout_marginStart="16dp"
+            android:text="@string/luogo"
+            android:textColor="@color/colorText"
+            android:textSize="18sp"
+            app:autoSizeMaxTextSize="22sp"
+            app:autoSizeTextType="uniform"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/img_google_maps"
+            app:layout_constraintTop_toBottomOf="@id/tv_match_view_datetime" />
 
-            <ImageView
-                android:id="@+id/imageView4"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight=".11"
-                app:srcCompat="@drawable/maps_icon_gmm"
-                android:contentDescription="@string/icon_google_maps" />
+        <TextView
+            android:id="@+id/tv_match_view_partecipants_label"
+            android:layout_width="0dp"
+            android:layout_height="32dp"
+            android:layout_marginTop="8dp"
+            android:text="@string/participants"
+            android:textColor="@color/colorText"
+            app:autoSizeMaxTextSize="32sp"
+            app:autoSizeTextType="uniform"
+            app:layout_constraintEnd_toStartOf="@+id/tv_match_view_partecipants"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/img_google_maps" />
 
-            <TextView
-                android:id="@+id/tv_match_view_place"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_marginStart="4dp"
-                android:layout_weight=".89"
-                android:text="@string/luogo"
-                android:textColor="@color/colorText"
-                android:textSize="18sp"
-                app:autoSizeMaxTextSize="22sp"
-                app:autoSizeTextType="uniform" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="48dp"
-            android:background="@drawable/border"
-            android:orientation="horizontal"
-            app:layout_constraintTop_toBottomOf="@id/layout_match_location">
-
-            <TextView
-                android:id="@+id/tv_match_view_partecipants_label"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight=".6"
-                android:text="@string/participants"
-                android:textColor="@color/colorText"
-                app:autoSizeMaxTextSize="33sp"
-                app:autoSizeTextType="uniform" />
-
-            <TextView
-                android:id="@+id/tv_match_view_partecipants"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight=".4"
-                android:text="0 / 10"
-                android:textColor="@color/colorText"
-                app:autoSizeMaxTextSize="33sp"
-                app:autoSizeTextType="uniform" />
-
-        </LinearLayout>
+        <TextView
+            android:id="@+id/tv_match_view_partecipants"
+            android:layout_width="0dp"
+            android:layout_height="32dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="8dp"
+            android:text="0 / 10"
+            android:textColor="@color/colorText"
+            app:autoSizeMaxTextSize="33sp"
+            app:autoSizeTextType="uniform"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/tv_match_view_partecipants_label"
+            app:layout_constraintTop_toBottomOf="@id/img_google_maps" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -151,19 +141,15 @@
         android:layout_height="0dp"
         android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp"
-        android:layout_weight=".26">
+        android:layout_weight=".5">
 
     </ListView>
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight=".11"
+        android:layout_height="64dp"
         android:orientation="horizontal"
-        android:paddingStart="16dp"
-        android:paddingTop="16dp"
-        android:paddingEnd="16dp"
-        android:paddingBottom="16dp">
+        android:padding="12dp">
 
         <Button
             android:id="@+id/btn_match_view_partecipate_leave"
@@ -181,9 +167,9 @@
             android:layout_height="match_parent"
             android:layout_marginStart="1dp"
             android:layout_weight=".33"
-            android:background="@color/colorTextButton"
+            android:background="#F44336"
             android:text="@string/elimina_partita"
-            android:textColor="@color/colorPrimaryDark"
+            android:textColor="@color/colorTextButton"
             android:visibility="invisible" />
 
         <com.google.android.material.switchmaterial.SwitchMaterial
