@@ -37,7 +37,7 @@ class SettingsActivity : AppCompatActivity(), View.OnClickListener {
         val usernameText = findViewById<TextView>(R.id.et_settings_username)
         val saveSettings = findViewById<TextView>(R.id.btn_settings_save)
         saveSettings.setOnClickListener(this)
-
+        btn_logout.setOnClickListener(this)
 
         userRef.get().addOnSuccessListener { documentSnapshot ->
             user = documentSnapshot.toObject(User::class.java)!!
@@ -45,12 +45,12 @@ class SettingsActivity : AppCompatActivity(), View.OnClickListener {
             usernameText.text = user.username
         }
 
-        val notify_user=DbSql.getUser(mAuthReg.currentUser!!.uid)
-        if(notify_user==1){
-            notification_switch.isChecked=true
+        val notify_user = DbSql.getUser(mAuthReg.currentUser!!.uid)
+        if(notify_user == 1){
+            notification_switch.isChecked = true
         }
-        else if(notify_user==0){
-            notification_switch.isChecked=false
+        else if(notify_user == 0){
+            notification_switch.isChecked = false
         }
         notification_switch.setOnClickListener(this)
     }
@@ -68,7 +68,7 @@ class SettingsActivity : AppCompatActivity(), View.OnClickListener {
                 userRef.update(user.toMap())
                 startActivity(Intent(this, MainActivity::class.java).putExtra("TAB", 2))
             }
-            R.id.logoutButton -> {
+            R.id.btn_logout -> {
                 FirebaseAuth.getInstance().signOut()
                 startActivity(Intent(this, LoginActivity::class.java))
             }

@@ -90,7 +90,7 @@
         android:orientation="horizontal">
 
         <Button
-            android:id="@+id/logoutButton"
+            android:id="@+id/btn_logout"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_marginStart="8dp"
