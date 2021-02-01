@@ -27,6 +27,7 @@ class MainFragment : Fragment() {
     private val db = initializeDatabase()
     private lateinit var firebaseUser: FirebaseUser
     private lateinit var listView: ListView
+    private lateinit var SearchBar : ProgressBar
 
     override fun onCreateView(inflater: LayoutInflater, viewGroup: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.fragment_main, viewGroup, false)
@@ -50,7 +51,8 @@ class MainFragment : Fragment() {
                     }
                     val adapter = MatchAdapter(context!!, matchList)
                     listView.adapter = adapter
-                    view.findViewById<ProgressBar>(R.id.progressBarMatch).visibility = View.INVISIBLE;
+                    SearchBar = view.findViewById(R.id.progressBarMatch)
+                    SearchBar.visibility = View.INVISIBLE
                 }
                 .addOnFailureListener { exception ->
                     Log.d("Main", "Error getting documents: ", exception)
@@ -90,6 +92,32 @@ class MainFragment : Fragment() {
             }
         }
         return view
+    }
+
+    override fun onResume() {
+        super.onResume()
+        Log.v("RESUME","qui ho ripreso")
+
+
+        val matchList = ArrayList<Match>()
+
+        db.collection("partite")
+                .whereGreaterThan("matchDate", Calendar.getInstance().timeInMillis)
+                .orderBy("matchDate", Query.Direction.ASCENDING)
+                .get()
+                .addOnSuccessListener { result ->
+                    for (document in result) {
+                        val match = document.toObject(Match::class.java)
+                        match.id = document.id
+                        matchList.add(match)
+                    }
+                    val adapter = MatchAdapter(context!!, matchList)
+                    listView.adapter = adapter
+                    SearchBar.visibility = View.INVISIBLE;
+                }
+                .addOnFailureListener { exception ->
+                    Log.d("Main", "Error getting documents: ", exception)
+                }
     }
 
     private fun initializeDatabase(): FirebaseFirestore {
