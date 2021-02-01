@@ -112,7 +112,7 @@ class MainFragment : Fragment() {
                     for (document in result) {
                         val match = document.toObject(Match::class.java)
                         match.id = document.id
-                        if(match.place.address.toLowerCase().contains(Citta.toLowerCase()) && match.matchName.toLowerCase().contains(NomeMatch)) {
+                        if(match.place.address.toLowerCase().contains(Citta.toLowerCase()) && match.matchName.toLowerCase().contains(NomeMatch.toLowerCase())) {
                             Log.v("Search","Trovato")
                             matchList.add(match)
                         }
