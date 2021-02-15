@@ -23,8 +23,8 @@
             android:layout_width="0dp"
             android:layout_height="64dp"
             android:layout_weight=".2"
-            android:padding="8dp"
             android:contentDescription="@string/immagine_del_logo_del_calcetto"
+            android:padding="8dp"
             android:src="@drawable/calcetto" />
 
         <TextView
@@ -67,6 +67,7 @@
         android:layout_height="1px"
         android:background="@color/colorPrimaryDark"
         android:orientation="horizontal"
+        android:visibility="invisible"
         app:layout_constraintTop_toBottomOf="@+id/layout_search_bar">
 
         <EditText
@@ -74,6 +75,7 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight=".35"
+            android:autofillHints=""
             android:ems="10"
             android:hint="@string/nome_match"
             android:inputType="textPersonName"
@@ -81,8 +83,7 @@
             android:textColorHighlight="#FFFFFF"
             android:textColorHint="#FFFFFF"
             android:textColorLink="#FFFFFF"
-            android:textSize="20sp"
-            android:autofillHints="" />
+            android:textSize="20sp" />
 
         <EditText
             android:id="@+id/CittaSearch"

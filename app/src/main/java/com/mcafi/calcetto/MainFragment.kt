@@ -16,7 +16,6 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.FirebaseFirestoreSettings
 import com.google.firebase.firestore.Query
 import com.mcafi.calcetto.model.Match
-import kotlinx.android.synthetic.main.activity_login.*
 import kotlinx.android.synthetic.main.fragment_main.*
 import java.util.*
 import kotlin.collections.ArrayList
@@ -113,6 +112,7 @@ class MainFragment : Fragment() {
                     }
                     val adapter = MatchAdapter(context!!, matchList)
                     listView.adapter = adapter
+
                     SearchBar.visibility = View.INVISIBLE;
                 }
                 .addOnFailureListener { exception ->

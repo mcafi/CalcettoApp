@@ -7,6 +7,7 @@
 
 
     <LinearLayout
+        android:id="@+id/linearLayout"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:orientation="vertical"
@@ -19,19 +20,25 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight=".35"
+            android:layout_weight=".28"
             android:orientation="horizontal">
 
-            <ImageView
-                android:id="@+id/profileIcon"
+            <androidx.cardview.widget.CardView
+                android:id="@+id/profileIconCard"
                 android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight=".40"
-                android:contentDescription="@string/immagine_del_profilo"
-                android:padding="8dp"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@drawable/ic_account_circle_black_64dp" />
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:layout_weight=".35"
+                app:cardBackgroundColor="#00AE1010"
+                app:cardCornerRadius="80dp">
+
+                <ImageView
+                    android:id="@+id/profileIcon"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:contentDescription="@string/immagine_del_profilo"
+                    app:srcCompat="@drawable/ic_account_circle_black_64dp" />
+            </androidx.cardview.widget.CardView>
 
             <LinearLayout
                 android:layout_width="0dp"
@@ -79,47 +86,8 @@
                 <Space
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
-                    android:layout_weight=".35" />
+                    android:layout_weight=".15" />
             </LinearLayout>
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight=".10"
-            android:orientation="horizontal">
-
-            <Button
-                android:id="@+id/editPicturebutton"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="10dp"
-                android:layout_marginEnd="8dp"
-                android:layout_marginBottom="10dp"
-                android:layout_weight=".35"
-                android:background="@color/colorTextButton"
-                android:text="@string/modifica_immagine"
-                android:textColor="@color/colorPrimaryDark" />
-
-            <Space
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight=".3" />
-
-            <Button
-                android:id="@+id/archivioMatch"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="10dp"
-                android:layout_marginEnd="16dp"
-                android:layout_marginBottom="10dp"
-                android:layout_weight=".35"
-                android:background="@color/colorTextButton"
-                android:text="Archivio Partite"
-                android:textColor="@color/colorButton" />
 
         </LinearLayout>
 
@@ -127,12 +95,10 @@
             android:id="@+id/constraintLayout3"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight=".10"
+            android:layout_weight=".12"
             android:background="#FFFFFF"
             android:paddingStart="16dp"
-            android:paddingTop="10dp"
             android:paddingEnd="16dp"
-            android:paddingBottom="10dp"
             android:textAlignment="center">
 
             <TextView
@@ -140,10 +106,12 @@
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight=".25"
+                android:padding="5dp"
                 android:text="@string/nome_match"
                 android:textAlignment="center"
                 android:textColor="#000000"
-                app:autoSizeTextType="uniform" />
+                android:textSize="20sp"
+                app:autoSizeTextType="none" />
 
             <TextView
                 android:id="@+id/DataEOra"
@@ -154,7 +122,8 @@
                 android:text="@string/date_time"
                 android:textAlignment="center"
                 android:textColor="@color/colorAccent"
-                app:autoSizeTextType="uniform" />
+                android:textSize="20sp"
+                app:autoSizeTextType="none" />
 
             <TextView
                 android:id="@+id/Partecipanti"
@@ -166,7 +135,8 @@
                 android:text="@string/posti_liberi"
                 android:textAlignment="center"
                 android:textColor="@color/colorAccent"
-                app:autoSizeTextType="uniform" />
+                android:textSize="20sp"
+                app:autoSizeTextType="none" />
 
             <TextView
                 android:id="@+id/Note"
@@ -182,7 +152,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight=".45"
+            android:layout_weight=".58"
             android:orientation="vertical">
 
             <ListView
@@ -195,6 +165,19 @@
 
 
     </LinearLayout>
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/ButtonArchivio"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:layout_margin="@dimen/fab_margin"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="16dp"
+        android:backgroundTint="@color/colorButton"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:srcCompat="@android:drawable/ic_menu_today" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

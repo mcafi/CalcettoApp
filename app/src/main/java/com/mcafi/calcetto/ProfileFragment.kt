@@ -12,6 +12,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.*
 import androidx.fragment.app.Fragment
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.firestore.FirebaseFirestore
@@ -54,8 +55,8 @@ class ProfileFragment : Fragment(), View.OnClickListener {
             }
         }
 
-        v.findViewById<Button>(R.id.editPicturebutton).setOnClickListener(this)
-        v.findViewById<Button>(R.id.archivioMatch).setOnClickListener(this)
+        v.findViewById<ImageView>(R.id.profileIcon).setOnClickListener(this)
+        v.findViewById<FloatingActionButton>(R.id.ButtonArchivio).setOnClickListener(this)
         profileIcon = v.findViewById(R.id.profileIcon)
         immagini.getBytes(MAX_SIZE).addOnSuccessListener { bytes ->
             val bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.size)
@@ -108,11 +109,11 @@ class ProfileFragment : Fragment(), View.OnClickListener {
 
     override fun onClick(v: View) {
         when (v.id) {
-            R.id.editPicturebutton -> {
+            R.id.profileIcon -> {
                 val gallery = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.INTERNAL_CONTENT_URI)
                 startActivityForResult(gallery, PICK_IMAGE)
             }
-            R.id.archivioMatch->{
+            R.id.ButtonArchivio->{
                 startActivity(Intent(activity, ArchivioMatch::class.java))
             }
         }
