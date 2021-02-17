@@ -26,13 +26,15 @@ class MainFragment : Fragment() {
     private val db = initializeDatabase()
     private lateinit var firebaseUser: FirebaseUser
     private lateinit var listView: ListView
-    private lateinit var SearchBar : ProgressBar
+    //private lateinit var SearchBar : ProgressBar
+
 
     override fun onCreateView(inflater: LayoutInflater, viewGroup: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.fragment_main, viewGroup, false)
         val addMatchButton: FloatingActionButton = view.findViewById(R.id.addMatchButton)
         var ButtonSearchClicked =false
 
+        val SearchBar  = view.findViewById<ProgressBar>(R.id.progressBarMatch)
         addMatchButton.setOnClickListener { startActivity(Intent(activity, NewMatchActivity::class.java)) }
         listView = view.findViewById(R.id.matches_list)
 
@@ -50,7 +52,7 @@ class MainFragment : Fragment() {
                     }
                     val adapter = MatchAdapter(context!!, matchList)
                     listView.adapter = adapter
-                    SearchBar = view.findViewById(R.id.progressBarMatch)
+
                     SearchBar.visibility = View.INVISIBLE
                 }
                 .addOnFailureListener { exception ->
@@ -95,9 +97,9 @@ class MainFragment : Fragment() {
 
     override fun onResume() {
         super.onResume()
-        Log.v("RESUME","qui ho ripreso")
 
 
+        val SearchBar  = view?.findViewById<ProgressBar>(R.id.progressBarMatch)
         val matchList = ArrayList<Match>()
 
         db.collection("partite")
@@ -113,7 +115,9 @@ class MainFragment : Fragment() {
                     val adapter = MatchAdapter(context!!, matchList)
                     listView.adapter = adapter
 
-                    SearchBar.visibility = View.INVISIBLE;
+                    if (SearchBar != null) {
+                        SearchBar.visibility = View.INVISIBLE
+                    };
                 }
                 .addOnFailureListener { exception ->
                     Log.d("Main", "Error getting documents: ", exception)

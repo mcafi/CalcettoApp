@@ -67,7 +67,6 @@
         android:layout_height="1px"
         android:background="@color/colorPrimaryDark"
         android:orientation="horizontal"
-        android:visibility="invisible"
         app:layout_constraintTop_toBottomOf="@+id/layout_search_bar">
 
         <EditText
